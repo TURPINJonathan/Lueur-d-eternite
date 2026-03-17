@@ -1,0 +1,100 @@
+security:
+  password_hashers:
+    App\Entity\User: 'auto'
+
+  role_hierarchy:
+    ROLE_ADMIN: [ROLE_USER]
+    ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_USER]
+
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    # LOGIN API (public) -> renvoie JWT
+    login:
+      pattern: ^/api/login
+      stateless: true
+      json_login:
+        check_path: /api/login
+        username_path: email
+        password_path: password
+        success_handler: App\Security\LoginSuccessHandler
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+      login_throttling:
+        max_attempts: 5
+        interval: '1 minute'
+
+    # REFRESH endpoint (public)
+
+    refresh:
+      pattern: ^/api/token/refresh
+      stateless: true
+      provider: app_user_provider
+      refresh_jwt:
+        check_path: /api/token/refresh
+      # pattern: ^/api/token/refresh
+      # stateless: true
+      # security: false
+    #   provider: app_user_provider
+    #   custom_authenticators:
+    #     - gesdinet.jwtrefreshtoken.security.refresh_token_authenticator
+
+    # Interface API Platform (web) protégée par session
+    api_platform_ui:
+      pattern: ^/api(?:/docs(?:\..+)?)?$
+      lazy: true
+      provider: app_user_provider
+      context: main
+      entry_point: App\Security\LoginFormEntryPoint
+
+    # Galerie publique (sans auth)
+    api_public:
+      pattern: ^/api/public
+      stateless: true
+      security: false
+
+    # API métier protégée par JWT
+    api:
+      pattern: ^/api
+      stateless: true
+      provider: app_user_provider
+      jwt: ~
+      logout:
+        path: /api/logout
+
+    # Backoffice EasyAdmin (session) - séparé de l’API
+    main:
+      lazy: true
+      provider: app_user_provider
+      form_login:
+        login_path: app_login
+        check_path: /login
+        enable_csrf: true
+        default_target_path: /backoffice
+      logout:
+        path: /logout
+        target: /login
+
+  access_control:
+    - { path: ^/login$, roles: PUBLIC_ACCESS }
+    - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+    - { path: ^/api/logout, roles: PUBLIC_ACCESS }
+    - { path: ^/api/public, roles: PUBLIC_ACCESS }
+
+    # Interface API Platform derrière login
+    - { path: ^/api$, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/docs, roles: IS_AUTHENTICATED_FULLY }
+
+    # Tout le reste de l'API = auth obligatoire
+    - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
+    # Admin
+    - { path: ^/backoffice, roles: ROLE_ADMIN }

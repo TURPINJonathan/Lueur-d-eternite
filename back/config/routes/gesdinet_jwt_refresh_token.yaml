@@ -1,0 +1,5 @@
+gesdinet_jwt_refresh_token:
+  path: /api/token/refresh
+  methods: [POST]
+  defaults:
+    _controller: gesdinet.jwtrefreshtoken::refresh
