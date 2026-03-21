@@ -1,0 +1,11 @@
+.next
+out
+build
+dist
+node_modules
+coverage
+.vscode
+old
+package-lock.json
+*.yml
+*.yaml

@@ -1,0 +1,16 @@
+gesdinet_jwt_refresh_token:
+  refresh_token_class: App\Entity\RefreshToken
+  ttl: 2592000 # 30 jours
+  firewall: api
+  user_provider: app_user_provider
+  single_use: true
+
+  # IMPORTANT : lire le refresh token depuis un cookie
+  token_parameter_name: refresh_token
+  cookie:
+    enabled: true
+    http_only: true
+    secure: false        # dev en http => false ; prod https => true
+    same_site: lax       # dev => lax ; prod cross-site => none (voir plus bas)
+    path: /
+    domain: null
