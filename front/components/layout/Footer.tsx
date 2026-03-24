@@ -13,7 +13,7 @@ const QUICK_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="footer inset-shadow-sm/10 page-shell flex flex-col gap-2 px-10 pb-2 pt-8 lg:px-20">
+    <footer className="footer inset-shadow-sm/10 page-shell flex flex-col gap-2 pb-2 pt-8 !mx-0 !w-full">
       <div className="flex flex-wrap gap-4">
         <div className="flex-2 flex basis-[300px] flex-col gap-2 items-center sm:items-start justify-start text-center sm:text-start">
           <p className="uppercase text-md font-semibold font-title">Lueur d&apos;Éternité</p>
