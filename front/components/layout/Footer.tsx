@@ -13,8 +13,8 @@ const QUICK_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="footer inset-shadow-sm/10 page-shell flex flex-col gap-2 px-10 pb-2 pt-8 lg:px-20 !mx-0 !w-full">
-      <div className="flex flex-wrap gap-4">
+    <footer className="footer inset-shadow-sm/10 page-shell flex flex-col gap-2 pb-2 !mx-0 !w-full">
+      <div className="flex flex-wrap gap-4 pt-8 px-10 lg:px-20">
         <div className="flex-2 flex basis-[300px] flex-col gap-2 items-center sm:items-start justify-start text-center sm:text-start">
           <p className="uppercase text-md font-semibold font-title">Lueur d&apos;Éternité</p>
           <p className="italic font-light">
@@ -50,7 +50,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="w-full flex flex-col md:flex-row justify-between items-center md:items-start gap-4 pt-2 border-t opacity-30">
+      <div className="w-full flex flex-col md:flex-row justify-between items-center md:items-start gap-4 pt-2 border-t opacity-30 px-10 lg:px-20">
         <div className="flex-1 flex flex-col gap-1 items-center md:items-start justify-center">
           <Link href="/mentions-legales">Mentions légales</Link>
           <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>

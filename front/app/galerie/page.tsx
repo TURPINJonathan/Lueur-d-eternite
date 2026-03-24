@@ -87,9 +87,7 @@ export default function Gallery() {
 
       <section className="page-shell page-section">
         <div className="flex flex-col items-center gap-8">
-          <h3 className="section-heading text-3xl lg:text-4xl">
-            Vos défunts ont droit à tout notre respect.
-          </h3>
+          <h3 className="section-heading text-3xl lg:text-4xl">Vos défunts ont droit à tout notre respect.</h3>
           <p className="leading-6 text-center">
             Confiez-nous l&apos;entretien de vos sépultures et profitez d&apos;un service professionnel et respectueux.
           </p>

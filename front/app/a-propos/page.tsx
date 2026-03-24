@@ -45,7 +45,8 @@ export default function About() {
             <div className="flex-1 flex flex-col justify-center gap-3 pb-4 lg:py-4">
               <h3 className="px-5 text-3xl lg:text-4xl">La lettre d&apos;Émilie</h3>
               <p className="italic leading-6 indent-8 px-5">
-                Il faudrait que tu me donnes ton texte ici et que tu me donnes une belle photo de toi (photo claire et pro mais pas trop je pense).
+                Il faudrait que tu me donnes ton texte ici et que tu me donnes une belle photo de toi (photo claire et
+                pro mais pas trop je pense).
               </p>
             </div>
           </div>

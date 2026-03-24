@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
+import LogoLoader from './LogoLoader.component';
+
 export type GalleryItem =
   | {
       id: string;
@@ -24,6 +26,55 @@ export type GalleryItem =
 
 interface GalleryComponentProps {
   items: GalleryItem[];
+}
+
+function GalleryLightboxMedia({ item }: { item: GalleryItem }) {
+  const [loadsPending, setLoadsPending] = useState(() => (item.kind === 'single' ? 1 : 2));
+
+  const onPieceLoaded = () => setLoadsPending((n) => Math.max(0, n - 1));
+  const busy = loadsPending > 0;
+
+  return (
+    <div className="relative min-h-[200px]">
+      {item.kind === 'single' ? (
+        <Image
+          src={item.src}
+          alt={item.alt}
+          width={1600}
+          height={1000}
+          sizes="100vw"
+          className="max-h-[85vh] w-full object-contain"
+          onLoadingComplete={onPieceLoaded}
+          onError={onPieceLoaded}
+        />
+      ) : (
+        <ReactCompareSlider
+          itemOne={
+            <ReactCompareSliderImage
+              src={item.beforeSrc}
+              alt={`${item.alt} - avant`}
+              onLoad={onPieceLoaded}
+              onError={onPieceLoaded}
+            />
+          }
+          itemTwo={
+            <ReactCompareSliderImage
+              src={item.afterSrc}
+              alt={`${item.alt} - après`}
+              onLoad={onPieceLoaded}
+              onError={onPieceLoaded}
+            />
+          }
+        />
+      )}
+
+      {busy ? (
+        <div className="absolute inset-0 z-[95] flex min-h-[min(85vh,560px)] items-center justify-center bg-black/55 backdrop-blur-[2px]">
+          <LogoLoader size="md" label="Chargement de l'image" />
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 export default function GalleryComponent({ items }: GalleryComponentProps) {
@@ -102,13 +153,13 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
         ))}
       </div>
 
-      {activeItem && (
+      {activeItem && activeIndex !== null && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
           onClick={() => setActiveIndex(null)}
           role="dialog"
           aria-modal="true"
-          aria-label={`Visualisation de l'image ${activeIndex !== null ? activeIndex + 1 : ''}`}
+          aria-label={`Visualisation de l'image ${activeIndex + 1}`}
         >
           <div
             className="relative w-full max-w-6xl overflow-hidden rounded-[var(--radius-lg)] bg-black shadow-2xl"
@@ -123,28 +174,12 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
               <X />
             </button>
 
-            {activeItem.kind === 'single' ? (
-              <Image
-                src={activeItem.src}
-                alt={activeItem.alt}
-                width={1600}
-                height={1000}
-                sizes="100vw"
-                className="max-h-[85vh] w-full object-contain"
-              />
-            ) : (
-              <>
-                <ReactCompareSlider
-                  itemOne={<ReactCompareSliderImage src={activeItem.beforeSrc} alt={`${activeItem.alt} - avant`} />}
-                  itemTwo={<ReactCompareSliderImage src={activeItem.afterSrc} alt={`${activeItem.alt} - après`} />}
-                />
-              </>
-            )}
+            <GalleryLightboxMedia key={`${activeIndex}-${activeItem.id}`} item={activeItem} />
 
             <button
               type="button"
               onClick={showPrevious}
-              disabled={activeIndex === null || activeIndex <= 0}
+              disabled={activeIndex <= 0}
               className="absolute z-[99] cursor-pointer left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="Image précédente"
             >
@@ -153,7 +188,7 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
             <button
               type="button"
               onClick={showNext}
-              disabled={activeIndex === null || activeIndex >= items.length - 1}
+              disabled={activeIndex >= items.length - 1}
               className="absolute z-[99] cursor-pointer right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="Image suivante"
             >
