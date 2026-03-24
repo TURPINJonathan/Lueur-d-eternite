@@ -15,15 +15,7 @@ export function buildWebSiteJsonLd() {
   };
 }
 
-export function buildWebPageJsonLd({
-  title,
-  description,
-  path,
-}: {
-  title: string;
-  description: string;
-  path: string;
-}) {
+export function buildWebPageJsonLd({ title, description, path }: { title: string; description: string; path: string }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -56,7 +48,7 @@ export function buildServiceJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: "Entretien de sépultures à Caen et alentours",
+    name: 'Entretien de sépultures à Caen et alentours',
     provider: {
       '@type': 'LocalBusiness',
       name: seoConfig.siteName,

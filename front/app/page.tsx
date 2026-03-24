@@ -8,9 +8,9 @@ import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd, buildWebPage
 import Link from 'next/link';
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Entretien de sépultures à Caen",
+  title: 'Entretien de sépultures à Caen',
   description:
-    "Nous entretenons les sépultures à Caen et alentours avec soin, régularité et respect, pour préserver durablement les lieux de mémoire.",
+    'Nous entretenons les sépultures à Caen et alentours avec soin, régularité et respect, pour préserver durablement les lieux de mémoire.',
   path: '/',
 });
 
@@ -18,26 +18,26 @@ export default function Home() {
   const webPageJsonLd = buildWebPageJsonLd({
     title: 'Entretien de sépultures à Caen',
     description:
-      "Nous entretenons les sépultures à Caen et alentours avec soin, régularité et respect, pour préserver durablement les lieux de mémoire.",
+      'Nous entretenons les sépultures à Caen et alentours avec soin, régularité et respect, pour préserver durablement les lieux de mémoire.',
     path: '/',
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: 'Accueil', path: '/' }]);
   const serviceJsonLd = buildServiceJsonLd();
   const faqJsonLd = buildFaqJsonLd([
     {
-      question: "Dans quelle zone intervenez-vous autour de Caen ?",
+      question: 'Dans quelle zone intervenez-vous autour de Caen ?',
       answer:
         "Nous intervenons à Caen et dans les communes alentours, avec une zone d'intervention d'environ 15 km autour de la ville.",
     },
     {
-      question: "Proposez-vous un entretien ponctuel et régulier ?",
+      question: 'Proposez-vous un entretien ponctuel et régulier ?',
       answer:
-        "Oui, nous proposons un nettoyage initial en profondeur puis des entretiens réguliers selon la fréquence souhaitée.",
+        'Oui, nous proposons un nettoyage initial en profondeur puis des entretiens réguliers selon la fréquence souhaitée.',
     },
     {
-      question: "Comment obtenir un devis personnalisé ?",
+      question: 'Comment obtenir un devis personnalisé ?',
       answer:
-        "Vous pouvez nous contacter par téléphone ou via la page contact pour recevoir un devis adapté à votre besoin.",
+        'Vous pouvez nous contacter par téléphone ou via la page contact pour recevoir un devis adapté à votre besoin.',
     },
   ]);
 
@@ -103,9 +103,15 @@ export default function Home() {
             Un service simple, pensé pour vous accompagner sans contrainte.
           </p>
           <p className="leading-6">
-            Découvrez le détail de nos <Link href="/services" className="underline underline-offset-4">prestations</Link> et
-            consultez nos <Link href="/tarifs" className="underline underline-offset-4">tarifs d&apos;entretien</Link> pour
-            choisir la formule la plus adaptée.
+            Découvrez le détail de nos{' '}
+            <Link href="/services" className="underline underline-offset-4">
+              prestations
+            </Link>{' '}
+            et consultez nos{' '}
+            <Link href="/tarifs" className="underline underline-offset-4">
+              tarifs d&apos;entretien
+            </Link>{' '}
+            pour choisir la formule la plus adaptée.
           </p>
         </div>
 

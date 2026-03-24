@@ -12,7 +12,7 @@ import Link from 'next/link';
 export const metadata: Metadata = createPageMetadata({
   title: "Services d'entretien de sépultures",
   description:
-    "Découvrez nos prestations de nettoyage en profondeur, entretien régulier et services complémentaires pour sépultures à Caen et environs.",
+    'Découvrez nos prestations de nettoyage en profondeur, entretien régulier et services complémentaires pour sépultures à Caen et environs.',
   path: '/services',
 });
 
@@ -20,7 +20,7 @@ const services = [
   {
     picture: picture1,
     title: 'Nettoyage en profondeur',
-    subtitle: "Pour un éclat des premiers jours",
+    subtitle: 'Pour un éclat des premiers jours',
     items: ['Produits spécifiques', 'Nettoyage intensif', 'Ornement', 'Détails'],
   },
   {
@@ -41,7 +41,7 @@ export default function Services() {
   const webPageJsonLd = buildWebPageJsonLd({
     title: "Services d'entretien de sépultures",
     description:
-      "Découvrez nos prestations de nettoyage en profondeur, entretien régulier et services complémentaires pour sépultures à Caen et environs.",
+      'Découvrez nos prestations de nettoyage en profondeur, entretien régulier et services complémentaires pour sépultures à Caen et environs.',
     path: '/services',
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
@@ -52,10 +52,10 @@ export default function Services() {
     {
       question: 'Que comprend le nettoyage en profondeur ?',
       answer:
-        "Le nettoyage en profondeur comprend un soin complet de la pierre, des ornements et des détails avec des produits adaptés.",
+        'Le nettoyage en profondeur comprend un soin complet de la pierre, des ornements et des détails avec des produits adaptés.',
     },
     {
-      question: "Puis-je choisir uniquement certaines prestations ?",
+      question: 'Puis-je choisir uniquement certaines prestations ?',
       answer:
         'Oui, vous pouvez sélectionner des services complémentaires selon les besoins spécifiques de la sépulture.',
     },
@@ -108,19 +108,15 @@ export default function Services() {
 
       <section className="page-shell page-section">
         <div className="flex flex-col items-center gap-8">
-          <h3 className="section-heading text-3xl lg:text-4xl">
-            Vous souhaitez des renseignements complémentaires ?
-          </h3>
+          <h3 className="section-heading text-3xl lg:text-4xl">Vous souhaitez des renseignements complémentaires ?</h3>
           <p className="leading-6 text-center flex flex-col gap-2 justify-center items-center">
-            <span>
-            N&apos;hésitez pas à nous contacter pour obtenir de plus amples informations.
-            </span>
+            <span>N&apos;hésitez pas à nous contacter pour obtenir de plus amples informations.</span>
             <span>
               Pour estimer votre budget, consultez également notre page{' '}
-            <Link href="/tarifs" className="underline underline-offset-4">
-              tarifs
-            </Link>
-            .
+              <Link href="/tarifs" className="underline underline-offset-4">
+                tarifs
+              </Link>
+              .
             </span>
           </p>
 

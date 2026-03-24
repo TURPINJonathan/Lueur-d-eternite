@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
@@ -13,6 +14,7 @@ interface CommonProps {
   iconLeft?: ReactNode;
   iconRight?: ReactNode;
   loading?: boolean;
+  loadingIndicator?: 'spinner' | 'logo';
   fullWidth?: boolean;
   className?: string;
   disabled?: boolean;
@@ -45,6 +47,13 @@ function Spinner() {
   );
 }
 
+function LoadingIcon({ mode }: { mode: 'spinner' | 'logo' }) {
+  if (mode === 'logo') {
+    return <Image src="/assets/logo_line.webp" alt="" width={22} height={22} className="logo-loader__image shrink-0" />;
+  }
+  return <Spinner />;
+}
+
 export default function Button(props: ButtonProps) {
   const {
     children,
@@ -53,6 +62,7 @@ export default function Button(props: ButtonProps) {
     iconLeft,
     iconRight,
     loading = false,
+    loadingIndicator = 'spinner',
     fullWidth = false,
     className,
     disabled = false,
@@ -144,7 +154,11 @@ export default function Button(props: ButtonProps) {
 
   const content = (
     <>
-      {loading ? <Spinner /> : iconLeft ? <span className="flex shrink-0 items-center">{iconLeft}</span> : null}
+      {loading ? (
+        <LoadingIcon mode={loadingIndicator} />
+      ) : iconLeft ? (
+        <span className="flex shrink-0 items-center">{iconLeft}</span>
+      ) : null}
 
       <span className="relative z-10">{children}</span>
 

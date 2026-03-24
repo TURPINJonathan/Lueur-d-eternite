@@ -30,12 +30,8 @@
   --layout-section-padding-y: clamp(2.5rem, 4vw, 3.75rem);
   --gradient-gold: linear-gradient(120deg, #{$gold-thin} 0%, #{$gold-light} 35%, #{$gold} 70%, #{$gold-dark} 100%);
   --gradient-gold-soft: linear-gradient(120deg, #{$gold-light} 0%, #{$gold} 50%, #{$gold-dark} 100%);
-  --shadow-gold-soft:
-    inset 0 1px 0 rgb(255 255 255 / 6%),
-    0 0 10px rgb(212 175 55 / 8%);
-  --shadow-gold-hover:
-    inset 0 1px 0 rgb(255 255 255 / 8%),
-    0 0 14px rgb(212 175 55 / 12%);
+  --shadow-gold-soft: inset 0 1px 0 rgb(255 255 255 / 6%), 0 0 10px rgb(212 175 55 / 8%);
+  --shadow-gold-hover: inset 0 1px 0 rgb(255 255 255 / 8%), 0 0 14px rgb(212 175 55 / 12%);
 
   /* Semantic tokens */
   --background: var(--color-page-background);

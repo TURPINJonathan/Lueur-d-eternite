@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import '../styles/index.scss';
-import { Footer, Header } from '#components';
+import { Footer, Header, NavigationRouteLoader } from '#components';
 import { seoConfig } from './seo';
 import { buildWebSiteJsonLd } from './seo-jsonld';
 
@@ -115,11 +115,9 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <NavigationRouteLoader />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }} />
       </body>
     </html>
   );
