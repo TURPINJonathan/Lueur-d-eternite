@@ -1,9 +1,20 @@
+import type { Metadata } from 'next';
 import { ButtonComponent, HeroComponent, SectionDivider } from '#ui';
 import HeroPicture from '../../public/assets/service_hero_picture.webp';
 import picture1 from '../../public/assets/home_hero_picture.webp';
 import picture2 from '../../public/assets/pricing_hero_picture.webp';
 import picture3 from '../../public/assets/contact_hero_picture.webp';
 import { CheckCircle } from 'lucide-react';
+import { createPageMetadata } from '../seo';
+import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+import Link from 'next/link';
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Services d'entretien de sépultures",
+  description:
+    "Découvrez nos prestations de nettoyage en profondeur, entretien régulier et services complémentaires pour sépultures à Caen et environs.",
+  path: '/services',
+});
 
 const services = [
   {
@@ -27,12 +38,36 @@ const services = [
 ];
 
 export default function Services() {
+  const webPageJsonLd = buildWebPageJsonLd({
+    title: "Services d'entretien de sépultures",
+    description:
+      "Découvrez nos prestations de nettoyage en profondeur, entretien régulier et services complémentaires pour sépultures à Caen et environs.",
+    path: '/services',
+  });
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: 'Accueil', path: '/' },
+    { name: 'Services', path: '/services' },
+  ]);
+  const faqJsonLd = buildFaqJsonLd([
+    {
+      question: 'Que comprend le nettoyage en profondeur ?',
+      answer:
+        "Le nettoyage en profondeur comprend un soin complet de la pierre, des ornements et des détails avec des produits adaptés.",
+    },
+    {
+      question: "Puis-je choisir uniquement certaines prestations ?",
+      answer:
+        'Oui, vous pouvez sélectionner des services complémentaires selon les besoins spécifiques de la sépulture.',
+    },
+  ]);
+
   return (
     <>
       <HeroComponent
         picture={HeroPicture}
         title="Nos services"
         subtitle="Des prestations professionnelles pour l'entretien et l'embellissement des sépultures"
+        imageAlt="Nettoyage professionnel de sépulture en Normandie"
       />
 
       <section className="page-shell page-section">
@@ -47,6 +82,8 @@ export default function Services() {
                 <div
                   className={`services-image-frame !p-0 bg-no-repeat bg-cover bg-center flex-1 ${imageOrder}`}
                   style={{ backgroundImage: `url(${service.picture.src})` }}
+                  role="img"
+                  aria-label={service.title}
                 />
 
                 <div className={`flex-1 flex flex-col justify-center gap-3 pb-4 lg:py-4 ${contentOrder}`}>
@@ -74,8 +111,17 @@ export default function Services() {
           <h3 className="section-heading text-3xl lg:text-4xl">
             Vous souhaitez des renseignements complémentaires ?
           </h3>
-          <p className="leading-6 text-center">
+          <p className="leading-6 text-center flex flex-col gap-2 justify-center items-center">
+            <span>
             N&apos;hésitez pas à nous contacter pour obtenir de plus amples informations.
+            </span>
+            <span>
+              Pour estimer votre budget, consultez également notre page{' '}
+            <Link href="/tarifs" className="underline underline-offset-4">
+              tarifs
+            </Link>
+            .
+            </span>
           </p>
 
           <ButtonComponent href="/contact" variant="gold" size="xl">
@@ -83,6 +129,9 @@ export default function Services() {
           </ButtonComponent>
         </div>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
     </>
   );
 }

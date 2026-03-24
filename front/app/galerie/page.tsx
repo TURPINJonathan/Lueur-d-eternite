@@ -1,6 +1,16 @@
+import type { Metadata } from 'next';
 import { ButtonComponent, GalleryComponent, HeroComponent, SectionDivider } from '#ui';
 import type { GalleryItem } from '#/components/ui/Gallery.component';
 import HeroPicture from '../../public/assets/gallery_hero_picture.webp';
+import { createPageMetadata } from '../seo';
+import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Galerie réalisations',
+  description:
+    "Parcourez des exemples avant/après et des photos de prestations d'entretien de sépultures réalisées à Caen et alentours.",
+  path: '/galerie',
+});
 
 const galleryFixtures: GalleryItem[] = [
   {
@@ -49,9 +59,25 @@ const galleryFixtures: GalleryItem[] = [
 ];
 
 export default function Gallery() {
+  const webPageJsonLd = buildWebPageJsonLd({
+    title: 'Galerie réalisations',
+    description:
+      "Parcourez des exemples avant/après et des photos de prestations d'entretien de sépultures réalisées à Caen et alentours.",
+    path: '/galerie',
+  });
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: 'Accueil', path: '/' },
+    { name: 'Galerie', path: '/galerie' },
+  ]);
+
   return (
     <>
-      <HeroComponent picture={HeroPicture} title="Galerie" subtitle="Parce que la réalité parle plus que mille mots" />
+      <HeroComponent
+        picture={HeroPicture}
+        title="Galerie"
+        subtitle="Parce que la réalité parle plus que mille mots"
+        imageAlt="Galerie de réalisations avant et après entretien"
+      />
 
       <section className="page-shell page-section">
         <GalleryComponent items={galleryFixtures} />
@@ -73,6 +99,8 @@ export default function Gallery() {
           </ButtonComponent>
         </div>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     </>
   );
 }

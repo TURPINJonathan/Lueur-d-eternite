@@ -1,14 +1,36 @@
+import type { Metadata } from 'next';
 import { CardComponent, ContactFormComponent, HeroComponent } from '#ui';
 import { MailCheck, PhoneCall } from 'lucide-react';
 import HeroPicture from '../../public/assets/contact_hero_picture.webp';
+import { createPageMetadata } from '../seo';
+import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Contact et devis',
+  description:
+    "Contactez Lueur d'Éternité pour un devis ou des renseignements sur l'entretien de sépultures à Caen et alentours.",
+  path: '/contact',
+});
 
 export default function Contact() {
+  const webPageJsonLd = buildWebPageJsonLd({
+    title: 'Contact et devis',
+    description:
+      "Contactez Lueur d'Éternité pour un devis ou des renseignements sur l'entretien de sépultures à Caen et alentours.",
+    path: '/contact',
+  });
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: 'Accueil', path: '/' },
+    { name: 'Contact', path: '/contact' },
+  ]);
+
   return (
     <>
       <HeroComponent
         picture={HeroPicture}
         title="Contactez-nous"
         subtitle="Nous répondons avec attention à vos besoins"
+        imageAlt="Prise de contact pour entretien de sépulture"
       />
 
       <section className="page-shell page-section flex flex-wrap gap-8">
@@ -39,6 +61,8 @@ export default function Contact() {
           <ContactFormComponent />
         </div>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     </>
   );
 }

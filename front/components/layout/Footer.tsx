@@ -24,21 +24,23 @@ export default function Footer() {
         </div>
 
         <div className="flex-1 basis-[185px] flex flex-col gap-2 items-center justify-start">
-          {QUICK_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="text-md font-title uppercase">
-              {link.label}
-            </Link>
-          ))}
+          <nav aria-label="Liens rapides" className="flex flex-col gap-2 items-center">
+            {QUICK_LINKS.map((link) => (
+              <Link key={link.href} href={link.href} className="text-md font-title uppercase">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
         <div className="flex-1 basis-[185px] flex flex-col items-center justify-center gap-2">
           <ButtonComponent href="/contact" variant="gold" size="smf" outline className="uppercase font-title">
             Contactez-nous
           </ButtonComponent>
-          <a href="mailto:contact@lueur-eternite.fr" className="font-light text-md">
+          <a href="mailto:contact@lueur-eternite.fr" className="font-light text-md" aria-label="Envoyer un email">
             contact@lueur-eternite.fr
           </a>
-          <a href="tel:+33625295952" className="font-light text-md">
+          <a href="tel:+33625295952" className="font-light text-md" aria-label="Appeler le 06 25 29 59 52">
             06 25 29 59 52
           </a>
           <div className="social-links flex gap-4">
@@ -50,8 +52,8 @@ export default function Footer() {
 
       <div className="w-full flex flex-col md:flex-row justify-between items-center md:items-start gap-4 pt-2 border-t opacity-30">
         <div className="flex-1 flex flex-col gap-1 items-center md:items-start justify-center">
-          <p>Mentions légales</p>
-          <p>Politique de confidentialité</p>
+          <Link href="/mentions-legales">Mentions légales</Link>
+          <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>
         </div>
 
         <div className="flex-1 flex flex-col gap-1 items-center justify-center">

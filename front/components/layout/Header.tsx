@@ -76,6 +76,7 @@ export default function Header() {
                   <Link
                     key={href}
                     href={href}
+                    aria-current={isActive ? 'page' : undefined}
                     className={[
                       'text-sm',
                       isActive ? 'text-gold-luxe' : 'text-[var(--color-white)] text-gold-luxe-hover',
@@ -128,6 +129,7 @@ export default function Header() {
                   key={href}
                   href={href}
                   onClick={close}
+                  aria-current={isActive ? 'page' : undefined}
                   className={['mobile-nav-link', isActive ? 'mobile-nav-link-active' : 'mobile-nav-link-idle'].join(
                     ' ',
                   )}

@@ -23,8 +23,14 @@ export default function ContactFormComponent() {
     return hasName && isEmailValid && isPhoneValid && hasMessage;
   }, [email, fullName, message, phone]);
 
+  const emailInvalid = email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const phoneDigits = phone.replace(/\D/g, '');
+  const phoneInvalid = phone.length > 0 && phoneDigits.length < 10;
+  const nameInvalid = fullName.length > 0 && fullName.trim().length < 2;
+  const messageInvalid = message.length > 0 && message.trim().length < 10;
+
   return (
-    <form className="flex flex-col gap-4">
+    <form className="flex flex-col gap-4" noValidate>
       <div className="flex flex-col gap-2">
         <label htmlFor="fullName" className="!font-light">
           Nom et prénom *
@@ -38,6 +44,7 @@ export default function ContactFormComponent() {
           placeholder="Ex. Marie Dupont"
           value={fullName}
           onChange={(event) => setFullName(event.target.value)}
+          aria-invalid={nameInvalid}
         />
       </div>
 
@@ -54,6 +61,7 @@ export default function ContactFormComponent() {
           placeholder="Ex. marie.dupont@email.fr"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
+          aria-invalid={emailInvalid}
         />
       </div>
 
@@ -70,6 +78,7 @@ export default function ContactFormComponent() {
           placeholder="Ex. 06 12 34 56 78"
           value={phone}
           onChange={(event) => setPhone(event.target.value)}
+          aria-invalid={phoneInvalid}
         />
       </div>
 
@@ -85,6 +94,7 @@ export default function ContactFormComponent() {
           placeholder="Indiquez quelques détails sur votre demande : localisation de la sépulture, type d'intervention souhaitée, fréquence d'entretien, délai souhaité, etc."
           value={message}
           onChange={(event) => setMessage(event.target.value)}
+          aria-invalid={messageInvalid}
         />
       </div>
 

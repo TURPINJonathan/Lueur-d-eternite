@@ -1,6 +1,16 @@
+import type { Metadata } from 'next';
 import { CardComponent, HeroComponent, SectionDivider } from '#ui';
 import { ConciergeBell, Euro, Handshake, MapPinCheckInside, ReceiptEuro } from 'lucide-react';
 import HeroPicture from '../../public/assets/pricing_hero_picture.webp';
+import { createPageMetadata } from '../seo';
+import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Tarifs et formules',
+  description:
+    "Consultez nos tarifs d'entretien de sépultures à Caen : nettoyage initial, entretien régulier et options complémentaires.",
+  path: '/tarifs',
+});
 
 interface Price {
   id: string;
@@ -23,12 +33,24 @@ const prices: Price[] = [
 ];
 
 export default function Pricing() {
+  const webPageJsonLd = buildWebPageJsonLd({
+    title: 'Tarifs et formules',
+    description:
+      "Consultez nos tarifs d'entretien de sépultures à Caen : nettoyage initial, entretien régulier et options complémentaires.",
+    path: '/tarifs',
+  });
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: 'Accueil', path: '/' },
+    { name: 'Tarifs', path: '/tarifs' },
+  ]);
+
   return (
     <>
       <HeroComponent
         picture={HeroPicture}
         title="Nos tarifs"
         subtitle="Le respect de nos défunts ne doit pas être un coût"
+        imageAlt="Tarifs pour entretien de sépultures à Caen"
       />
 
       <section className="page-shell page-section">
@@ -115,7 +137,10 @@ export default function Pricing() {
             />
           </div>
         </div>
+        
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     </>
   );
 }

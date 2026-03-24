@@ -84,6 +84,23 @@ body {
   background: linear-gradient(180deg, #e9e3d8 0%, #f4efe7 40%, #efe7db 100%);
 }
 
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 9999;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  background: var(--foreground);
+  transform: translateY(-150%);
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 *,
 *::before,
 *::after {
