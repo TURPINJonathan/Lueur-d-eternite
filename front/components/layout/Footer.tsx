@@ -2,10 +2,18 @@
 
 import { ButtonComponent } from '#ui';
 import { Copyright, Facebook, Instagram } from 'lucide-react';
+import Link from 'next/link';
+
+const QUICK_LINKS = [
+  { href: '/services', label: 'Services' },
+  { href: '/tarifs', label: 'Tarifs' },
+  { href: '/galerie', label: 'Galerie' },
+  { href: '/a-propos', label: 'À propos' },
+];
 
 export default function Footer() {
   return (
-    <footer className="footer inset-shadow-sm/10 flex flex-col gap-2 pt-8 pb-2 px-10 lg:px-20 ">
+    <footer className="footer inset-shadow-sm/10 page-shell flex flex-col gap-2 px-10 pb-2 pt-8 lg:px-20">
       <div className="flex flex-wrap gap-4">
         <div className="flex-2 flex basis-[300px] flex-col gap-2 items-center sm:items-start justify-start text-center sm:text-start">
           <p className="uppercase text-md font-semibold font-title">Lueur d&apos;Éternité</p>
@@ -16,18 +24,25 @@ export default function Footer() {
         </div>
 
         <div className="flex-1 basis-[185px] flex flex-col gap-2 items-center justify-start">
-          <p className="uppercase text-md font-title">Services</p>
-          <p className="uppercase text-md font-title">Tarifs</p>
-          <p className="uppercase text-md font-title">Galerie</p>
-          <p className="uppercase text-md font-title">A propos</p>
+          <nav aria-label="Liens rapides" className="flex flex-col gap-2 items-center">
+            {QUICK_LINKS.map((link) => (
+              <Link key={link.href} href={link.href} className="text-md font-title uppercase">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
         <div className="flex-1 basis-[185px] flex flex-col items-center justify-center gap-2">
-          <ButtonComponent variant="gold" size="smf" outline className="uppercase font-title">
+          <ButtonComponent href="/contact" variant="gold" size="smf" outline className="uppercase font-title">
             Contactez-nous
           </ButtonComponent>
-          <p className="font-light text-md">contact@lueur-eternite.com</p>
-          <p className="font-light text-md">06 25 29 59 52</p>
+          <a href="mailto:contact@lueur-eternite.fr" className="font-light text-md" aria-label="Envoyer un email">
+            contact@lueur-eternite.fr
+          </a>
+          <a href="tel:+33625295952" className="font-light text-md" aria-label="Appeler le 06 25 29 59 52">
+            06 25 29 59 52
+          </a>
           <div className="social-links flex gap-4">
             <Facebook size={20} className="inline-block opacity-50" aria-hidden />
             <Instagram size={20} className="inline-block opacity-50" aria-hidden />
@@ -37,8 +52,8 @@ export default function Footer() {
 
       <div className="w-full flex flex-col md:flex-row justify-between items-center md:items-start gap-4 pt-2 border-t opacity-30">
         <div className="flex-1 flex flex-col gap-1 items-center md:items-start justify-center">
-          <p>Mentions légales</p>
-          <p>Politique de confidentialité</p>
+          <Link href="/mentions-legales">Mentions légales</Link>
+          <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>
         </div>
 
         <div className="flex-1 flex flex-col gap-1 items-center justify-center">
@@ -51,7 +66,7 @@ export default function Footer() {
 
         <div className="flex-1 flex flex-col md:gap-1 items-center md:items-end justify-center">
           Réalisation & éco-conception par{' '}
-          <a href="https://jonathan-turpin.frcom" target="_blank" rel="nofollow">
+          <a href="https://jonathan-turpin.fr" target="_blank" rel="nofollow noopener noreferrer">
             Jonathan TURPIN
           </a>
         </div>

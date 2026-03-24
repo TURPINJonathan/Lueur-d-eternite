@@ -82,17 +82,17 @@ export default function Button(props: ButtonProps) {
   // 🎨 FILLED
   const filledVariants = {
     primary: cn(
-      'border border-[rgb(143,175,196,0.42)]',
-      'bg-[linear-gradient(135deg,rgba(143,175,196,0.30),rgba(63,92,110,0.42))]',
-      'text-white backdrop-blur-lg',
+      'border border-[color-mix(in_srgb,var(--color-brand-secondary)_42%,transparent)]',
+      'bg-[linear-gradient(135deg,color-mix(in_srgb,var(--color-brand-secondary)_30%,transparent),color-mix(in_srgb,var(--color-brand-primary)_42%,transparent))]',
+      'text-[var(--color-white)] backdrop-blur-lg',
       'shadow-[0_14px_35px_rgba(63,92,110,0.18)]',
       'hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(63,92,110,0.24)]',
     ),
 
     secondary: cn(
-      'border border-[rgba(255,255,255,0.18)]',
+      'border border-[color-mix(in_srgb,var(--color-white)_18%,transparent)]',
       'bg-[linear-gradient(135deg,rgba(255,255,255,0.10),rgba(255,255,255,0.05))]',
-      'text-white backdrop-blur-lg',
+      'text-[var(--color-white)] backdrop-blur-lg',
       'shadow-[0_12px_28px_rgba(0,0,0,0.12)]',
       'hover:-translate-y-0.5',
     ),
@@ -109,13 +109,12 @@ export default function Button(props: ButtonProps) {
     ),
   };
 
-  // ✨ OUTLINE (nouveau)
   const outlineVariants = {
     primary: cn(
-      'border border-[rgba(143,175,196,0.55)]',
-      'text-[rgb(143,175,196)]',
+      'border border-[color-mix(in_srgb,var(--color-brand-secondary)_55%,transparent)]',
+      'text-[var(--color-brand-secondary)]',
       'bg-transparent',
-      'hover:bg-[rgba(143,175,196,0.08)]',
+      'hover:bg-[color-mix(in_srgb,var(--color-brand-secondary)_8%,transparent)]',
     ),
 
     secondary: cn(

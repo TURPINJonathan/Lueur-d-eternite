@@ -3,6 +3,7 @@
   "ignoreFiles": ["node_modules/**", "dist/**", ".next/**", "out/**", "build/**"],
   "rules": {
     "order/properties-alphabetical-order": null,
+    "order/properties-order": null,
     "custom-property-no-missing-var-function": null,
     "selector-class-pattern": null
   }

@@ -46,7 +46,7 @@ export default function Header() {
                 alt="Lueur d'Éternité — Retour à l’accueil"
                 width={100}
                 priority
-                className="h-auto max-h-[inherit] , filter: 'drop-shadow(0 10px 30px rgba(63, 92, 110, 0.3))'"
+                className="h-auto max-h-[inherit] drop-shadow-[0_10px_30px_rgba(63,92,110,0.3)]"
               />
             </Link>
 
@@ -76,6 +76,7 @@ export default function Header() {
                   <Link
                     key={href}
                     href={href}
+                    aria-current={isActive ? 'page' : undefined}
                     className={[
                       'text-sm',
                       isActive ? 'text-gold-luxe' : 'text-[var(--color-white)] text-gold-luxe-hover',
@@ -128,6 +129,7 @@ export default function Header() {
                   key={href}
                   href={href}
                   onClick={close}
+                  aria-current={isActive ? 'page' : undefined}
                   className={['mobile-nav-link', isActive ? 'mobile-nav-link-active' : 'mobile-nav-link-idle'].join(
                     ' ',
                   )}
