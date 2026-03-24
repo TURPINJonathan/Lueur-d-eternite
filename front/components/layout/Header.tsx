@@ -46,7 +46,7 @@ export default function Header() {
                 alt="Lueur d'Éternité — Retour à l’accueil"
                 width={100}
                 priority
-                className="h-auto max-h-[inherit] , filter: 'drop-shadow(0 10px 30px rgba(63, 92, 110, 0.3))'"
+                className="h-auto max-h-[inherit] drop-shadow-[0_10px_30px_rgba(63,92,110,0.3)]"
               />
             </Link>
 

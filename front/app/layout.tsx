@@ -23,7 +23,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Lueur d\Éternité',
+  title: "Lueur d'Éternité",
   description:
     'À Caen et ses environs, nous entretenons les sépultures avec soin afin que chaque lieu reste digne, apaisant et fidèle au souvenir qu’il représente.',
 };

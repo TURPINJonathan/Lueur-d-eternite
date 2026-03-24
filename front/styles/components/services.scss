@@ -1,0 +1,7 @@
+@use '../mixin' as mixin;
+
+.services-image-frame {
+  min-height: 280px;
+
+  @include mixin.feature-surface;
+}
