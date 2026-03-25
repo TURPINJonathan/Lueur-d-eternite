@@ -2,18 +2,33 @@
 
 {% block title %}Connexion{% endblock %}
 
+{% block stylesheets %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+    rel="stylesheet"
+  >
+{% endblock %}
+
 {% block body %}
 <style>
   :root{
-    --bg1:#2b0b2f;
-    --bg2:#7b2e6f;
-    --card: rgba(255,255,255,.12);
-    --card2: rgba(255,255,255,.08);
-    --stroke: rgba(255,255,255,.18);
-    --text: rgba(255,255,255,.92);
-    --muted: rgba(255,255,255,.72);
-    --accent:#ff4fd8;
-    --accent2:#b84bff;
+    --bg1:#e9e3d8;
+    --bg2:#f4efe7;
+
+    --card: rgba(255,255,255,.52);
+    --card2: rgba(255,255,255,.28);
+    --stroke: rgb(43 43 43 / 7%);
+
+    --text: rgba(43,43,43,.92);
+    --muted: rgba(43,43,43,.72);
+
+    --accent:#d4af37;
+    --accent2:#a8842f;
+
+    --font-sans: 'Inter', sans-serif;
+    --font-title: 'Playfair Display', serif;
   }
 
   .login-page{
@@ -22,25 +37,42 @@
     align-items:center;
     justify-content:center;
     background:
-      radial-gradient(1200px 600px at 10% 10%, rgba(255,79,216,.22), transparent 55%),
-      radial-gradient(900px 500px at 90% 15%, rgba(184,75,255,.20), transparent 60%),
+      radial-gradient(1200px 600px at 10% 10%, rgba(212,175,55,.22), transparent 55%),
+      radial-gradient(900px 500px at 90% 15%, rgba(143,175,196,.18), transparent 60%),
       radial-gradient(1200px 700px at 50% 110%, rgba(255,255,255,.08), transparent 55%),
       linear-gradient(135deg, var(--bg1), var(--bg2));
     position:relative;
     overflow:hidden;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family: var(--font-sans);
     color: var(--text);
+    isolation: isolate;
+  }
+
+  /* Background decoratif (inspiré du 404 front) */
+  .login-page::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background-image: url("{{ asset('assets/logo_line.webp') }}");
+    background-repeat:no-repeat;
+    background-position: center top;
+    background-size: contain;
+    opacity: .2;
+    transform: translateY(2.5rem);
+    pointer-events:none;
   }
 
   .sparkles{
     position:absolute; inset:-20%;
+    z-index:0;
     background-image:
-      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.55), transparent 60%),
-      radial-gradient(1.5px 1.5px at 45% 15%, rgba(255,255,255,.35), transparent 60%),
-      radial-gradient(2px 2px at 70% 40%, rgba(255,255,255,.45), transparent 60%),
-      radial-gradient(1.5px 1.5px at 85% 60%, rgba(255,255,255,.30), transparent 60%),
-      radial-gradient(2px 2px at 35% 75%, rgba(255,255,255,.40), transparent 60%),
-      radial-gradient(1.5px 1.5px at 60% 85%, rgba(255,255,255,.25), transparent 60%);
+      radial-gradient(2px 2px at 20% 30%, rgba(212,175,55,.55), transparent 60%),
+      radial-gradient(1.5px 1.5px at 45% 15%, rgba(212,175,55,.35), transparent 60%),
+      radial-gradient(2px 2px at 70% 40%, rgba(143,175,196,.40), transparent 60%),
+      radial-gradient(1.5px 1.5px at 85% 60%, rgba(212,175,55,.30), transparent 60%),
+      radial-gradient(2px 2px at 35% 75%, rgba(212,175,55,.40), transparent 60%),
+      radial-gradient(1.5px 1.5px at 60% 85%, rgba(143,175,196,.28), transparent 60%);
     opacity:.7;
     animation: floaty 10s ease-in-out infinite;
     pointer-events:none;
@@ -56,10 +88,11 @@
     background: linear-gradient(180deg, var(--card), var(--card2));
     border: 1px solid var(--stroke);
     border-radius: 20px;
-    box-shadow: 0 24px 70px rgba(0,0,0,.35);
+    box-shadow: 0 24px 70px rgba(0,0,0,.16);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     position:relative;
+    z-index:1;
     overflow:hidden;
   }
 
@@ -72,10 +105,10 @@
     background-repeat:no-repeat;
     background-position: 120% 20%;
     background-size: 320px;
-    opacity: .09;
+    opacity: .07;
     transform: rotate(-10deg);
     pointer-events:none;
-    filter: saturate(1.1) contrast(1.05);
+    filter: saturate(1.05) contrast(1.02);
   }
 
   .login-inner{
@@ -109,6 +142,7 @@
   }
 
   .brand h1{
+    font-family: var(--font-title);
     font-size: 1.25rem;
     line-height: 1.2;
     margin:0;
@@ -124,8 +158,8 @@
     margin: 14px 0 18px;
     padding: 10px 12px;
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.16);
-    background: rgba(0,0,0,.14);
+    border: 1px solid rgba(43,43,43,.10);
+    background: rgba(255,255,255,.55);
     color: var(--muted);
     font-size: .92rem;
   }
@@ -134,9 +168,9 @@
     margin: 12px 0 14px;
     padding: 10px 12px;
     border-radius: 12px;
-    border: 1px solid rgba(255,75,75,.35);
-    background: rgba(255,75,75,.12);
-    color: rgba(255,255,255,.92);
+    border: 1px solid rgba(212,24,61,.28);
+    background: rgba(212,24,61,.10);
+    color: rgba(43,43,43,.92);
     text-align: center;
   }
 
@@ -145,7 +179,7 @@
     display:block;
     font-size: .92rem;
     margin: 0 0 8px;
-    color: rgba(255,255,255,.86);
+    color: rgba(43,43,43,.86);
     text-align: center;
   }
 
@@ -153,16 +187,16 @@
     width: 100%;
     border-radius: 14px;
     padding: 12px 14px;
-    border: 1px solid rgba(255,255,255,.18);
-    background: rgba(0,0,0,.20);
+    border: 1px solid rgba(43,43,43,.18);
+    background: rgba(255,255,255,.70);
     color: var(--text);
     outline: none;
     transition: border-color .15s ease, box-shadow .15s ease;
   }
-  .input::placeholder{ color: rgba(255,255,255,.45); }
+  .input::placeholder{ color: rgba(43,43,43,.45); }
   .input:focus{
-    border-color: rgba(255,79,216,.55);
-    box-shadow: 0 0 0 4px rgba(255,79,216,.14);
+    border-color: rgba(143,175,196,.85);
+    box-shadow: 0 0 0 4px rgba(143,175,196,.20);
   }
 
   .row{
@@ -190,7 +224,7 @@
     letter-spacing:.2px;
     color: #170414;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    box-shadow: 0 16px 40px rgba(255,79,216,.18);
+    box-shadow: 0 16px 40px rgba(212,175,55,.22);
     cursor:pointer;
     transition: transform .06s ease, filter .15s ease;
   }
@@ -199,8 +233,8 @@
 
   .footer{
     padding: 14px 28px 20px;
-    border-top: 1px solid rgba(255,255,255,.10);
-    color: rgba(255,255,255,.62);
+    border-top: 1px solid rgba(43,43,43,.10);
+    color: rgba(43,43,43,.62);
     font-size: .86rem;
     display:flex;
     flex-direction: column;
@@ -224,7 +258,7 @@
     <div class="login-inner">
       <div class="brand">
         <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
-          <h1>Lueur d'Eternité</h1>
+          <h1>Lueur d'&Eacute;ternité</h1>
           <p>Accès à l’espace administration</p>
         </div>
       </div>
