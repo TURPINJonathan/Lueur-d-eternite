@@ -52,14 +52,16 @@ export default function Footer() {
 
       <div className="w-full flex flex-col md:flex-row justify-between items-center md:items-start gap-4 pt-2 border-t opacity-30 px-10 lg:px-20">
         <div className="flex-1 flex flex-col gap-1 items-center md:items-start justify-center">
-          <Link href="/mentions-legales">Mentions légales</Link>
+          <div className="flex gap-1  items-center md:items-start justify-center">
+          <Link href="/mentions-legales">Mentions légales</Link>&middot;<Link href="/cgv">CGV</Link>
+          </div>
           <Link href="/politique-de-confidentialite">Politique de confidentialité</Link>
         </div>
 
         <div className="flex-1 flex flex-col gap-1 items-center justify-center">
           <span className="flex justify-center items-center">
             <Copyright size={16} className="inline-block" aria-hidden />
-            <span>2026 copyright - All rights reserved</span>
+            <span>2026 copyright &middot; All rights reserved</span>
           </span>
           <span className="uppercase text-xs italic">Lueur d&apos;éternité</span>
         </div>
