@@ -10,6 +10,7 @@ const routes = [
   '/contact',
   '/mentions-legales',
   '/politique-de-confidentialite',
+  '/cgv',
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -15,12 +15,23 @@ export function buildWebSiteJsonLd() {
   };
 }
 
-export function buildWebPageJsonLd({ title, description, path }: { title: string; description: string; path: string }) {
+export function buildWebPageJsonLd({
+  title,
+  description,
+  path,
+  keywords,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  keywords?: string[];
+}) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     name: title,
     description,
+    keywords: keywords?.join(', '),
     url: `${seoConfig.siteUrl}${path}`,
     inLanguage: 'fr-FR',
     isPartOf: {
@@ -48,7 +59,7 @@ export function buildServiceJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Entretien de sépultures à Caen et alentours',
+    name: 'Entretien, nettoyage et soin de sépultures (tombes) à Caen (Calvados)',
     provider: {
       '@type': 'LocalBusiness',
       name: seoConfig.siteName,
@@ -56,18 +67,32 @@ export function buildServiceJsonLd() {
       telephone: seoConfig.phoneHref,
       email: seoConfig.email,
     },
-    areaServed: {
-      '@type': 'GeoCircle',
-      geoMidpoint: {
-        '@type': 'GeoCoordinates',
-        latitude: 49.1829,
-        longitude: -0.3707,
+    areaServed: [
+      {
+        '@type': 'AdministrativeArea',
+        name: 'Calvados',
+        addressCountry: 'FR',
       },
-      geoRadius: seoConfig.serviceRadiusKm * 1000,
-    },
+      {
+        '@type': 'City',
+        name: seoConfig.city,
+        addressCountry: 'FR',
+      },
+      {
+        '@type': 'GeoCircle',
+        geoMidpoint: {
+          '@type': 'GeoCoordinates',
+          latitude: 49.1829,
+          longitude: -0.3707,
+        },
+        geoRadius: seoConfig.serviceRadiusKm * 1000,
+      },
+    ],
     serviceType: [
+      'Nettoyage de tombe',
+      'Soin de sépulture',
       'Nettoyage en profondeur de sépulture',
-      'Entretien régulier de sépulture',
+      'Entretien régulier de tombe',
       'Fleurissement et soins complémentaires',
     ],
     availableChannel: {

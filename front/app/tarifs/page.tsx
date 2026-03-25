@@ -4,12 +4,14 @@ import { ConciergeBell, Euro, Handshake, MapPinCheckInside, ReceiptEuro } from '
 import HeroPicture from '../../public/assets/pricing_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+import { safeJsonLd } from '../jsonld';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'Tarifs et formules',
+  title: 'Tarifs entretien sépulture | Caen (Calvados)',
   description:
     "Consultez nos tarifs d'entretien de sépultures à Caen : nettoyage initial, entretien régulier et options complémentaires.",
   path: '/tarifs',
+  keywords: ['tarifs', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
 });
 
 interface Price {
@@ -34,10 +36,11 @@ const prices: Price[] = [
 
 export default function Pricing() {
   const webPageJsonLd = buildWebPageJsonLd({
-    title: 'Tarifs et formules',
+    title: 'Tarifs entretien sépulture | Caen (Calvados)',
     description:
       "Consultez nos tarifs d'entretien de sépultures à Caen : nettoyage initial, entretien régulier et options complémentaires.",
     path: '/tarifs',
+    keywords: ['tarifs', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: 'Accueil', path: '/' },
@@ -138,8 +141,8 @@ export default function Pricing() {
           </div>
         </div>
       </section>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
     </>
   );
 }

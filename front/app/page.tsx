@@ -6,12 +6,14 @@ import HeroPicture from '../public/assets/home_hero_picture.webp';
 import { createPageMetadata } from './seo';
 import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd, buildWebPageJsonLd } from './seo-jsonld';
 import Link from 'next/link';
+import { safeJsonLd } from './jsonld';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Entretien de sépultures à Caen',
   description:
     'Nous entretenons les sépultures à Caen et alentours avec soin, régularité et respect, pour préserver durablement les lieux de mémoire.',
   path: '/',
+  keywords: ['sépulture', 'tombe', 'nettoyage', 'soin', 'entretien', 'Caen', 'Calvados', 'Normandie'],
 });
 
 export default function Home() {
@@ -20,6 +22,7 @@ export default function Home() {
     description:
       'Nous entretenons les sépultures à Caen et alentours avec soin, régularité et respect, pour préserver durablement les lieux de mémoire.',
     path: '/',
+    keywords: ['sépulture', 'tombe', 'nettoyage', 'soin', 'entretien', 'Caen', 'Calvados', 'Normandie'],
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: 'Accueil', path: '/' }]);
   const serviceJsonLd = buildServiceJsonLd();
@@ -119,10 +122,10 @@ export default function Home() {
           <MapComponent mode="circle" center={[49.1829, -0.3707]} radiusKm={15} zoomBoost={1} />
         </div>
       </section>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
     </>
   );
 }

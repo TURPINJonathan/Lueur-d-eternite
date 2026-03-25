@@ -8,12 +8,14 @@ import { CheckCircle } from 'lucide-react';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
 import Link from 'next/link';
+import { safeJsonLd } from '../jsonld';
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Services d'entretien de sépultures",
+  title: "Services nettoyage tombe | Caen (Calvados)",
   description:
-    'Découvrez nos prestations de nettoyage en profondeur, entretien régulier et services complémentaires pour sépultures à Caen et environs.',
+    'Découvrez nos prestations de nettoyage et soin de sépultures (tombes) : nettoyage en profondeur, entretien régulier et options complémentaires à Caen (Calvados) et alentours.',
   path: '/services',
+  keywords: ['sépulture', 'tombe', 'nettoyage', 'soin', 'entretien', 'Caen', 'Calvados'],
 });
 
 const services = [
@@ -39,10 +41,11 @@ const services = [
 
 export default function Services() {
   const webPageJsonLd = buildWebPageJsonLd({
-    title: "Services d'entretien de sépultures",
+    title: "Services nettoyage tombe | Caen (Calvados)",
     description:
-      'Découvrez nos prestations de nettoyage en profondeur, entretien régulier et services complémentaires pour sépultures à Caen et environs.',
+      'Découvrez nos prestations de nettoyage et soin de sépultures (tombes) : nettoyage en profondeur, entretien régulier et options complémentaires à Caen (Calvados) et alentours.',
     path: '/services',
+    keywords: ['sépulture', 'tombe', 'nettoyage', 'soin', 'entretien', 'Caen', 'Calvados'],
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: 'Accueil', path: '/' },
@@ -66,7 +69,7 @@ export default function Services() {
       <HeroComponent
         picture={HeroPicture}
         title="Nos services"
-        subtitle="Des prestations professionnelles pour l'entretien et l'embellissement des sépultures"
+        subtitle="Des prestations professionnelles pour l'entretien et l'embellissement des sépultures à Caen et alentours"
         imageAlt="Nettoyage professionnel de sépulture en Normandie"
       />
 
@@ -125,9 +128,9 @@ export default function Services() {
           </ButtonComponent>
         </div>
       </section>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
     </>
   );
 }

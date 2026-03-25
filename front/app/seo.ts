@@ -8,7 +8,7 @@ export const seoConfig = {
   defaultTitle: "Lueur d'Éternité | Entretien de sépultures à Caen",
   defaultDescription:
     "Service professionnel d'entretien de sépultures à Caen et alentours : nettoyage, fleurissement et suivi respectueux des lieux de mémoire.",
-  defaultImage: '/assets/home_hero_picture.webp',
+  defaultImage: '/assets/logo_full.webp',
   locale: 'fr_FR',
   phoneDisplay: '06 25 29 59 52',
   phoneHref: '+33625295952',
@@ -22,17 +22,20 @@ export function createPageMetadata({
   title,
   description,
   path,
+  keywords,
   noIndex = false,
 }: {
   title: string;
   description: string;
   path: string;
+  keywords?: string[];
   noIndex?: boolean;
 }): Metadata {
   const canonical = `${seoConfig.siteUrl}${path}`;
   return {
     title,
     description,
+    keywords,
     alternates: { canonical },
     openGraph: {
       title,
