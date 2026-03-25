@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { safeJsonLd } from '../jsonld';
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Services nettoyage tombe | Caen (Calvados)",
+  title: 'Services nettoyage tombe | Caen (Calvados)',
   description:
     'Découvrez nos prestations de nettoyage et soin de sépultures (tombes) : nettoyage en profondeur, entretien régulier et options complémentaires à Caen (Calvados) et alentours.',
   path: '/services',
@@ -41,7 +41,7 @@ const services = [
 
 export default function Services() {
   const webPageJsonLd = buildWebPageJsonLd({
-    title: "Services nettoyage tombe | Caen (Calvados)",
+    title: 'Services nettoyage tombe | Caen (Calvados)',
     description:
       'Découvrez nos prestations de nettoyage et soin de sépultures (tombes) : nettoyage en profondeur, entretien régulier et options complémentaires à Caen (Calvados) et alentours.',
     path: '/services',

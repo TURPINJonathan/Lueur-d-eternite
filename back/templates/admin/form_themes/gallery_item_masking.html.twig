@@ -1,0 +1,109 @@
+{% extends '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{# Ajoute un masquage dynamique des champs upload pour créer une entrée gallery (single vs compare). #}
+{% block ea_crud_rest %}
+  {{ parent() }}
+  <script>
+    (function () {
+      const compareInput =
+        document.querySelector('input[type="checkbox"][name*="[isCompare]"]');
+      if (!compareInput) return;
+
+      const pickWrap = (fileInput) => {
+        if (!fileInput) return null;
+        return fileInput.closest('.form-column')
+          || fileInput.closest('.form-group')
+          || fileInput.closest('.ea-fileupload')
+          || fileInput.parentElement;
+      };
+
+      const srcFile = document.querySelector('input[type="file"][name*="[srcFile]"]');
+      const beforeFile = document.querySelector('input[type="file"][name*="[beforeFile]"]');
+      const afterFile = document.querySelector('input[type="file"][name*="[afterFile]"]');
+
+      // URLs des médias existants (injectées via HiddenField sur la page d'édition)
+      const thumbHidden = document.querySelector('input[type="hidden"][name*="[thumbUrl]"]');
+      const beforeHidden = document.querySelector('input[type="hidden"][name*="[beforeSrcUrl]"]');
+      const afterHidden = document.querySelector('input[type="hidden"][name*="[afterSrcUrl]"]');
+
+      const thumbInitialUrl = thumbHidden && thumbHidden.value ? thumbHidden.value : null;
+      const beforeInitialUrl = beforeHidden && beforeHidden.value ? beforeHidden.value : null;
+      const afterInitialUrl = afterHidden && afterHidden.value ? afterHidden.value : null;
+
+      const srcWrap = pickWrap(srcFile);
+      const beforeWrap = pickWrap(beforeFile);
+      const afterWrap = pickWrap(afterFile);
+
+      const setVisible = (el, visible) => {
+        if (!el) return;
+        el.style.display = visible ? '' : 'none';
+      };
+
+      const toggle = () => {
+        const isCompare = !!compareInput.checked;
+        setVisible(srcWrap, !isCompare);
+        setVisible(beforeWrap, isCompare);
+        setVisible(afterWrap, isCompare);
+      };
+
+      const setupPreview = (fileInput, label, initialUrl) => {
+        if (!fileInput) return;
+        const wrap = pickWrap(fileInput) || fileInput.parentElement;
+        if (!wrap) return;
+
+        let container = wrap.querySelector('.ea-media-preview');
+        if (!container) {
+          container = document.createElement('div');
+          container.className = 'ea-media-preview mt-2';
+          container.innerHTML = `
+            <div class="small text-muted mb-1">${label}</div>
+            <img
+              class="img-fluid rounded border"
+              style="object-fit: cover; display: none;"
+              alt=""
+            />
+          `;
+          wrap.appendChild(container);
+        }
+
+        const img = container.querySelector('img');
+        let lastUrl = null;
+
+        const setImage = (file) => {
+          if (!file || !img) return;
+          if (lastUrl) URL.revokeObjectURL(lastUrl);
+          lastUrl = URL.createObjectURL(file);
+          img.src = lastUrl;
+          img.style.display = '';
+        };
+
+        fileInput.addEventListener('change', () => {
+          const file = fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+          if (!file) {
+            if (img) {
+              img.src = '';
+              img.style.display = 'none';
+            }
+            return;
+          }
+
+          setImage(file);
+        });
+
+        // Initial preview (edit mode) before user selects a new file.
+        if (initialUrl && img) {
+          img.src = initialUrl;
+          img.style.display = '';
+        }
+      };
+
+      compareInput.addEventListener('change', toggle);
+      toggle();
+
+      setupPreview(srcFile, 'Aperçu de l\'image', thumbInitialUrl);
+      setupPreview(beforeFile, 'Aperçu de la photo avant', beforeInitialUrl);
+      setupPreview(afterFile, 'Aperçu de la photo aprèsaprès', afterInitialUrl);
+    })();
+  </script>
+{% endblock %}
+

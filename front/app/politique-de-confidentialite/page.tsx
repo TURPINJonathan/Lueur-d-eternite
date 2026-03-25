@@ -12,7 +12,10 @@ export const metadata: Metadata = createPageMetadata({
 export default function PrivacyPolicyPage() {
   return (
     <section className="page-shell page-section min-h-[68svh] relative overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 flex items-start justify-center translate-y-10">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 flex items-start justify-center translate-y-10"
+      >
         <div className="relative h-full w-full">
           <Image
             src="/assets/logo_line.webp"
@@ -32,10 +35,10 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-2xl font-semibold">Responsable du traitement</h2>
             <div className="leading-6">Émilie SIMON</div>
-             <div className="leading-6">49 rue de Condé, 14220 Thury-Harcourt-le-Hom</div>
-              <a className="underline underline-offset-4" href="mailto:contact@lueur-eternite.fr">
-                    contact@lueur-eternite.fr
-                  </a>
+            <div className="leading-6">49 rue de Condé, 14220 Thury-Harcourt-le-Hom</div>
+            <a className="underline underline-offset-4" href="mailto:contact@lueur-eternite.fr">
+              contact@lueur-eternite.fr
+            </a>
           </section>
 
           <section>
@@ -106,7 +109,9 @@ export default function PrivacyPolicyPage() {
 
           <section>
             <h2 className="text-2xl font-semibold">Formulaire</h2>
-            <p className="leading-7 mt-3">Les données envoyées via le formulaire sont utilisées uniquement pour répondre à la demande.</p>
+            <p className="leading-7 mt-3">
+              Les données envoyées via le formulaire sont utilisées uniquement pour répondre à la demande.
+            </p>
             <p className="leading-7 mt-2">Aucune base de données commerciale n’est constituée.</p>
             <p className="leading-7 mt-2">Les utilisateurs doivent transmettre uniquement les données nécessaires.</p>
           </section>
@@ -194,4 +199,3 @@ export default function PrivacyPolicyPage() {
     </section>
   );
 }
-

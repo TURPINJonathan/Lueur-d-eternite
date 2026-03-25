@@ -21,6 +21,7 @@ export type GalleryItem =
       beforeSrc: string;
       afterSrc: string;
       thumb: string;
+      afterThumb?: string;
       alt: string;
     };
 
@@ -121,6 +122,8 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
                   height={500}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="h-64 w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                  loading="lazy"
+                  fetchPriority="low"
                 />
               </button>
             ) : (
@@ -131,19 +134,25 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
                 aria-label={`Ouvrir la comparaison ${item.alt}`}
               >
                 <Image
-                  src={item.afterSrc}
-                  alt={`${item.alt} - après`}
+                  // Pour les perfs : la moitié gauche charge une thumbnail (thumb = avant).
+                  // La moitié droite charge l'image complète "after" (thumb after n'existe pas pour le moment).
+                  src={item.afterThumb ?? item.afterSrc}
+                  alt={`${item.alt} - aperçu après`}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover"
+                  loading="lazy"
+                  fetchPriority="low"
                 />
                 <div className="absolute inset-y-0 left-0 w-1/2 overflow-hidden">
                   <Image
-                    src={item.beforeSrc}
-                    alt={`${item.alt} - avant`}
+                    src={item.thumb}
+                    alt={`${item.alt} - aperçu avant`}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
                     className="h-full w-full object-cover object-left"
+                    loading="lazy"
+                    fetchPriority="low"
                   />
                 </div>
                 <div className="pointer-events-none absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2 bg-white/90 shadow-[0_0_10px_rgba(0,0,0,0.35)]" />

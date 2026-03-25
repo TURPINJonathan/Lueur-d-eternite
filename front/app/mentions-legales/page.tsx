@@ -12,7 +12,10 @@ export const metadata: Metadata = createPageMetadata({
 export default function LegalNoticesPage() {
   return (
     <section className="page-shell page-section min-h-[68svh] relative overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 flex items-start justify-center translate-y-10">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 flex items-start justify-center translate-y-10"
+      >
         <div className="relative h-full w-full">
           <Image
             src="/assets/logo_line.webp"
@@ -81,7 +84,12 @@ export default function LegalNoticesPage() {
           <section>
             <h2 className="text-2xl font-semibold">Le site est exploité à l’adresse</h2>
             <p className="leading-7 mt-3">
-              <a className="underline underline-offset-4" href="https://lueur-eternite.fr" target="_blank" rel="noreferrer">
+              <a
+                className="underline underline-offset-4"
+                href="https://lueur-eternite.fr"
+                target="_blank"
+                rel="noreferrer"
+              >
                 https://lueur-eternite.fr
               </a>
             </p>
@@ -114,17 +122,22 @@ export default function LegalNoticesPage() {
               Le site est accessible gratuitement à tout utilisateur disposant d’un accès à internet.
             </p>
             <p className="leading-7 mt-2">
-              L’accès peut être suspendu ou interrompu pour maintenance, mise à jour ou pour toute cause technique indépendante de la volonté de l’éditeur.
+              L’accès peut être suspendu ou interrompu pour maintenance, mise à jour ou pour toute cause technique
+              indépendante de la volonté de l’éditeur.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold">Objet du site</h2>
             <p className="leading-7 mt-3">
-              Le site a pour objet de présenter les prestations d’entretien et de nettoyage de sépultures proposées par l’éditeur, ainsi que de permettre la prise de contact en vue de l’établissement d’un devis.
+              Le site a pour objet de présenter les prestations d’entretien et de nettoyage de sépultures proposées par
+              l’éditeur, ainsi que de permettre la prise de contact en vue de l’établissement d’un devis.
             </p>
             <p className="leading-7 mt-2">
-              Les tarifs affichés sur le site correspondent aux prestations standard présentées. Ils peuvent être ajustés en fonction de la situation concrète et des contraintes d’intervention (état de la sépulture, accessibilité, distance, règles du cimetière, conditions techniques ou météorologiques, demandes spécifiques).
+              Les tarifs affichés sur le site correspondent aux prestations standard présentées. Ils peuvent être
+              ajustés en fonction de la situation concrète et des contraintes d’intervention (état de la sépulture,
+              accessibilité, distance, règles du cimetière, conditions techniques ou météorologiques, demandes
+              spécifiques).
             </p>
             <p className="leading-7 mt-2">Le prix définitif est confirmé par devis avant toute commande.</p>
           </section>
@@ -138,10 +151,12 @@ export default function LegalNoticesPage() {
               Les informations présentées sur le site sont fournies à titre informatif et peuvent évoluer.
             </p>
             <p className="leading-7 mt-2">
-              Les visuels et photographies sont non contractuels. Le résultat des prestations peut varier selon l’état initial, les matériaux, l’environnement et les contraintes d’intervention.
+              Les visuels et photographies sont non contractuels. Le résultat des prestations peut varier selon l’état
+              initial, les matériaux, l’environnement et les contraintes d’intervention.
             </p>
             <p className="leading-7 mt-2">
-              Dans la mesure autorisée par la loi, l’éditeur ne pourra être tenu responsable que des dommages directs résultant d’une faute prouvée.
+              Dans la mesure autorisée par la loi, l’éditeur ne pourra être tenu responsable que des dommages directs
+              résultant d’une faute prouvée.
             </p>
           </section>
 
@@ -153,15 +168,14 @@ export default function LegalNoticesPage() {
             <p className="leading-7 mt-2">
               Toute reproduction, représentation ou exploitation sans autorisation est interdite.
             </p>
-            <p className="leading-7 mt-2">
-              Les contenus tiers restent la propriété de leurs auteurs respectifs.
-            </p>
+            <p className="leading-7 mt-2">Les contenus tiers restent la propriété de leurs auteurs respectifs.</p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold">Données personnelles</h2>
             <p className="leading-7 mt-3">
-              Les données personnelles sont traitées conformément à la politique de confidentialité accessible sur le site.
+              Les données personnelles sont traitées conformément à la politique de confidentialité accessible sur le
+              site.
             </p>
           </section>
 
@@ -198,4 +212,3 @@ export default function LegalNoticesPage() {
     </section>
   );
 }
-

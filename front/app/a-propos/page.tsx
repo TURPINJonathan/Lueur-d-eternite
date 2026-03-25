@@ -6,7 +6,7 @@ import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
 import { safeJsonLd } from '../jsonld';
 
 export const metadata: Metadata = createPageMetadata({
-  title: "À propos | Nettoyage tombe Caen (Calvados)",
+  title: 'À propos | Nettoyage tombe Caen (Calvados)',
   description:
     "Découvrez l'histoire et les valeurs de Lueur d'Éternité, service local de nettoyage et soin de sépultures (tombes) à Caen (Calvados).",
   path: '/a-propos',
@@ -15,7 +15,7 @@ export const metadata: Metadata = createPageMetadata({
 
 export default function About() {
   const webPageJsonLd = buildWebPageJsonLd({
-    title: "À propos | Nettoyage tombe Caen (Calvados)",
+    title: 'À propos | Nettoyage tombe Caen (Calvados)',
     description:
       "Découvrez l'histoire et les valeurs de Lueur d'Éternité, service local de nettoyage et soin de sépultures (tombes) à Caen (Calvados).",
     path: '/a-propos',

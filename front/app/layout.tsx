@@ -114,7 +114,7 @@ export default function RootLayout({
     ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: "Pages & prestations : entretien de sépultures à Caen (Calvados)",
+      name: 'Pages & prestations : entretien de sépultures à Caen (Calvados)',
       itemListElement: [
         {
           '@type': 'Offer',
@@ -124,7 +124,7 @@ export default function RootLayout({
         },
         {
           '@type': 'Offer',
-          name: "Services - nettoyage et soin de tombe",
+          name: 'Services - nettoyage et soin de tombe',
           url: `${seoConfig.siteUrl}/services`,
           description: 'Nettoyage en profondeur, entretien régulier et options complémentaires.',
         },
