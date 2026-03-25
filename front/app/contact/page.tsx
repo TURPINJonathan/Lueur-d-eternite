@@ -4,20 +4,23 @@ import { MailCheck, PhoneCall } from 'lucide-react';
 import HeroPicture from '../../public/assets/contact_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+import { safeJsonLd } from '../jsonld';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'Contact et devis',
+  title: 'Devis nettoyage tombe | Caen (Calvados)',
   description:
     "Contactez Lueur d'Éternité pour un devis ou des renseignements sur l'entretien de sépultures à Caen et alentours.",
   path: '/contact',
+  keywords: ['devis', 'contact', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
 });
 
 export default function Contact() {
   const webPageJsonLd = buildWebPageJsonLd({
-    title: 'Contact et devis',
+    title: 'Devis nettoyage tombe | Caen (Calvados)',
     description:
       "Contactez Lueur d'Éternité pour un devis ou des renseignements sur l'entretien de sépultures à Caen et alentours.",
     path: '/contact',
+    keywords: ['devis', 'contact', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: 'Accueil', path: '/' },
@@ -61,8 +64,8 @@ export default function Contact() {
           <ContactFormComponent />
         </div>
       </section>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
     </>
   );
 }

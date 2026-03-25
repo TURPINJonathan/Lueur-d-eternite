@@ -5,6 +5,7 @@ import '../styles/index.scss';
 import { Footer, Header, NavigationRouteLoader } from '#components';
 import { seoConfig } from './seo';
 import { buildWebSiteJsonLd } from './seo-jsonld';
+import { safeJsonLd } from './jsonld';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -35,6 +36,8 @@ export const metadata: Metadata = {
   keywords: [
     'entretien sépulture Caen',
     'nettoyage tombe Caen',
+    'nettoyage tombe Calvados',
+    'soin sépulture Caen',
     'fleurissement sépulture',
     'service funéraire Caen',
     'entretien tombe Normandie',
@@ -97,10 +100,60 @@ export default function RootLayout({
       addressCountry: 'FR',
     },
     areaServed: {
-      '@type': 'City',
-      name: seoConfig.city,
+      '@type': 'AdministrativeArea',
+      name: 'Calvados',
     },
     description: seoConfig.defaultDescription,
+    knowsAbout: ['entretien de sépulture', 'nettoyage de tombe', 'soin de sépulture', 'fleurissement'],
+    openingHoursSpecification: [
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Monday', opens: '08:00', closes: '18:00' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday', opens: '08:00', closes: '18:00' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Wednesday', opens: '08:00', closes: '18:00' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday', opens: '08:00', closes: '18:00' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '08:00', closes: '18:00' },
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: "Pages & prestations : entretien de sépultures à Caen (Calvados)",
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          name: 'Accueil - entretien de sépultures à Caen (Calvados)',
+          url: `${seoConfig.siteUrl}/`,
+          description: 'Présentation du service local : nettoyage, entretien et soins respectueux.',
+        },
+        {
+          '@type': 'Offer',
+          name: "Services - nettoyage et soin de tombe",
+          url: `${seoConfig.siteUrl}/services`,
+          description: 'Nettoyage en profondeur, entretien régulier et options complémentaires.',
+        },
+        {
+          '@type': 'Offer',
+          name: 'Tarifs - formules et estimation',
+          url: `${seoConfig.siteUrl}/tarifs`,
+          description: 'Consultez nos tarifs et formules pour l’entretien des sépultures.',
+        },
+        {
+          '@type': 'Offer',
+          name: 'Galerie - avant / après',
+          url: `${seoConfig.siteUrl}/galerie`,
+          description: 'Exemples de réalisations : entretien, nettoyage et soin de tombes.',
+        },
+        {
+          '@type': 'Offer',
+          name: 'À propos - valeurs & méthode',
+          url: `${seoConfig.siteUrl}/a-propos`,
+          description: 'L’histoire, l’approche et l’engagement du service à Caen et alentours.',
+        },
+        {
+          '@type': 'Offer',
+          name: 'Contact - demander un devis',
+          url: `${seoConfig.siteUrl}/contact`,
+          description: 'Formulaire de contact et coordonnées pour demander un devis.',
+        },
+      ],
+    },
   };
   const websiteJsonLd = buildWebSiteJsonLd();
 
@@ -116,8 +169,8 @@ export default function RootLayout({
         </main>
         <Footer />
         <NavigationRouteLoader />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(localBusinessJsonLd) }} />
       </body>
     </html>
   );

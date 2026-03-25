@@ -3,20 +3,23 @@ import { HeroComponent } from '#ui';
 import HeroPicture from '../../public/assets/about_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+import { safeJsonLd } from '../jsonld';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'À propos',
+  title: "À propos | Nettoyage tombe Caen (Calvados)",
   description:
-    "Découvrez l'histoire et les valeurs de Lueur d'Éternité, service local d'entretien de sépultures à Caen.",
+    "Découvrez l'histoire et les valeurs de Lueur d'Éternité, service local de nettoyage et soin de sépultures (tombes) à Caen (Calvados).",
   path: '/a-propos',
+  keywords: ['à propos', "Lueur d'Éternité", 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
 });
 
 export default function About() {
   const webPageJsonLd = buildWebPageJsonLd({
-    title: 'À propos',
+    title: "À propos | Nettoyage tombe Caen (Calvados)",
     description:
-      "Découvrez l'histoire et les valeurs de Lueur d'Éternité, service local d'entretien de sépultures à Caen.",
+      "Découvrez l'histoire et les valeurs de Lueur d'Éternité, service local de nettoyage et soin de sépultures (tombes) à Caen (Calvados).",
     path: '/a-propos',
+    keywords: ['à propos', "Lueur d'Éternité", 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: 'Accueil', path: '/' },
@@ -52,8 +55,8 @@ export default function About() {
           </div>
         </div>
       </section>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
     </>
   );
 }

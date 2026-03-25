@@ -4,12 +4,14 @@ import type { GalleryItem } from '#/components/ui/Gallery.component';
 import HeroPicture from '../../public/assets/gallery_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+import { safeJsonLd } from '../jsonld';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'Galerie réalisations',
+  title: 'Nos réalisations | Caen',
   description:
     "Parcourez des exemples avant/après et des photos de prestations d'entretien de sépultures réalisées à Caen et alentours.",
   path: '/galerie',
+  keywords: ['galerie', 'avant après', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
 });
 
 const galleryFixtures: GalleryItem[] = [
@@ -60,10 +62,11 @@ const galleryFixtures: GalleryItem[] = [
 
 export default function Gallery() {
   const webPageJsonLd = buildWebPageJsonLd({
-    title: 'Galerie réalisations',
+    title: 'Avant / après nettoyage tombe | Caen',
     description:
       "Parcourez des exemples avant/après et des photos de prestations d'entretien de sépultures réalisées à Caen et alentours.",
     path: '/galerie',
+    keywords: ['galerie', 'avant après', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: 'Accueil', path: '/' },
@@ -97,8 +100,8 @@ export default function Gallery() {
           </ButtonComponent>
         </div>
       </section>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
     </>
   );
 }
