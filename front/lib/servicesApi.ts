@@ -1,4 +1,4 @@
-import { apiGet } from '#/lib/api';
+import { apiGet } from '#lib/api';
 
 export interface ServiceCard {
   id: string;
@@ -13,4 +13,3 @@ export interface ServiceCard {
 export async function getServices(revalidate: number = 60): Promise<ServiceCard[]> {
   return apiGet<ServiceCard[]>('/api/public/services', { revalidate });
 }
-

@@ -21,7 +21,7 @@ export default function CGVPage() {
         <div className="relative h-full w-full">
           <Image
             src="/assets/logo_line.webp"
-            alt=""
+            alt="Logo en fond de section"
             fill
             sizes="100vw"
             className="object-contain opacity-10"

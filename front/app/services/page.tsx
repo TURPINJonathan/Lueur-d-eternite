@@ -4,9 +4,10 @@ import HeroPicture from '../../public/assets/service_hero_picture.webp';
 import { CheckCircle } from 'lucide-react';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
+import Image from 'next/image';
 import Link from 'next/link';
 import { safeJsonLd } from '../jsonld';
-import { getServices, type ServiceCard } from '#/lib/servicesApi';
+import { getServices, type ServiceCard } from '#lib';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Services nettoyage tombe | Caen (Calvados)',
@@ -66,43 +67,39 @@ export default async function Services() {
           ) : (
             services.map((service, index) => {
               const imageOnLeft = index % 2 === 0;
-            const imageOrder = imageOnLeft ? 'lg:order-1' : 'lg:order-2';
-            const contentOrder = imageOnLeft ? 'lg:order-2' : 'lg:order-1';
+              const imageOrder = imageOnLeft ? 'lg:order-1' : 'lg:order-2';
+              const contentOrder = imageOnLeft ? 'lg:order-2' : 'lg:order-1';
 
-            return (
-              <div key={service.id} className="w-full flex flex-col lg:flex-row gap-5 lg:gap-10">
-                <div
-                  className={`services-image-frame !p-0 relative overflow-hidden flex-1 ${imageOrder}`}
-                >
-                  {service.picture ? (
-                    <img
-                      src={service.picture}
-                      alt={service.pictureAlt.trim()}
-                      className="absolute inset-0 h-full w-full object-cover"
-                      loading="lazy"
-                      decoding="async"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  ) : null}
-                </div>
+              return (
+                <div key={service.id} className="w-full flex flex-col lg:flex-row gap-5 lg:gap-10">
+                  <div className={`services-image-frame !p-0 relative overflow-hidden flex-1 ${imageOrder}`}>
+                    {service.picture ? (
+                      <Image
+                        src={service.picture}
+                        alt={service.pictureAlt.trim()}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        fill
+                      />
+                    ) : null}
+                  </div>
 
-                <div className={`flex-1 flex flex-col justify-center gap-3 pb-4 lg:py-4 ${contentOrder}`}>
-                  <h3 className="text-3xl lg:text-4xl px-5">{service.title}</h3>
-                  <p className="leading-6 italic px-5">{service.subtitle}</p>
-                  <ul className="px-5">
-                    {service.items.map((item, itemIdx) => (
-                      <li
-                        key={`${service.id}-${itemIdx}`}
-                        className="flex justify-start items-center mb-1 gap-2"
-                      >
-                        <CheckCircle className="h-5 w-5" />
-                        <span className="leading-6">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className={`flex-1 flex flex-col justify-center gap-3 pb-4 lg:py-4 ${contentOrder}`}>
+                    <h3 className="text-3xl lg:text-4xl px-5">{service.title}</h3>
+                    <p className="leading-6 italic px-5">{service.subtitle}</p>
+                    <ul className="px-5">
+                      {service.items.map((item, itemIdx) => (
+                        <li key={`${service.id}-${itemIdx}`} className="flex justify-start items-center mb-1 gap-2">
+                          <CheckCircle className="h-5 w-5" />
+                          <span className="leading-6">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            );
+              );
             })
           )}
         </div>

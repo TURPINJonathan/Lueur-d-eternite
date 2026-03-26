@@ -134,8 +134,6 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
                 aria-label={`Ouvrir la comparaison ${item.alt}`}
               >
                 <Image
-                  // Pour les perfs : la moitié gauche charge une thumbnail (thumb = avant).
-                  // La moitié droite charge l'image complète "after" (thumb after n'existe pas pour le moment).
                   src={item.afterThumb ?? item.afterSrc}
                   alt={`${item.alt} - aperçu après`}
                   fill

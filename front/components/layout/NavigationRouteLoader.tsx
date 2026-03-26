@@ -1,6 +1,6 @@
 'use client';
 
-import LogoLoader from '#/components/ui/LogoLoader.component';
+import LogoLoader from '#components/ui/LogoLoader.component';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 

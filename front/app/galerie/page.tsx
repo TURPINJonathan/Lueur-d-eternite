@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { ButtonComponent, GalleryComponent, HeroComponent, SectionDivider } from '#ui';
-import type { GalleryItem } from '#/components/ui/Gallery.component';
+import type { GalleryItem } from '#components/ui/Gallery.component';
 import HeroPicture from '../../public/assets/gallery_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
 import { safeJsonLd } from '../jsonld';
-import { getGalleryItems } from '#/lib/galleryApi';
+import { getGalleryItems } from '#lib';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Nos réalisations | Caen',

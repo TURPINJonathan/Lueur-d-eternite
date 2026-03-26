@@ -1,1 +1,1 @@
-export { default } from '#/lib/routeLoading';
+export { routeLoading as default } from '#lib';

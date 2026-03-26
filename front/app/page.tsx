@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { ButtonComponent, CardComponent, HeroComponent, SectionDivider } from '#ui';
-import MapComponent from '#/components/ui/Map.dynamic';
+import MapComponent from '#components/ui/Map.dynamic';
 import { Clock, HeartHandshake, ShieldCheck } from 'lucide-react';
 import HeroPicture from '../public/assets/home_hero_picture.webp';
 import { createPageMetadata } from './seo';
