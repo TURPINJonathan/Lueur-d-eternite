@@ -25,7 +25,7 @@
   --font-title: #{$font-title};
   --font-weight-normal: #{$font-weight-normal};
   --font-weight-medium: #{$font-weight-medium};
-  --layout-page-max-width: 1440px;
+  --layout-page-max-width: 1200px;
   --layout-section-padding-x: clamp(1.25rem, 2.4vw, 5rem);
   --layout-section-padding-y: clamp(2.5rem, 4vw, 3.75rem);
   --gradient-gold: linear-gradient(120deg, #{$gold-thin} 0%, #{$gold-light} 35%, #{$gold} 70%, #{$gold-dark} 100%);

@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
 import { ButtonComponent, HeroComponent, SectionDivider } from '#ui';
 import HeroPicture from '../../public/assets/service_hero_picture.webp';
-import picture1 from '../../public/assets/home_hero_picture.webp';
-import picture2 from '../../public/assets/pricing_hero_picture.webp';
-import picture3 from '../../public/assets/contact_hero_picture.webp';
 import { CheckCircle } from 'lucide-react';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
 import Link from 'next/link';
 import { safeJsonLd } from '../jsonld';
+import { getServices, type ServiceCard } from '#/lib/servicesApi';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Services nettoyage tombe | Caen (Calvados)',
@@ -18,28 +16,14 @@ export const metadata: Metadata = createPageMetadata({
   keywords: ['sépulture', 'tombe', 'nettoyage', 'soin', 'entretien', 'Caen', 'Calvados'],
 });
 
-const services = [
-  {
-    picture: picture1,
-    title: 'Nettoyage en profondeur',
-    subtitle: 'Pour un éclat des premiers jours',
-    items: ['Produits spécifiques', 'Nettoyage intensif', 'Ornement', 'Détails'],
-  },
-  {
-    picture: picture2,
-    title: 'Nettoyage simple',
-    subtitle: 'Un suivi soigné',
-    items: ['Détails'],
-  },
-  {
-    picture: picture3,
-    title: 'Des services complémentaires',
-    subtitle: 'Pour des détails minutieux',
-    items: ['Détails'],
-  },
-];
+export default async function Services() {
+  let services: ServiceCard[] = [];
+  try {
+    services = await getServices(60);
+  } catch {
+    services = [];
+  }
 
-export default function Services() {
   const webPageJsonLd = buildWebPageJsonLd({
     title: 'Services nettoyage tombe | Caen (Calvados)',
     description:
@@ -75,26 +59,42 @@ export default function Services() {
 
       <section className="page-shell page-section">
         <div className="flex flex-col items-center justify-center gap-10 lg:gap-8">
-          {services.map((service, index) => {
-            const imageOnLeft = index % 2 === 0;
+          {services.length === 0 ? (
+            <div className="mt-6 text-center text-sm text-[rgba(43,43,43,.75)]">
+              Services en cours de construction, revenez bientôt.
+            </div>
+          ) : (
+            services.map((service, index) => {
+              const imageOnLeft = index % 2 === 0;
             const imageOrder = imageOnLeft ? 'lg:order-1' : 'lg:order-2';
             const contentOrder = imageOnLeft ? 'lg:order-2' : 'lg:order-1';
 
             return (
-              <div key={service.title} className="w-full flex flex-col lg:flex-row gap-5 lg:gap-10">
+              <div key={service.id} className="w-full flex flex-col lg:flex-row gap-5 lg:gap-10">
                 <div
-                  className={`services-image-frame !p-0 bg-no-repeat bg-cover bg-center flex-1 ${imageOrder}`}
-                  style={{ backgroundImage: `url(${service.picture.src})` }}
-                  role="img"
-                  aria-label={service.title}
-                />
+                  className={`services-image-frame !p-0 relative overflow-hidden flex-1 ${imageOrder}`}
+                >
+                  {service.picture ? (
+                    <img
+                      src={service.picture}
+                      alt={service.pictureAlt.trim()}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                  ) : null}
+                </div>
 
                 <div className={`flex-1 flex flex-col justify-center gap-3 pb-4 lg:py-4 ${contentOrder}`}>
                   <h3 className="text-3xl lg:text-4xl px-5">{service.title}</h3>
                   <p className="leading-6 italic px-5">{service.subtitle}</p>
                   <ul className="px-5">
-                    {service.items.map((item) => (
-                      <li key={item} className="flex justify-start items-center mb-1 gap-2">
+                    {service.items.map((item, itemIdx) => (
+                      <li
+                        key={`${service.id}-${itemIdx}`}
+                        className="flex justify-start items-center mb-1 gap-2"
+                      >
                         <CheckCircle className="h-5 w-5" />
                         <span className="leading-6">{item}</span>
                       </li>
@@ -103,7 +103,8 @@ export default function Services() {
                 </div>
               </div>
             );
-          })}
+            })
+          )}
         </div>
       </section>
 

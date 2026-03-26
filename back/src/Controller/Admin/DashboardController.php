@@ -47,6 +47,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
 
         yield MenuItem::linkToRoute('Galerie', 'fa fa-images', 'back_office_galerie_index');
+        yield MenuItem::linkToRoute('Services', 'fa fa-wrench', 'back_office_services_index');
         yield MenuItem::subMenu('Administration', 'fa fa-user-shield')->setSubItems([
             MenuItem::linkToRoute('Utilisateurs', 'fa fa-user', 'back_office_users_index'),
         ]);
