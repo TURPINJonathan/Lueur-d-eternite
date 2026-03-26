@@ -3,6 +3,57 @@
 {# Prestations dynamiques + aperçu image (API média / fichier choisi). #}
 {% block ea_crud_rest %}
   {{ parent() }}
+  <style>
+    .ea-presta-add-btn,
+    .ea-presta-remove-btn {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border-radius: 0.375rem;
+      border: 1px solid transparent;
+      color: #fff;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .ea-presta-add-btn {
+      background: #198754;
+      border-color: #157347;
+      width: 100% !important;
+    }
+
+    .ea-presta-add-btn:hover {
+      background: #157347 !important;
+      border-color: #14643c !important;
+    }
+
+    .ea-presta-remove-btn {
+      background: #dc3545;
+      border-color: #bb2d3b;
+    }
+
+    .ea-presta-remove-btn:hover {
+      background: #bb2d3b !important;
+      border-color: #a52834 !important;
+    }
+
+    .ea-presta-remove-btn:disabled {
+      background: #f1f1f1;
+      border-color: #e0e0e0;
+      color: #6c757d;
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .ea-presta-btn-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+  </style>
   <script>
     (function () {
       const textarea =
@@ -38,10 +89,14 @@
 
       const addBtn = document.createElement('button');
       addBtn.type = 'button';
-      addBtn.className = 'btn btn-outline-primary btn-sm align-self-start';
+      addBtn.className = 'btn btn-sm ea-presta-add-btn align-self-start';
       addBtn.setAttribute('aria-label', 'Ajouter une prestation');
-      addBtn.textContent = '+';
       addBtn.title = 'Ajouter une prestation';
+      addBtn.innerHTML = `<span>Ajouter une nouvelle ligne</span>
+        <svg class="ea-presta-btn-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      `;
 
       let inputs = [];
 
@@ -53,13 +108,15 @@
 
           const xBtn = document.createElement('button');
           xBtn.type = 'button';
-          xBtn.className = 'btn btn-outline-danger btn-sm flex-shrink-0';
-          xBtn.textContent = '×';
+          xBtn.className = 'btn btn-sm ea-presta-remove-btn flex-shrink-0';
+          xBtn.innerHTML = `
+            <svg class="ea-presta-btn-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M4 4l8 8M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          `;
           xBtn.setAttribute('aria-label', 'Supprimer cette prestation');
           xBtn.title = 'Supprimer';
           xBtn.disabled = idx === 0;
-          xBtn.style.opacity = idx === 0 ? '0.4' : '1';
-          xBtn.style.cursor = idx === 0 ? 'not-allowed' : 'pointer';
 
           const sync = () => {
             writeLines(inputs);
