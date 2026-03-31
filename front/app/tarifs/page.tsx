@@ -5,6 +5,7 @@ import HeroPicture from '../../public/assets/pricing_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
 import { safeJsonLd } from '../jsonld';
+import { getTarifs, type TarifCard, type TarifGenericNotice } from '#lib';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Tarifs entretien sépulture | Caen (Calvados)',
@@ -14,27 +15,96 @@ export const metadata: Metadata = createPageMetadata({
   keywords: ['tarifs', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
 });
 
-interface Price {
-  id: string;
-  title: string;
-  details?: string;
-  price: number | string;
+function formatEuroFromCents(priceCents: number): string {
+  const abs = Math.abs(priceCents);
+  const euros = Math.floor(abs / 100);
+  const cents = abs % 100;
+
+  if (cents === 0) return euros.toString();
+  return `${euros},${cents.toString().padStart(2, '0')}`;
 }
 
-const prices: Price[] = [
-  {
-    id: '1',
-    title: 'Nettoyage en profondeur',
-    details: 'Soin ponctuel, obligatoire pour une première prestation',
-    price: 150,
-  },
-  { id: '2', title: 'Entretien régulier', details: "Soin d'entretien régulier", price: 49 },
-  { id: '3', title: 'Option ponctuelle', details: 'Traitement anti-mousse longue durée', price: 45 },
-  { id: '4', title: 'Option ponctuelle', details: 'Pierre ravivée', price: 50 },
-  { id: '5', title: 'Option ponctuelle', details: 'Lettre ravivée', price: 50 },
-];
+function GlobalNotices({ notices }: { notices: TarifGenericNotice[] }) {
+  if (notices.length === 0) return null;
 
-export default function Pricing() {
+  return (
+    <aside
+      className={`flex-1 basis-[200px] w-full flex flex-row flex-wrap justify-center items-center gap-4 ${notices.length === 1 ? 'lg:flex-col' : ''}`}
+    >
+      {notices.map((notice, idx) => (
+        <CardComponent
+          key={`${notice.kind}-${notice.title}-${idx}`}
+          className="flex-1 basis-[250px]"
+          premium={(notices.length <= 3 && idx === 1) || (notices.length === 1 && idx === 0) || notices.length === 2}
+          title={notice.label}
+          description={notice.title}
+        >
+          {/* <pre>{JSON.stringify(notice, null, 2)}</pre> */}
+          {notice.code && (
+            <span className="inline-flex items-center rounded border border-[var(--color-gold)]/40 bg-[var(--muted)] px-3 py-1 text-xs font-medium uppercase tracking-[0.04em] text-[var(--foreground)]">
+              {notice.code}
+            </span>
+          )}
+        </CardComponent>
+      ))}
+    </aside>
+  );
+}
+
+function DesktopPriceCell({ tarif }: { tarif: TarifCard }) {
+  return (
+    <div className="flex flex-col items-start gap-1.5">
+      <div className="flex items-center gap-2">
+        {tarif.hasDiscount && (
+          <span className="text-sm text-[var(--muted-foreground)] line-through decoration-[var(--color-gold)] decoration-[1px]">
+            {formatEuroFromCents(tarif.originalPriceCents)} €
+          </span>
+        )}
+
+        <span className="flex items-center gap-1 font-semibold text-[var(--color-gold)]">
+          <span className="leading-none">{formatEuroFromCents(tarif.priceCents)}</span>
+          <Euro className="h-4 w-4" />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function MobilePriceCell({ tarif }: { tarif: TarifCard }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div className="flex items-end gap-2">
+        {tarif.hasDiscount ? (
+          <span className="text-xs text-[var(--muted-foreground)] line-through decoration-[var(--color-gold)] decoration-[1px]">
+            {formatEuroFromCents(tarif.originalPriceCents)} €
+          </span>
+        ) : null}
+
+        <span className="flex items-center gap-1.5 font-semibold text-[var(--color-gold)]">
+          <span className="text-xl leading-none">{formatEuroFromCents(tarif.priceCents)}</span>
+          <Euro className="h-4 w-4 !text-[var(--color-gold)]" />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default async function Pricing() {
+  let tarifs: TarifCard[] = [];
+  let genericNotices: TarifGenericNotice[] = [];
+  let apiError: string | null = null;
+
+  try {
+    const data = await getTarifs(60);
+    tarifs = data.items;
+    genericNotices = data.genericNotices;
+  } catch (e) {
+    console.error('GET /api/public/tarifs failed:', e);
+    apiError = e instanceof Error ? e.message : 'Impossible de charger les tarifs depuis le back.';
+    tarifs = [];
+    genericNotices = [];
+  }
+
   const webPageJsonLd = buildWebPageJsonLd({
     title: 'Tarifs entretien sépulture | Caen (Calvados)',
     description:
@@ -42,6 +112,7 @@ export default function Pricing() {
     path: '/tarifs',
     keywords: ['tarifs', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
   });
+
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: 'Accueil', path: '/' },
     { name: 'Tarifs', path: '/tarifs' },
@@ -57,55 +128,80 @@ export default function Pricing() {
       />
 
       <section className="page-shell page-section">
-        <div className="flex flex-col items-center justify-center gap-8">
-          <div className="w-full overflow-hidden rounded-[var(--radius-lg)] lg:bg-[linear-gradient(180deg,#fff9ef_0%,#f7efdf_45%,#efe3cb_100%)] lg:shadow-2xl">
-            <div className="hidden md:block">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b border-[#c7a96a]/40 bg-[linear-gradient(120deg,#f2e0ba_0%,#ead3a2_45%,#ddbf83_100%)]">
-                    <th className="px-6 py-5 text-left text-sm font-semibold text-[var(--foreground)]">Formules</th>
-                    <th className="px-6 py-5 text-left text-sm font-semibold text-[var(--foreground)]">Précisions</th>
-                    <th className="px-6 py-5 text-left text-sm font-semibold text-[var(--foreground)]">Prix</th>
-                  </tr>
-                </thead>
+        <div className={`flex items-center flex-col gap-8 ${genericNotices.length === 1 ? 'lg:flex-row' : 'flex-col'}`}>
+          <div
+            className={`w-full flex-4 overflow-hidden rounded-[var(--radius-lg)] shadow-xl ${genericNotices.length === 1 ? ' lg:basis-[700px]' : ''}`}
+          >
+            {tarifs.length === 0 ? (
+              <>
+                <div className="p-8 text-center text-sm">Tarifs en cours de construction, revenez bientôt.</div>
+                {apiError && process.env.NODE_ENV === 'development' ? (
+                  <div className="mt-2 text-center text-xs text-red-600">{apiError}</div>
+                ) : null}
+              </>
+            ) : (
+              <>
+                <div className="hidden md:block">
+                  <table className="w-full rounded border-collapse">
+                    <thead>
+                      <tr className="border-b border-[#d7bf86]/35 bg-[linear-gradient(120deg,#f5e6c4_0%,#e7cf9a_50%,#d4af37_100%)]">
+                        <th className="px-6 py-5 text-left text-sm font-semibold text-[var(--foreground)]">Formules</th>
+                        <th className="px-6 py-5 text-left text-sm font-semibold text-[var(--foreground)]">
+                          Précisions
+                        </th>
+                        <th className="px-6 py-5 text-left text-sm font-semibold text-[var(--foreground)]">Prix</th>
+                      </tr>
+                    </thead>
 
-                <tbody>
-                  {prices.map((price, index) => (
-                    <tr key={price.id} className={index !== prices.length - 1 ? 'border-b border-[#c7a96a]/30' : ''}>
-                      <td className="px-6 py-5 font-semibold text-[var(--foreground)]">{price.title}</td>
-                      <td className="px-6 py-5 text-[var(--muted-foreground)] italic !font-light">{price.details}</td>
-                      <td className="px-6 py-5 text-[var(--foreground)] flex gap-2 items-center justify-start">
-                        {price.price}
-                        {typeof price.price === 'number' && <Euro className="w-4 h-4" />}
-                      </td>
-                    </tr>
+                    <tbody>
+                      {tarifs.map((tarif, index) => (
+                        <tr
+                          key={tarif.id}
+                          className={`transition-colors duration-200 hover:bg-[#f9f5ec] ${
+                            index !== tarifs.length - 1 ? 'border-b border-[#d9ccb2]/55' : ''
+                          }`}
+                        >
+                          <td className="px-6 py-6 align-top">
+                            <span className="font-semibold text-[var(--foreground)]">{tarif.title}</span>
+                          </td>
+
+                          <td className="px-6 py-6 align-top">
+                            <span className="italic text-[var(--muted-foreground)]">{tarif.details}</span>
+                          </td>
+
+                          <td className="px-6 py-6 align-top text-[var(--foreground)]">
+                            <DesktopPriceCell tarif={tarif} />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="flex flex-col gap-5 p-4 md:hidden">
+                  {tarifs.map((tarif) => (
+                    <CardComponent
+                      key={tarif.id}
+                      className="!min-h-lg !items-center !justify-center !gap-2 !p-5 !text-center"
+                    >
+                      <div className="flex flex-col items-center gap-3">
+                        <h3 className="text-2xl font-medium text-[var(--foreground)]">{tarif.title}</h3>
+                        <h4 className="!text-xs !font-light italic text-[var(--foreground)]">{tarif.details}</h4>
+                        <MobilePriceCell tarif={tarif} />
+                      </div>
+                    </CardComponent>
                   ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="flex flex-col gap-6 p-4 md:hidden">
-              {prices.map((price) => (
-                <CardComponent
-                  key={price.id}
-                  className="!min-h-lg !items-center !justify-center !gap-2 !p-4 !text-center"
-                >
-                  <div className="flex flex-col gap-3 justify-center items-center">
-                    <h3 className="font-medium text-[var(--foreground)] text-2xl">{price.title}</h3>
-                    <h4 className="text-[var(--foreground)] italic !font-light !text-xs">{price.details}</h4>
-
-                    <p className="text-[var(--foreground)] flex gap-2 items-center justify-start">
-                      {price.price} {typeof price.price === 'number' && <Euro className="w-4 h-4" />}
-                    </p>
-                  </div>
-                </CardComponent>
-              ))}
-            </div>
+                </div>
+              </>
+            )}
           </div>
+
+          <GlobalNotices notices={genericNotices} />
         </div>
       </section>
 
       <SectionDivider />
+
       <section className="page-shell page-section">
         <div className="flex flex-wrap gap-8">
           <div className="flex-1 basis-[600px] text-center flex flex-wrap gap-8">
@@ -132,15 +228,17 @@ export default function Pricing() {
               className="flex-1 basis-[450px]"
             />
 
-            <CardComponent
-              icon={Handshake}
-              title="Votre satisfaction garantie"
-              description="Si le résultat ne vous convient pas, nous revenons gratuitement pour parfaire le travail. Votre satisfaction est notre priorité."
-              className="flex-1 basis-[450px]"
-            />
+            <div className="flex-1 basis-[450px]">
+              <CardComponent
+                icon={Handshake}
+                title="Votre satisfaction garantie"
+                description="Si le résultat ne vous convient pas, nous revenons gratuitement pour parfaire le travail. Votre satisfaction est notre priorité."
+              />
+            </div>
           </div>
         </div>
       </section>
+
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
     </>

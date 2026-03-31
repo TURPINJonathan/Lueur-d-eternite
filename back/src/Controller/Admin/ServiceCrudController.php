@@ -67,6 +67,7 @@ final class ServiceCrudController extends AbstractCrudController
                 
                 TextField::new('pictureAlt', 'Description de l\'image')
                     ->setRequired(true)
+                    ->setHelp('Description pour l\'accessibilité des mal voyants. Ca doit être court, concis.')
                     ->setColumns(6),
 
                 ImageField::new('imageFile', 'Image')

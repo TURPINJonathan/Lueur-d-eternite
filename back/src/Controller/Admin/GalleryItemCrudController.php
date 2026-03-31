@@ -64,7 +64,8 @@ final class GalleryItemCrudController extends AbstractCrudController
                     ->renderAsSwitch()->setColumns(8),
 
                 TextField::new('alt', 'Description')
-                    ->setRequired(true)->setColumns(6),
+                    ->setRequired(true)->setColumns(6)
+                    ->setHelp('Description pour l\'accessibilité des mal voyants. Ca doit être court, concis. Si c\'est une photo avant/après, alors il sera automatiquement ajouté avant ou après mais la decription sera la même.'),
 
                 // Valeurs pour afficher un aperçu des images existantes sur la page d'édition
                 // (elles sont utilisées par le form theme JS pour initialiser les prévisualisations).

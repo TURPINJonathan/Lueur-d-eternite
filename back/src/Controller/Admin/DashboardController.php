@@ -48,6 +48,9 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToRoute('Galerie', 'fa fa-images', 'back_office_galerie_index');
         yield MenuItem::linkToRoute('Services', 'fa fa-wrench', 'back_office_services_index');
+        yield MenuItem::linkToRoute('Tarifs', 'fa fa-receipt', 'back_office_tarifs_index');
+        yield MenuItem::linkToRoute('Promotions', 'fa fa-tags', 'back_office_promotions_index');
+        yield MenuItem::linkToRoute('Codes promo', 'fa fa-ticket', 'back_office_codes_promo_index');
         yield MenuItem::subMenu('Administration', 'fa fa-user-shield')->setSubItems([
             MenuItem::linkToRoute('Utilisateurs', 'fa fa-user', 'back_office_users_index'),
         ]);
