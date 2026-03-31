@@ -53,6 +53,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Codes promo', 'fa fa-ticket', 'back_office_codes_promo_index');
         yield MenuItem::subMenu('Administration', 'fa fa-user-shield')->setSubItems([
             MenuItem::linkToRoute('Utilisateurs', 'fa fa-user', 'back_office_users_index'),
+            MenuItem::linkToRoute('Paramètres du site', 'fa fa-sliders-h', 'back_office_parametres_site_index'),
         ]);
     }
 

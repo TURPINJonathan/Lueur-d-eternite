@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { CheckCircle } from 'lucide-react';
 import { createPageMetadata } from '../seo';
+import { getSiteSettings } from '#lib';
+import { sanitizePhoneToHref } from '#lib/phone';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Mentions légales',
@@ -9,7 +11,11 @@ export const metadata: Metadata = createPageMetadata({
   path: '/mentions-legales',
 });
 
-export default function LegalNoticesPage() {
+export default async function LegalNoticesPage() {
+  const siteSettings = await getSiteSettings(300);
+  const legalUpdatedAt = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date(siteSettings.updatedAt));
+  const phoneHref = sanitizePhoneToHref(siteSettings.contactPhoneDisplay);
+
   return (
     <section className="page-shell page-section min-h-[68svh] relative overflow-hidden">
       <div
@@ -38,34 +44,34 @@ export default function LegalNoticesPage() {
             <ul className="leading-7 mt-3">
               <li className="flex justify-start items-center mb-1 gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span className="leading-6">Nom : Émilie SIMON</span>
+                <span className="leading-6">Nom : {siteSettings.legalEntityName}</span>
               </li>
               <li className="flex justify-start items-center mb-1 gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span className="leading-6">Statut : Entrepreneur individuel</span>
+                <span className="leading-6">Statut : {siteSettings.legalStatus}</span>
               </li>
               <li className="flex justify-start items-center mb-1 gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span className="leading-6">Adresse : 49 rue de Condé, 14220 Thury-Harcourt-le-Hom, France</span>
+                <span className="leading-6">Adresse : {siteSettings.legalAddress}</span>
               </li>
               <li className="flex justify-start items-center mb-1 gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span className="leading-6">SIREN : 848 739 546</span>
+                <span className="leading-6">SIREN : {siteSettings.legalSiren}</span>
               </li>
               <li className="flex justify-start items-center mb-1 gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span className="leading-6">SIRET : 848 739 546 00036</span>
+                <span className="leading-6">SIRET : {siteSettings.legalSiret}</span>
               </li>
               <li className="flex justify-start items-center mb-1 gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span className="leading-6">TVA : TVA non applicable, article 293B du CGI</span>
+                <span className="leading-6">TVA : {siteSettings.legalVat}</span>
               </li>
               <li className="flex justify-start items-center mb-1 gap-2">
                 <CheckCircle className="h-5 w-5" />
                 <span className="leading-6">
                   Téléphone :{' '}
-                  <a className="underline underline-offset-4" href="tel:+33625295952">
-                    06 25 29 59 52
+                  <a className="underline underline-offset-4" href={`tel:${phoneHref}`}>
+                    {siteSettings.contactPhoneDisplay}
                   </a>
                 </span>
               </li>
@@ -73,8 +79,8 @@ export default function LegalNoticesPage() {
                 <CheckCircle className="h-5 w-5" />
                 <span className="leading-6">
                   Email :{' '}
-                  <a className="underline underline-offset-4" href="mailto:contact@lueur-eternite.fr">
-                    contact@lueur-eternite.fr
+                  <a className="underline underline-offset-4" href={`mailto:${siteSettings.contactEmail}`}>
+                    {siteSettings.contactEmail}
                   </a>
                 </span>
               </li>
@@ -98,20 +104,19 @@ export default function LegalNoticesPage() {
           <section>
             <h2 className="text-2xl font-semibold">Directeur de la publication</h2>
             <p className="leading-7 mt-3">Directeur de la publication :</p>
-            <p className="leading-7 mt-2">Émilie SIMON</p>
+            <p className="leading-7 mt-2">{siteSettings.publicationDirector}</p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold">Hébergement</h2>
             <p className="leading-7 mt-3">Le site est hébergé par :</p>
             <div className="leading-7 mt-3 flex flex-col">
-              <span className="leading-6">OVHcloud</span>
-              <span className="leading-6">2 rue Kellermann</span>
-              <span className="leading-6">59100 Roubaix – France</span>
+              <span className="leading-6">{siteSettings.hostingProviderName}</span>
+              <span className="leading-6">{siteSettings.hostingProviderAddress}</span>
             </div>
             <p className="leading-7 mt-2">
-              <a className="underline underline-offset-4" href="https://www.ovh.com" target="_blank" rel="noreferrer">
-                https://www.ovh.com
+              <a className="underline underline-offset-4" href={siteSettings.hostingProviderUrl} target="_blank" rel="noreferrer">
+                {siteSettings.hostingProviderUrl}
               </a>
             </p>
           </section>
@@ -191,8 +196,8 @@ export default function LegalNoticesPage() {
                 <CheckCircle className="h-5 w-5" />
                 <span className="leading-6">
                   Email :{' '}
-                  <a className="underline underline-offset-4" href="mailto:contact@lueur-eternite.fr">
-                    contact@lueur-eternite.fr
+                  <a className="underline underline-offset-4" href={`mailto:${siteSettings.contactEmail}`}>
+                    {siteSettings.contactEmail}
                   </a>
                 </span>
               </li>
@@ -200,12 +205,17 @@ export default function LegalNoticesPage() {
                 <CheckCircle className="h-5 w-5" />
                 <span className="leading-6">
                   Téléphone :{' '}
-                  <a className="underline underline-offset-4" href="tel:+33625295952">
-                    06 25 29 59 52
+                  <a className="underline underline-offset-4" href={`tel:${phoneHref}`}>
+                    {siteSettings.contactPhoneDisplay}
                   </a>
                 </span>
               </li>
             </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold">Dernière mise à jour</h2>
+            <p className="leading-7 mt-3">{legalUpdatedAt}</p>
           </section>
         </div>
       </div>

@@ -5,7 +5,7 @@ import HeroPicture from '../../public/assets/pricing_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
 import { safeJsonLd } from '../jsonld';
-import { getTarifs, type TarifCard, type TarifGenericNotice } from '#lib';
+import { getSiteSettings, getTarifs, type TarifCard, type TarifGenericNotice } from '#lib';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Tarifs entretien sépulture | Caen (Calvados)',
@@ -93,6 +93,7 @@ export default async function Pricing() {
   let tarifs: TarifCard[] = [];
   let genericNotices: TarifGenericNotice[] = [];
   let apiError: string | null = null;
+  const siteSettings = await getSiteSettings(60);
 
   try {
     const data = await getTarifs(60);
@@ -215,7 +216,7 @@ export default async function Pricing() {
             <CardComponent
               icon={MapPinCheckInside}
               title="Zone de prestation"
-              description="Nous intervenons à Caen et ses alentours afin de prendre le temps de soigner vos sépultures avec respect."
+              description={`Nous intervenons à ${siteSettings.serviceAreaText} afin de prendre le temps de soigner vos sépultures avec respect.`}
               className="flex-1 basis-[450px]"
             />
           </div>

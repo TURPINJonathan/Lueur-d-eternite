@@ -7,6 +7,8 @@ import { createPageMetadata } from './seo';
 import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd, buildWebPageJsonLd } from './seo-jsonld';
 import Link from 'next/link';
 import { safeJsonLd } from './jsonld';
+import { getSiteSettings } from '#lib';
+import { sanitizePhoneToHref } from '#lib/phone';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Entretien de sépultures à Caen',
@@ -16,7 +18,10 @@ export const metadata: Metadata = createPageMetadata({
   keywords: ['sépulture', 'tombe', 'nettoyage', 'soin', 'entretien', 'Caen', 'Calvados', 'Normandie'],
 });
 
-export default function Home() {
+export default async function Home() {
+  const siteSettings = await getSiteSettings(60);
+  const phoneHref = sanitizePhoneToHref(siteSettings.contactPhoneDisplay);
+
   const webPageJsonLd = buildWebPageJsonLd({
     title: 'Entretien de sépultures à Caen',
     description:
@@ -25,12 +30,15 @@ export default function Home() {
     keywords: ['sépulture', 'tombe', 'nettoyage', 'soin', 'entretien', 'Caen', 'Calvados', 'Normandie'],
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: 'Accueil', path: '/' }]);
-  const serviceJsonLd = buildServiceJsonLd();
+  const serviceJsonLd = buildServiceJsonLd({
+    phoneHref,
+    serviceRadiusKm: siteSettings.serviceRadiusKm,
+  });
   const faqJsonLd = buildFaqJsonLd([
     {
       question: 'Dans quelle zone intervenez-vous autour de Caen ?',
       answer:
-        "Nous intervenons à Caen et dans les communes alentours, avec une zone d'intervention d'environ 15 km autour de la ville.",
+        `Nous intervenons à Caen et dans les communes alentours, avec une zone d'intervention d'environ ${siteSettings.serviceRadiusKm} km autour de la ville.`,
     },
     {
       question: 'Proposez-vous un entretien ponctuel et régulier ?',
@@ -119,7 +127,7 @@ export default function Home() {
         </div>
 
         <div className="flex-3 basis-[600px]">
-          <MapComponent mode="circle" center={[49.1829, -0.3707]} radiusKm={15} zoomBoost={1} />
+          <MapComponent mode="circle" center={[49.1829, -0.3707]} radiusKm={siteSettings.serviceRadiusKm} zoomBoost={1} />
         </div>
       </section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />

@@ -3,6 +3,7 @@
 import { ButtonComponent } from '#ui';
 import { Copyright, Facebook, Instagram } from 'lucide-react';
 import Link from 'next/link';
+import { sanitizePhoneToHref } from '#lib/phone';
 
 const QUICK_LINKS = [
   { href: '/services', label: 'Services' },
@@ -11,7 +12,14 @@ const QUICK_LINKS = [
   { href: '/a-propos', label: 'À propos' },
 ];
 
-export default function Footer() {
+interface FooterProps {
+  contactPhoneDisplay: string;
+  contactEmail: string;
+}
+
+export default function Footer({ contactPhoneDisplay, contactEmail }: FooterProps) {
+  const phoneHref = sanitizePhoneToHref(contactPhoneDisplay);
+
   return (
     <footer className="footer inset-shadow-sm/10 page-shell flex flex-col gap-2 pb-2 !mx-0 !w-full">
       <div className="flex flex-wrap gap-4 pt-8 px-10 lg:px-20">
@@ -37,11 +45,15 @@ export default function Footer() {
           <ButtonComponent href="/contact" variant="gold" size="smf" outline className="uppercase font-title">
             Contactez-nous
           </ButtonComponent>
-          <a href="mailto:contact@lueur-eternite.fr" className="font-light text-md" aria-label="Envoyer un email">
-            contact@lueur-eternite.fr
+          <a href={`mailto:${contactEmail}`} className="font-light text-md" aria-label={`Envoyer un email à ${contactEmail}`}>
+            {contactEmail}
           </a>
-          <a href="tel:+33625295952" className="font-light text-md" aria-label="Appeler le 06 25 29 59 52">
-            06 25 29 59 52
+          <a
+            href={`tel:${phoneHref}`}
+            className="font-light text-md"
+            aria-label={`Appeler le ${contactPhoneDisplay}`}
+          >
+            {contactPhoneDisplay}
           </a>
           <div className="social-links flex gap-4">
             <Facebook size={20} className="inline-block opacity-50" aria-hidden />

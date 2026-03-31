@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { CheckCircle } from 'lucide-react';
 import { createPageMetadata } from '../seo';
+import { getSiteSettings } from '#lib';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Politique de confidentialité',
@@ -9,7 +10,10 @@ export const metadata: Metadata = createPageMetadata({
   path: '/politique-de-confidentialite',
 });
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+  const siteSettings = await getSiteSettings(300);
+  const policyUpdatedAt = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date(siteSettings.updatedAt));
+
   return (
     <section className="page-shell page-section min-h-[68svh] relative overflow-hidden">
       <div
@@ -34,10 +38,10 @@ export default function PrivacyPolicyPage() {
         <div className="mt-8 space-y-10">
           <section>
             <h2 className="text-2xl font-semibold">Responsable du traitement</h2>
-            <div className="leading-6">Émilie SIMON</div>
-            <div className="leading-6">49 rue de Condé, 14220 Thury-Harcourt-le-Hom</div>
-            <a className="underline underline-offset-4" href="mailto:contact@lueur-eternite.fr">
-              contact@lueur-eternite.fr
+            <div className="leading-6">{siteSettings.legalEntityName}</div>
+            <div className="leading-6">{siteSettings.legalAddress}</div>
+            <a className="underline underline-offset-4" href={`mailto:${siteSettings.contactEmail}`}>
+              {siteSettings.contactEmail}
             </a>
           </section>
 
@@ -62,7 +66,7 @@ export default function PrivacyPolicyPage() {
               </li>
               <li className="flex justify-start items-center mb-1 gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span className="leading-6">données techniques (IP, logs)</span>
+                <span className="leading-6">Données techniques (IP, logs)</span>
               </li>
             </ul>
           </section>
@@ -183,8 +187,8 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-2xl font-semibold">Droits</h2>
             <p className="leading-7 mt-3">Accès, rectification, suppression :</p>
             <p className="leading-7 mt-2">
-              <a className="underline underline-offset-4" href="mailto:contact@lueur-eternite.fr">
-                contact@lueur-eternite.fr
+              <a className="underline underline-offset-4" href={`mailto:${siteSettings.contactEmail}`}>
+                {siteSettings.contactEmail}
               </a>
             </p>
             <p className="leading-7 mt-2">Réclamation : CNIL</p>
@@ -193,6 +197,11 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-2xl font-semibold">Cookies</h2>
             <p className="leading-7 mt-3">Aucun cookie de tracking utilisé.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold">Dernière mise à jour</h2>
+            <p className="leading-7 mt-3">{policyUpdatedAt}</p>
           </section>
         </div>
       </div>
