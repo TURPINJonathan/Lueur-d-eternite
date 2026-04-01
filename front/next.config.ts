@@ -1,21 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  async rewrites() {
-    // If you define NEXT_PUBLIC_BACK_BASE_URL (e.g. "http://localhost:8000"),
-    // we proxy /api/* to the Symfony back so Next/Image can use relative URLs.
-    const backBaseUrl = process.env.NEXT_PUBLIC_BACK_BASE_URL;
-    if (!backBaseUrl) return [];
-
-    const trimmed = backBaseUrl.replace(/\/+$/, '');
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${trimmed}/api/:path*`,
-      },
-    ];
-  },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',

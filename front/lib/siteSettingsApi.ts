@@ -42,7 +42,11 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsPublic = {
 
 export async function getSiteSettings(revalidate: number = 60): Promise<SiteSettingsPublic> {
   try {
-    return await apiGet<SiteSettingsPublic>('/api/public/site-settings', { revalidate }).then((data) => ({
+    const baseUrl = process.env.NEXT_PUBLIC_BACK_BASE_URL ?? '';
+    return await apiGet<SiteSettingsPublic>(
+      `${baseUrl.replace(/\/+$/, '')}/api/public/site-settings`,
+      { revalidate },
+    ).then((data) => ({
       ...DEFAULT_SITE_SETTINGS,
       ...data,
     }));

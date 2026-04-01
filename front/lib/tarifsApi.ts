@@ -27,5 +27,6 @@ export interface TarifsResponse {
 }
 
 export async function getTarifs(revalidate: number = 60): Promise<TarifsResponse> {
-  return apiGet<TarifsResponse>('/api/public/tarifs', { revalidate });
+  const baseUrl = process.env.NEXT_PUBLIC_BACK_BASE_URL ?? '';
+  return apiGet<TarifsResponse>(`${baseUrl.replace(/\/+$/, '')}/api/public/tarifs`, { revalidate });
 }
