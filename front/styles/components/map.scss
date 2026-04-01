@@ -1,0 +1,61 @@
+.trade-area-map .leaflet-tile {
+  filter: saturate(0.55) sepia(0.08) brightness(1.02) contrast(0.96);
+}
+
+.trade-area-map .leaflet-control-attribution {
+  border-top-left-radius: 10px;
+  color: #5a4a34;
+  background: rgb(255 251 245 / 82%);
+  backdrop-filter: blur(4px);
+}
+
+.trade-area-map .leaflet-control-attribution a {
+  color: #8a6d35;
+}
+
+.trade-area-map .leaflet-pane,
+.trade-area-map .leaflet-top,
+.trade-area-map .leaflet-bottom {
+  z-index: 400;
+}
+
+.trade-area-map .leaflet-control-zoom {
+  overflow: hidden;
+  border: 1px solid rgb(120 96 56 / 12%) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 10px 24px rgb(0 0 0 / 8%),
+    inset 0 1px 0 rgb(255 255 255 / 70%) !important;
+}
+
+.trade-area-map .leaflet-control-zoom a {
+  width: 40px;
+  height: 40px;
+  border: none !important;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 40px;
+  color: #5a4a34;
+  background: rgb(255 251 245 / 90%);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.trade-area-map .leaflet-control-zoom a:hover {
+  color: #8a6d35;
+  background: rgb(248 241 231 / 98%);
+}
+
+.trade-area-map .leaflet-control-zoom a:first-child {
+  border-bottom: 1px solid rgb(120 96 56 / 8%) !important;
+}
+
+.trade-area-map .leaflet-control-zoom a.leaflet-disabled {
+  color: #8b7e6d;
+  opacity: 0.45;
+  background: rgb(255 251 245 / 72%);
+}

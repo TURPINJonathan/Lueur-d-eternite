@@ -1,0 +1,31 @@
+@keyframes logo-loader-breathe {
+  0%,
+  100% {
+    opacity: 0.82;
+    filter: drop-shadow(0 0 6px rgb(212 175 55 / 28%));
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 18px rgb(212 175 55 / 48%));
+    transform: scale(1.04);
+  }
+}
+
+.logo-loader {
+  &__image {
+    display: block;
+    width: auto;
+    height: auto;
+    animation: logo-loader-breathe 2.4s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__image {
+      animation: none;
+      opacity: 1;
+      filter: drop-shadow(0 0 8px rgb(212 175 55 / 25%));
+    }
+  }
+}

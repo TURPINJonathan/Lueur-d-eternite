@@ -1,0 +1,7 @@
+@mixin feature-surface {
+  border-radius: 1.5rem;
+  box-shadow:
+    0 18px 34px rgb(0 0 0 / 8%),
+    0 8px 24px rgb(212 175 55 / 5%),
+    inset 0 1px 0 rgb(255 255 255 / 70%);
+}

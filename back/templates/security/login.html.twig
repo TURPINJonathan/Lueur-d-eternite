@@ -1,0 +1,310 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+    rel="stylesheet"
+  >
+{% endblock %}
+
+{% block body %}
+<style>
+  :root{
+    --bg1:#e9e3d8;
+    --bg2:#f4efe7;
+
+    --card: rgba(255,255,255,.52);
+    --card2: rgba(255,255,255,.28);
+    --stroke: rgb(43 43 43 / 7%);
+
+    --text: rgba(43,43,43,.92);
+    --muted: rgba(43,43,43,.72);
+
+    --accent:#d4af37;
+    --accent2:#a8842f;
+
+    --font-sans: 'Inter', sans-serif;
+    --font-title: 'Playfair Display', serif;
+  }
+
+  .login-page{
+    min-height: 100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(212,175,55,.22), transparent 55%),
+      radial-gradient(900px 500px at 90% 15%, rgba(143,175,196,.18), transparent 60%),
+      radial-gradient(1200px 700px at 50% 110%, rgba(255,255,255,.08), transparent 55%),
+      linear-gradient(135deg, var(--bg1), var(--bg2));
+    position:relative;
+    overflow:hidden;
+    font-family: var(--font-sans);
+    color: var(--text);
+    isolation: isolate;
+  }
+
+  /* Background decoratif (inspiré du 404 front) */
+  .login-page::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background-image: url("{{ asset('assets/logo_line.webp') }}");
+    background-repeat:no-repeat;
+    background-position: center top;
+    background-size: contain;
+    opacity: .2;
+    transform: translateY(2.5rem);
+    pointer-events:none;
+  }
+
+  .sparkles{
+    position:absolute; inset:-20%;
+    z-index:0;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, rgba(212,175,55,.55), transparent 60%),
+      radial-gradient(1.5px 1.5px at 45% 15%, rgba(212,175,55,.35), transparent 60%),
+      radial-gradient(2px 2px at 70% 40%, rgba(143,175,196,.40), transparent 60%),
+      radial-gradient(1.5px 1.5px at 85% 60%, rgba(212,175,55,.30), transparent 60%),
+      radial-gradient(2px 2px at 35% 75%, rgba(212,175,55,.40), transparent 60%),
+      radial-gradient(1.5px 1.5px at 60% 85%, rgba(143,175,196,.28), transparent 60%);
+    opacity:.7;
+    animation: floaty 10s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes floaty{
+    0%,100%{ transform: translate3d(0,0,0) scale(1); }
+    50%{ transform: translate3d(2%, -2%, 0) scale(1.03); }
+  }
+
+  .login-card{
+    width: 100%;
+    max-width: 460px;
+    background: linear-gradient(180deg, var(--card), var(--card2));
+    border: 1px solid var(--stroke);
+    border-radius: 20px;
+    box-shadow: 0 24px 70px rgba(0,0,0,.16);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    position:relative;
+    z-index:1;
+    overflow:hidden;
+  }
+
+  /* watermark logo */
+  .login-card::after{
+    content:"";
+    position:absolute;
+    inset: -20% -20%;
+    background-image: url("{{ asset('assets/logo_line.webp') }}");
+    background-repeat:no-repeat;
+    background-position: 120% 20%;
+    background-size: 320px;
+    opacity: .07;
+    transform: rotate(-10deg);
+    pointer-events:none;
+    filter: saturate(1.05) contrast(1.02);
+  }
+
+  .login-inner{
+    position:relative;
+    padding: 28px 28px 22px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .brand-logo{
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.22);
+    box-shadow: 0 14px 40px rgba(0,0,0,.25);
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+  }
+  .brand-logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+  }
+
+  .brand h1{
+    font-family: var(--font-title);
+    font-size: 1.25rem;
+    line-height: 1.2;
+    margin:0;
+    letter-spacing:.2px;
+  }
+  .brand p{
+    margin: 2px 0 0;
+    color: var(--muted);
+    font-size: .95rem;
+  }
+
+  .hint{
+    margin: 14px 0 18px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(43,43,43,.10);
+    background: rgba(255,255,255,.55);
+    color: var(--muted);
+    font-size: .92rem;
+  }
+
+  .error{
+    margin: 12px 0 14px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(212,24,61,.28);
+    background: rgba(212,24,61,.10);
+    color: rgba(43,43,43,.92);
+    text-align: center;
+  }
+
+  .field{ margin-bottom: 10px; width: 100%; }
+  .label{
+    display:block;
+    font-size: .92rem;
+    margin: 0 0 8px;
+    color: rgba(43,43,43,.86);
+    text-align: center;
+  }
+
+  .input{
+    width: 100%;
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 1px solid rgba(43,43,43,.18);
+    background: rgba(255,255,255,.70);
+    color: var(--text);
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .input::placeholder{ color: rgba(43,43,43,.45); }
+  .input:focus{
+    border-color: rgba(143,175,196,.85);
+    box-shadow: 0 0 0 4px rgba(143,175,196,.20);
+  }
+
+  .row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 10px;
+    margin-top: 6px;
+    margin-bottom: 14px;
+  }
+  .checkbox{
+    display:flex; align-items:center; gap:8px;
+    color: var(--muted);
+    font-size: .9rem;
+    user-select:none;
+  }
+  .checkbox input{ accent-color: var(--accent); }
+
+  .btn{
+    width: 100%;
+    border: 0;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-weight: 700;
+    letter-spacing:.2px;
+    color: #170414;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    box-shadow: 0 16px 40px rgba(212,175,55,.22);
+    cursor:pointer;
+    transition: transform .06s ease, filter .15s ease;
+  }
+  .btn:hover{ filter: brightness(1.03); }
+  .btn:active{ transform: translateY(1px); }
+
+  .footer{
+    padding: 14px 28px 20px;
+    border-top: 1px solid rgba(43,43,43,.10);
+    color: rgba(43,43,43,.62);
+    font-size: .86rem;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap:wrap;
+    position:relative;
+  }
+
+  @media (max-width: 420px){
+    .login-inner{ padding: 22px 18px 18px; }
+    .footer{ padding: 12px 18px 18px; }
+  }
+</style>
+
+<main class="login-page">
+  <div class="sparkles"></div>
+
+  <section class="login-card" aria-label="Connexion Lueur d'Eternité">
+    <div class="login-inner">
+      <div class="brand">
+        <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
+          <h1>Lueur d'&Eacute;ternité</h1>
+          <p>Accès à l’espace administration</p>
+        </div>
+      </div>
+
+      {% if error %}
+        <div class="error" role="alert">
+          {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+      {% endif %}
+
+      <form method="post" novalidate style="width: 100%;">
+        <div class="field">
+          {# <label class="label" for="username">Email</label> #}
+          <input class="input"
+                 id="username"
+                 name="_username"
+                 type="email"
+                 value="{{ last_username }}"
+                 autocomplete="email"
+                 placeholder="ex: contact@lueur-eternite.fr"
+                 style="width: stretch; text-align: center"
+                 required
+                 autofocus>
+        </div>
+
+        <div class="field">
+          {# <label class="label" for="password">Mot de passe</label> #}
+          <input class="input"
+                 id="password"
+                 name="_password"
+                 type="password"
+                 autocomplete="current-password"
+                 placeholder="••••••••••"
+                 style="width: stretch; text-align: center"
+                 required>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <button class="btn" type="submit">Se connecter</button>
+      </form>
+    </div>
+
+    <div class="footer">
+      <small>🔒 Connexion sécurisée</small>
+    </div>
+  </section>
+</main>
+{% endblock %}
