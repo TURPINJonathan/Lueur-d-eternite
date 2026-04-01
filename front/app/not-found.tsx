@@ -21,7 +21,7 @@ export default function NotFound() {
         <div className="relative h-full w-full">
           <Image
             src="/assets/logo_line.webp"
-            alt=""
+            alt="Logo en fond de section"
             fill
             sizes="100vw"
             className="object-contain opacity-10"
@@ -32,8 +32,8 @@ export default function NotFound() {
       <div className="flex flex-col items-center justify-center text-center gap-6 py-10">
         <h1 className="text-3xl lg:text-4xl">404</h1>
         <p className="leading-6 max-w-[720px]">
-          La page demandée n&apos;existe pas ou n&apos;est plus disponible. Vous pouvez revenir à l&apos;accueil
-          pour continuer votre visite.
+          La page demandée n&apos;existe pas ou n&apos;est plus disponible. Vous pouvez revenir à l&apos;accueil pour
+          continuer votre visite.
         </p>
         <ButtonComponent href="/" variant="gold" size="md">
           Retour à l&apos;accueil
@@ -42,4 +42,3 @@ export default function NotFound() {
     </section>
   );
 }
-

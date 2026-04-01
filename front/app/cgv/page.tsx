@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { CheckCircle } from 'lucide-react';
 import { createPageMetadata } from '../seo';
+import { getSiteSettings } from '#lib';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Conditions Générales de Vente',
@@ -9,16 +10,21 @@ export const metadata: Metadata = createPageMetadata({
   path: '/cgv',
 });
 
-export default function CGVPage() {
+export default async function CGVPage() {
+  const siteSettings = await getSiteSettings(300);
   const listItemTextClass = 'leading-6';
+  const cgvUpdatedAt = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date(siteSettings.updatedAt));
 
   return (
     <section className="page-shell page-section min-h-[68svh] relative overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 flex items-start justify-center translate-y-10">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 flex items-start justify-center translate-y-10"
+      >
         <div className="relative h-full w-full">
           <Image
             src="/assets/logo_line.webp"
-            alt=""
+            alt="Logo en fond de section"
             fill
             sizes="100vw"
             className="object-contain opacity-10"
@@ -63,7 +69,7 @@ export default function CGVPage() {
 
           <section id="zone-d-intervention">
             <h2 className="text-2xl font-semibold">Zone d’intervention</h2>
-            <p className="leading-7 mt-3">Prestations limitées à 15 km autour de Caen.</p>
+            <p className="leading-7 mt-3">{siteSettings.legalZoneNotice}</p>
           </section>
 
           <section id="retractation">
@@ -108,7 +114,9 @@ export default function CGVPage() {
 
           <section id="satisfaction">
             <h2 className="text-2xl font-semibold">Satisfaction (IMPORTANT)</h2>
-            <p className="leading-7 mt-3">La satisfaction garantie constitue un geste commercial éventuel, non une garantie de résultat.</p>
+            <p className="leading-7 mt-3">
+              La satisfaction garantie constitue un geste commercial éventuel, non une garantie de résultat.
+            </p>
           </section>
 
           <section id="photos">
@@ -165,19 +173,18 @@ export default function CGVPage() {
             <h2 className="text-2xl font-semibold">Médiation</h2>
             <p className="leading-7 mt-3">CM2C</p>
             <p className="leading-7 mt-2">
-              <a
-                className="underline underline-offset-4"
-                href="https://www.cm2c.net"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className="underline underline-offset-4" href="https://www.cm2c.net" target="_blank" rel="noreferrer">
                 https://www.cm2c.net
               </a>
             </p>
+          </section>
+
+          <section id="derniere-mise-a-jour">
+            <h2 className="text-2xl font-semibold">Dernière mise à jour</h2>
+            <p className="leading-7 mt-3">{cgvUpdatedAt}</p>
           </section>
         </div>
       </div>
     </section>
   );
 }
-

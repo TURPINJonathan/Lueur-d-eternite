@@ -33,7 +33,7 @@ export default function LogoLoader({
       <span className="sr-only">{label}</span>
       <Image
         src="/assets/logo_line.webp"
-        alt=""
+        alt="Logo qui scintille en attendant le chargement..."
         width={px}
         height={px}
         className="logo-loader__image"

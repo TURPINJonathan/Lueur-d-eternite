@@ -55,7 +55,13 @@ export function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
   };
 }
 
-export function buildServiceJsonLd() {
+export function buildServiceJsonLd({
+  phoneHref = seoConfig.phoneHref,
+  serviceRadiusKm = seoConfig.serviceRadiusKm,
+}: {
+  phoneHref?: string;
+  serviceRadiusKm?: number;
+} = {}) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -64,7 +70,7 @@ export function buildServiceJsonLd() {
       '@type': 'LocalBusiness',
       name: seoConfig.siteName,
       url: seoConfig.siteUrl,
-      telephone: seoConfig.phoneHref,
+      telephone: phoneHref,
       email: seoConfig.email,
     },
     areaServed: [
@@ -85,7 +91,7 @@ export function buildServiceJsonLd() {
           latitude: 49.1829,
           longitude: -0.3707,
         },
-        geoRadius: seoConfig.serviceRadiusKm * 1000,
+        geoRadius: serviceRadiusKm * 1000,
       },
     ],
     serviceType: [

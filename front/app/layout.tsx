@@ -3,9 +3,12 @@ import { Cormorant_Garamond, Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import '../styles/index.scss';
 import { Footer, Header, NavigationRouteLoader } from '#components';
+import { getSiteSettings } from '#lib';
+import { sanitizePhoneToHref } from '#lib/phone';
 import { seoConfig } from './seo';
 import { buildWebSiteJsonLd } from './seo-jsonld';
 import { safeJsonLd } from './jsonld';
+import { ToasterComponent } from '#ui';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -80,18 +83,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteSettings = await getSiteSettings(60);
+  const phoneHref = sanitizePhoneToHref(siteSettings.contactPhoneDisplay);
+
   const localBusinessJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: seoConfig.siteName,
     image: `${seoConfig.siteUrl}${seoConfig.defaultImage}`,
     url: seoConfig.siteUrl,
-    telephone: seoConfig.phoneHref,
+    telephone: phoneHref,
     email: seoConfig.email,
     address: {
       '@type': 'PostalAddress',
@@ -114,7 +120,7 @@ export default function RootLayout({
     ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: "Pages & prestations : entretien de sépultures à Caen (Calvados)",
+      name: 'Pages & prestations : entretien de sépultures à Caen (Calvados)',
       itemListElement: [
         {
           '@type': 'Offer',
@@ -124,7 +130,7 @@ export default function RootLayout({
         },
         {
           '@type': 'Offer',
-          name: "Services - nettoyage et soin de tombe",
+          name: 'Services - nettoyage et soin de tombe',
           url: `${seoConfig.siteUrl}/services`,
           description: 'Nettoyage en profondeur, entretien régulier et options complémentaires.',
         },
@@ -167,8 +173,12 @@ export default function RootLayout({
         <main id="main-content" className="paper-grain">
           {children}
         </main>
-        <Footer />
+        <Footer
+          contactPhoneDisplay={siteSettings.contactPhoneDisplay}
+          contactEmail={siteSettings.contactEmail}
+        />
         <NavigationRouteLoader />
+        <ToasterComponent />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(localBusinessJsonLd) }} />
       </body>

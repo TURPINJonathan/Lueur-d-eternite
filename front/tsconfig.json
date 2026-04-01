@@ -21,7 +21,10 @@
     "paths": {
       "#/*": ["./*"],
       "#components": ["./components/index.ts"],
-      "#ui": ["./components/ui/index.ts"]
+      "#components/*": ["./components/*"],
+      "#ui": ["./components/ui/index.ts"],
+      "#lib": ["./lib/index.ts"],
+      "#lib/*": ["./lib/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts", "**/*.mts"],

@@ -1,4 +1,4 @@
-import LogoLoader from '#/components/ui/LogoLoader.component';
+import LogoLoader from '#components/ui/LogoLoader.component';
 
 export default function RouteLoading() {
   return (

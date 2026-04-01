@@ -15,6 +15,7 @@
   --color-surface-warm: #{$color-surface-warm};
   --color-page-background: #{$color-page-background};
   --color-white: #{$color-white};
+  --color-gold: #{$gold-dark};
   --shadow: #{$shadow};
   --nav-height: #{$nav-height};
   --bg-overlay: #{$bg-overlay};
@@ -25,7 +26,7 @@
   --font-title: #{$font-title};
   --font-weight-normal: #{$font-weight-normal};
   --font-weight-medium: #{$font-weight-medium};
-  --layout-page-max-width: 1440px;
+  --layout-page-max-width: 1200px;
   --layout-section-padding-x: clamp(1.25rem, 2.4vw, 5rem);
   --layout-section-padding-y: clamp(2.5rem, 4vw, 3.75rem);
   --gradient-gold: linear-gradient(120deg, #{$gold-thin} 0%, #{$gold-light} 35%, #{$gold} 70%, #{$gold-dark} 100%);
@@ -70,6 +71,31 @@
 html {
   scroll-behavior: smooth;
   font-size: var(--font-size);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba($gold, 80%) rgba($color-text-primary, 8%);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba($color-text-primary, 6%);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba($gold, 35%), rgba($gold-dark, 65%));
+  border-radius: 999px;
+  border: 2px solid rgba($color-text-primary, 6%);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba($gold, 45%), rgba($gold-dark, 78%));
 }
 
 body {

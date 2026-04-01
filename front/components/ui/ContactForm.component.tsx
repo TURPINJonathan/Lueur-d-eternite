@@ -2,6 +2,7 @@
 
 import { SendIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 import ButtonComponent from './Button.component';
 import InputComponent from './Input.component';
@@ -12,6 +13,7 @@ export default function ContactFormComponent() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isFormValid = useMemo(() => {
     const hasName = fullName.trim().length >= 2;
@@ -29,8 +31,53 @@ export default function ContactFormComponent() {
   const nameInvalid = fullName.length > 0 && fullName.trim().length < 2;
   const messageInvalid = message.length > 0 && message.trim().length < 10;
 
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!isFormValid || isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const base = (process.env.NEXT_PUBLIC_BACK_BASE_URL ?? '').replace(/\/+$/, '');
+      const url = `${base}/api/public/contact`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: fullName.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          message: message.trim(),
+          website: '', // honeypot
+        }),
+      });
+
+      const payload = (await response.json().catch(() => ({}))) as {
+        message?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(payload.message ?? "L'envoi a échoué.");
+      }
+
+      toast.success(payload.message ?? 'Votre message a bien été envoyée.');
+      setFullName('');
+      setEmail('');
+      setPhone('');
+      setMessage('');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "L'envoi a échoué.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
-    <form className="flex flex-col gap-4" noValidate>
+    <form className="flex flex-col gap-4" noValidate onSubmit={onSubmit}>
       <div className="flex flex-col gap-2">
         <label htmlFor="fullName" className="!font-light">
           Nom et prénom *
@@ -100,13 +147,13 @@ export default function ContactFormComponent() {
 
       <ButtonComponent
         type="submit"
-        variant={isFormValid ? 'gold' : 'goldSecondary'}
-        outline={!isFormValid}
+        variant={isFormValid && !isSubmitting ? 'gold' : 'goldSecondary'}
+        outline={!isFormValid || isSubmitting}
         size="mdf"
         iconRight={<SendIcon className="h-5 w-5" />}
-        disabled={!isFormValid}
+        disabled={!isFormValid || isSubmitting}
       >
-        Envoyer ma demande
+        {isSubmitting ? 'Envoi en cours...' : 'Envoyer ma demande'}
       </ButtonComponent>
 
       <p className="text-center text-sm font-light italic">Les champs marqués d&apos;un * sont obligatoires</p>

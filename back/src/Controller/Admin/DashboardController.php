@@ -46,22 +46,14 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
 
-        yield MenuItem::subMenu('Référentiels', 'fa fa-sliders')->setSubItems([
-            MenuItem::linkToRoute('Tarifs', 'fa fa-coins', 'back_office_rates_index'),
-            MenuItem::linkToRoute('Codes promo', 'fa fa-tags', 'back_office_promo_codes_index'),
-        ]);
-
-        yield MenuItem::subMenu('Clients', 'fa fa-users')->setSubItems([
-            MenuItem::linkToRoute('Entreprises', 'fa fa-building', 'back_office_companies_index'),
-            // MenuItem::linkToRoute('Clients', 'fa fa-user-tie', 'back_office_customers_index'),
-        ]);
-
-        yield MenuItem::subMenu('Médiathèque', 'fa fa-photo-film')->setSubItems([
-            MenuItem::linkToRoute('Médias', 'fa fa-photo-film', 'back_office_media_index'),
-        ]);
-
+        yield MenuItem::linkToRoute('Galerie', 'fa fa-images', 'back_office_galerie_index');
+        yield MenuItem::linkToRoute('Services', 'fa fa-wrench', 'back_office_services_index');
+        yield MenuItem::linkToRoute('Tarifs', 'fa fa-receipt', 'back_office_tarifs_index');
+        yield MenuItem::linkToRoute('Promotions', 'fa fa-tags', 'back_office_promotions_index');
+        yield MenuItem::linkToRoute('Codes promo', 'fa fa-ticket', 'back_office_codes_promo_index');
         yield MenuItem::subMenu('Administration', 'fa fa-user-shield')->setSubItems([
             MenuItem::linkToRoute('Utilisateurs', 'fa fa-user', 'back_office_users_index'),
+            MenuItem::linkToRoute('Paramètres du site', 'fa fa-sliders-h', 'back_office_parametres_site_index'),
         ]);
     }
 

@@ -1,0 +1,38 @@
+{% extends '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{# Masque dynamiquement le champ code quand "Code unique" est activé. #}
+{% block ea_crud_rest %}
+  {{ parent() }}
+  <script>
+    (function () {
+      const uniqueInput = document.querySelector('input[type="checkbox"][name*="[isUniqueCode]"]');
+      const codeInput = document.querySelector('input[type="text"][name*="[code]"]');
+
+      if (!uniqueInput || !codeInput) return;
+
+      const pickWrap = (el) => {
+        if (!el) return null;
+        return el.closest('.form-column')
+          || el.closest('.form-group')
+          || el.parentElement;
+      };
+
+      const codeWrap = pickWrap(codeInput);
+      if (!codeWrap) return;
+
+      const setVisible = (el, visible) => {
+        if (!el) return;
+        el.style.display = visible ? '' : 'none';
+      };
+
+      const toggle = () => {
+        const isUnique = !!uniqueInput.checked;
+        setVisible(codeWrap, !isUnique);
+      };
+
+      uniqueInput.addEventListener('change', toggle);
+      toggle();
+    })();
+  </script>
+{% endblock %}
+

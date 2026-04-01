@@ -7,3 +7,4 @@ export { default as GalleryComponent } from './Gallery.component';
 export { default as HeroComponent } from './Hero.component';
 export { default as InputComponent } from './Input.component';
 export { default as TextareaComponent } from './Textarea.component';
+export { default as ToasterComponent } from './Toaster.component';

@@ -1,0 +1,262 @@
+{% extends '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{# Prestations dynamiques + aperçu image (API média / fichier choisi). #}
+{% block ea_crud_rest %}
+  {{ parent() }}
+  <style>
+    .ea-presta-add-btn,
+    .ea-presta-remove-btn {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border-radius: 0.375rem;
+      border: 1px solid transparent;
+      color: #fff;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .ea-presta-add-btn {
+      background: #198754;
+      border-color: #157347;
+      width: 100% !important;
+    }
+
+    .ea-presta-add-btn:hover {
+      background: #157347 !important;
+      border-color: #14643c !important;
+    }
+
+    .ea-presta-remove-btn {
+      background: #dc3545;
+      border-color: #bb2d3b;
+    }
+
+    .ea-presta-remove-btn:hover {
+      background: #bb2d3b !important;
+      border-color: #a52834 !important;
+    }
+
+    .ea-presta-remove-btn:disabled {
+      background: #f1f1f1;
+      border-color: #e0e0e0;
+      color: #6c757d;
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .ea-presta-btn-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+  </style>
+  <script>
+    (function () {
+      const textarea =
+        document.querySelector('textarea[name*="itemsText"]') ||
+        document.querySelector('textarea[name="itemsText"]');
+      if (!textarea) return;
+
+      const form = textarea.closest('form');
+      if (!form) return;
+
+      // Build initial lines from textarea content.
+      const readLines = () => {
+        const raw = textarea.value ?? '';
+        const lines = raw
+          .split(/\r\n|\n|\r/)
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0);
+        return lines;
+      };
+
+      const writeLines = (inputs) => {
+        const values = inputs
+          .map((i) => i.value.trim())
+          .filter((v) => v.length > 0);
+        textarea.value = values.join('\n');
+      };
+
+      const container = document.createElement('div');
+      container.className = 'ea-form-group mt-2';
+
+      const list = document.createElement('div');
+      list.className = 'd-flex flex-column gap-2';
+
+      const addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'btn btn-sm ea-presta-add-btn align-self-start';
+      addBtn.setAttribute('aria-label', 'Ajouter une prestation');
+      addBtn.title = 'Ajouter une prestation';
+      addBtn.innerHTML = `<span>Ajouter une nouvelle ligne</span>
+        <svg class="ea-presta-btn-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      `;
+
+      let inputs = [];
+
+      const render = () => {
+        list.innerHTML = '';
+        inputs.forEach((inputEl, idx) => {
+          const row = document.createElement('div');
+          row.className = 'd-flex align-items-center gap-2';
+
+          const xBtn = document.createElement('button');
+          xBtn.type = 'button';
+          xBtn.className = 'btn btn-sm ea-presta-remove-btn flex-shrink-0';
+          xBtn.innerHTML = `
+            <svg class="ea-presta-btn-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M4 4l8 8M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          `;
+          xBtn.setAttribute('aria-label', 'Supprimer cette prestation');
+          xBtn.title = 'Supprimer';
+          xBtn.disabled = idx === 0;
+
+          const sync = () => {
+            writeLines(inputs);
+          };
+
+          xBtn.addEventListener('click', () => {
+            if (idx === 0) return;
+            inputs.splice(idx, 1);
+            render();
+            sync();
+          });
+
+          row.appendChild(inputEl);
+          row.appendChild(xBtn);
+
+          list.appendChild(row);
+
+          if (!inputEl.dataset.eaPrestationBound) {
+            inputEl.dataset.eaPrestationBound = '1';
+            inputEl.addEventListener('input', sync);
+            inputEl.addEventListener('blur', sync);
+          }
+        });
+      };
+
+      // Init at least one input.
+      inputs = readLines().map((val) => {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control';
+        input.value = val;
+        input.placeholder = 'Ex: Produits spécifiques';
+        return input;
+      });
+
+      if (inputs.length === 0) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control';
+        input.value = '';
+        input.placeholder = 'Ex: Produits spécifiques';
+        inputs = [input];
+      }
+
+      render();
+
+      addBtn.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control';
+        input.value = '';
+        input.placeholder = 'Ex: Détails';
+        inputs.push(input);
+        render();
+        writeLines(inputs);
+      });
+
+      container.appendChild(list);
+      const addRow = document.createElement('div');
+      addRow.className = 'd-flex align-items-center gap-2 mt-1';
+      addRow.appendChild(addBtn);
+      container.appendChild(addRow);
+
+      textarea.style.display = 'none';
+      textarea.insertAdjacentElement('afterend', container);
+
+      // Always sync before submit.
+      form.addEventListener('submit', () => writeLines(inputs));
+      writeLines(inputs);
+    })();
+  </script>
+  <script>
+    (function () {
+      const fileInput = document.querySelector('input[type="file"][name*="[imageFile]"]');
+      if (!fileInput) return;
+
+      const pickWrap = (el) => {
+        if (!el) return null;
+        return el.closest('.form-column')
+          || el.closest('.form-group')
+          || el.closest('.ea-fileupload')
+          || el.parentElement;
+      };
+
+      const pictureHidden = document.querySelector('input[type="hidden"][name*="[pictureUrl]"]');
+      const initialUrl = pictureHidden && pictureHidden.value ? pictureHidden.value : null;
+
+      const wrap = pickWrap(fileInput) || fileInput.parentElement;
+      if (!wrap) return;
+
+      let container = wrap.querySelector('.ea-service-image-preview');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'ea-service-image-preview ea-media-preview mt-2';
+        container.innerHTML = `
+          <div class="small text-muted mb-1">Aperçu</div>
+          <img class="img-fluid rounded border" style="object-fit: cover; display: none;" alt="" />
+        `;
+        wrap.appendChild(container);
+      }
+
+      const img = container.querySelector('img');
+      let lastBlobUrl = null;
+
+      const setImageFromFile = (file) => {
+        if (!file || !img) return;
+        if (lastBlobUrl) URL.revokeObjectURL(lastBlobUrl);
+        lastBlobUrl = URL.createObjectURL(file);
+        img.src = lastBlobUrl;
+        img.style.display = '';
+      };
+
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+        if (!file) {
+          if (img && initialUrl) {
+            if (lastBlobUrl) {
+              URL.revokeObjectURL(lastBlobUrl);
+              lastBlobUrl = null;
+            }
+            img.src = initialUrl;
+            img.style.display = '';
+          } else if (img) {
+            if (lastBlobUrl) {
+              URL.revokeObjectURL(lastBlobUrl);
+              lastBlobUrl = null;
+            }
+            img.src = '';
+            img.style.display = 'none';
+          }
+          return;
+        }
+        setImageFromFile(file);
+      });
+
+      if (initialUrl && img) {
+        img.src = initialUrl;
+        img.style.display = '';
+      }
+    })();
+  </script>
+{% endblock %}
+

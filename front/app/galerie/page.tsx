@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { ButtonComponent, GalleryComponent, HeroComponent, SectionDivider } from '#ui';
-import type { GalleryItem } from '#/components/ui/Gallery.component';
+import type { GalleryItem } from '#components/ui/Gallery.component';
 import HeroPicture from '../../public/assets/gallery_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
 import { safeJsonLd } from '../jsonld';
+import { getGalleryItems } from '#lib';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Nos réalisations | Caen',
@@ -14,53 +15,18 @@ export const metadata: Metadata = createPageMetadata({
   keywords: ['galerie', 'avant après', 'sépulture', 'tombe', 'nettoyage', 'soin', 'Caen', 'Calvados'],
 });
 
-const galleryFixtures: GalleryItem[] = [
-  {
-    id: '1',
-    kind: 'single',
-    src: 'https://images.pexels.com/photos/10499270/pexels-photo-10499270.jpeg',
-    thumb: 'https://images.pexels.com/photos/10499270/pexels-photo-10499270.jpeg?w=800',
-    alt: 'Tombe propre et entretenue',
-  },
-  {
-    id: '2',
-    kind: 'compare',
-    beforeSrc: 'https://images.pexels.com/photos/27434669/pexels-photo-27434669.jpeg',
-    afterSrc: 'https://images.pexels.com/photos/11354344/pexels-photo-11354344.jpeg',
-    thumb: 'https://images.pexels.com/photos/27434669/pexels-photo-27434669.jpeg?w=800',
-    alt: 'Nettoyage de sépulture avant après',
-  },
-  {
-    id: '3',
-    kind: 'single',
-    src: 'https://images.pexels.com/photos/29365618/pexels-photo-29365618.jpeg',
-    thumb: 'https://images.pexels.com/photos/29365618/pexels-photo-29365618.jpeg?w=800',
-    alt: 'Sépulture fleurie',
-  },
-  {
-    id: '4',
-    kind: 'single',
-    src: 'https://images.pexels.com/photos/34351087/pexels-photo-34351087.jpeg',
-    thumb: 'https://images.pexels.com/photos/34351087/pexels-photo-34351087.jpeg?w=800',
-    alt: 'Cimetière calme et entretenu',
-  },
-  {
-    id: '5',
-    kind: 'single',
-    src: 'https://images.pexels.com/photos/6494467/pexels-photo-6494467.jpeg',
-    thumb: 'https://images.pexels.com/photos/6494467/pexels-photo-6494467.jpeg?w=800',
-    alt: 'Détail pierre tombale propre',
-  },
-  {
-    id: '6',
-    kind: 'single',
-    src: 'https://images.pexels.com/photos/6841492/pexels-photo-6841492.jpeg',
-    thumb: 'https://images.pexels.com/photos/6841492/pexels-photo-6841492.jpeg?w=800',
-    alt: 'Ambiance paisible et naturelle',
-  },
-];
+export default async function Gallery() {
+  let items: GalleryItem[] = [];
+  let apiError: string | null = null;
+  try {
+    items = await getGalleryItems(60);
+  } catch (e) {
+    // Fallback silencieux : on garde la page fonctionnelle même si l'API est indisponible.
+    console.error('GET /api/public/gallery-items failed:', e);
+    apiError = e instanceof Error ? e.message : 'Impossible de charger la galerie depuis le back.';
+    items = [];
+  }
 
-export default function Gallery() {
   const webPageJsonLd = buildWebPageJsonLd({
     title: 'Avant / après nettoyage tombe | Caen',
     description:
@@ -83,7 +49,17 @@ export default function Gallery() {
       />
 
       <section className="page-shell page-section">
-        <GalleryComponent items={galleryFixtures} />
+        <GalleryComponent items={items} />
+        {items.length === 0 ? (
+          <>
+            <div className="text-center text-xl text-[rgba(43,43,43,.75)]">
+              Galerie en cours de construction, revenez bientôt.
+            </div>
+            {apiError && process.env.NODE_ENV === 'development' ? (
+              <div className="mt-2 text-center text-xs text-red-600">{apiError}</div>
+            ) : null}
+          </>
+        ) : null}
       </section>
 
       <SectionDivider flip />

@@ -49,7 +49,15 @@ function Spinner() {
 
 function LoadingIcon({ mode }: { mode: 'spinner' | 'logo' }) {
   if (mode === 'logo') {
-    return <Image src="/assets/logo_line.webp" alt="" width={22} height={22} className="logo-loader__image shrink-0" />;
+    return (
+      <Image
+        src="/assets/logo_line.webp"
+        alt="Logo qui scintille en attendant le chargement..."
+        width={22}
+        height={22}
+        className="logo-loader__image shrink-0"
+      />
+    );
   }
   return <Spinner />;
 }
