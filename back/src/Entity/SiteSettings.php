@@ -20,6 +20,21 @@ class SiteSettings
     #[ORM\Column(length: 255)]
     private string $contactEmail = 'contact@lueur-eternite.fr';
 
+    #[ORM\Column(length: 255)]
+    private string $contactFormRecipientEmail = 'contact@lueur-eternite.fr';
+
+    #[ORM\Column(length: 255)]
+    private string $contactFormSenderName = "Lueur d'Éternité";
+
+    #[ORM\Column]
+    private bool $contactFormSendConfirmation = true;
+
+    #[ORM\Column(type: 'text')]
+    private string $contactFormTemplateAdmin = '';
+
+    #[ORM\Column(type: 'text')]
+    private string $contactFormTemplateUser = '';
+
     #[ORM\Column]
     private int $serviceRadiusKm = 15;
 
@@ -131,6 +146,66 @@ class SiteSettings
     public function setContactEmail(string $contactEmail): self
     {
         $this->contactEmail = $contactEmail;
+
+        return $this;
+    }
+
+    public function getContactFormRecipientEmail(): string
+    {
+        return $this->contactFormRecipientEmail;
+    }
+
+    public function setContactFormRecipientEmail(string $contactFormRecipientEmail): self
+    {
+        $this->contactFormRecipientEmail = $contactFormRecipientEmail;
+
+        return $this;
+    }
+
+    public function getContactFormSenderName(): string
+    {
+        return $this->contactFormSenderName;
+    }
+
+    public function setContactFormSenderName(string $contactFormSenderName): self
+    {
+        $this->contactFormSenderName = $contactFormSenderName;
+
+        return $this;
+    }
+
+    public function isContactFormSendConfirmation(): bool
+    {
+        return $this->contactFormSendConfirmation;
+    }
+
+    public function setContactFormSendConfirmation(bool $contactFormSendConfirmation): self
+    {
+        $this->contactFormSendConfirmation = $contactFormSendConfirmation;
+
+        return $this;
+    }
+
+    public function getContactFormTemplateAdmin(): string
+    {
+        return $this->contactFormTemplateAdmin;
+    }
+
+    public function setContactFormTemplateAdmin(string $contactFormTemplateAdmin): self
+    {
+        $this->contactFormTemplateAdmin = $contactFormTemplateAdmin;
+
+        return $this;
+    }
+
+    public function getContactFormTemplateUser(): string
+    {
+        return $this->contactFormTemplateUser;
+    }
+
+    public function setContactFormTemplateUser(string $contactFormTemplateUser): self
+    {
+        $this->contactFormTemplateUser = $contactFormTemplateUser;
 
         return $this;
     }

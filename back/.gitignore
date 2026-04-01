@@ -16,8 +16,11 @@
 ###< phpunit/phpunit ###
 
 ###> symfony/asset-mapper ###
-/public/assets/
+/public/assets/*
 /assets/vendor/
+!/public/assets/admin/
+!/public/assets/admin/site-settings-email-editor.js
+!/public/assets/admin/site-settings-email-editor.css
 ###< symfony/asset-mapper ###
 
 ###> lexik/jwt-authentication-bundle ###

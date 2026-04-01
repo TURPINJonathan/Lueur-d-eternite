@@ -1,0 +1,11 @@
+.js-email-template-editor {
+  height: 560px !important;
+  min-height: 560px !important;
+  max-height: 560px !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  resize: none !important;
+  white-space: pre !important;
+  font-family: Consolas, 'Courier New', monospace !important;
+  line-height: 1.35 !important;
+}

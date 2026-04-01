@@ -8,6 +8,7 @@ import { sanitizePhoneToHref } from '#lib/phone';
 import { seoConfig } from './seo';
 import { buildWebSiteJsonLd } from './seo-jsonld';
 import { safeJsonLd } from './jsonld';
+import { ToasterComponent } from '#ui';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -177,6 +178,7 @@ export default async function RootLayout({
           contactEmail={siteSettings.contactEmail}
         />
         <NavigationRouteLoader />
+        <ToasterComponent />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(localBusinessJsonLd) }} />
       </body>

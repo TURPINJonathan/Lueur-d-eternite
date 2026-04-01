@@ -1,3 +1,9 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
+
+when@dev:
+    framework:
+        mailer:
+            # Force Mailpit in local development to avoid env mismatch
+            dsn: 'smtp://127.0.0.1:1025'
