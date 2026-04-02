@@ -38,7 +38,7 @@ final class PromoCodeCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $discountTypeChoices = [
-            'Pourcentage' => DiscountType::PERCENT,
+            'Pourcentage'  => DiscountType::PERCENT,
             'Montant fixe' => DiscountType::FIXED_AMOUNT,
         ];
 
@@ -118,7 +118,7 @@ final class PromoCodeCrudController extends AbstractCrudController
         }
 
         $code = trim($promoCode->getCode());
-        if ($code === '') {
+        if ('' === $code) {
             throw new \RuntimeException('Le champ "Code" est obligatoire si "Code unique" est désactivé.');
         }
 
@@ -135,7 +135,7 @@ final class PromoCodeCrudController extends AbstractCrudController
         if ($promoCode->isUniqueCode()) {
             // Champ "code" ignoré : on conserve le code historique s'il existait déjà en unique.
             // Si on bascule depuis non-unique -> unique, on génère un nouveau code serveur.
-            if ($originalIsUnique && $originalCode !== '') {
+            if ($originalIsUnique && '' !== $originalCode) {
                 $promoCode->setCode($originalCode);
             } else {
                 $promoCode->setCode($this->generateUniqueCode($entityManager, $promoCode->getName()));
@@ -145,7 +145,7 @@ final class PromoCodeCrudController extends AbstractCrudController
         }
 
         $code = trim($promoCode->getCode());
-        if ($code === '') {
+        if ('' === $code) {
             throw new \RuntimeException('Le champ "Code" est obligatoire si "Code unique" est désactivé.');
         }
 
@@ -156,7 +156,7 @@ final class PromoCodeCrudController extends AbstractCrudController
     {
         $prefix = $this->buildCodePrefix($internalName);
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 20; ++$i) {
             $candidate = $prefix . '-' . strtoupper(bin2hex(random_bytes(6)));
 
             $exists = $entityManager->getRepository(PromoCode::class)->findOneBy(['code' => $candidate]);
@@ -171,7 +171,7 @@ final class PromoCodeCrudController extends AbstractCrudController
     private function buildCodePrefix(string $internalName): string
     {
         $normalized = trim($internalName);
-        if ($normalized === '') {
+        if ('' === $normalized) {
             return 'PROMO';
         }
 
@@ -181,11 +181,10 @@ final class PromoCodeCrudController extends AbstractCrudController
         $normalized = trim($normalized, '-');
         $normalized = preg_replace('/-+/', '-', $normalized) ?? '';
 
-        if ($normalized === '') {
+        if ('' === $normalized) {
             return 'PROMO';
         }
 
         return substr($normalized, 0, 20);
     }
 }
-

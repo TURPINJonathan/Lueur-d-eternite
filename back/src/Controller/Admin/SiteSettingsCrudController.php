@@ -6,20 +6,20 @@ namespace App\Controller\Admin;
 
 use App\Entity\SiteSettings;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,8 +32,7 @@ final class SiteSettingsCrudController extends AbstractCrudController
         private readonly AdminUrlGenerator $adminUrlGenerator,
         #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
-    ) {
-    }
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -99,6 +98,26 @@ final class SiteSettingsCrudController extends AbstractCrudController
             TextField::new('legalZoneNotice', 'Texte zone (CGV)')
                 ->setColumns(12),
 
+            FormField::addPanel('Réseaux sociaux')->setIcon('fa fa-link'),
+            TextField::new('facebookLink', 'Lien Facebook')
+                ->setHelp('Exemple: https://www.facebook.com/monentreprise')
+                ->setColumns(6),
+            TextField::new('instagramLink', 'Lien Instagram')
+                ->setHelp('Exemple: https://www.instagram.com/monentreprise')
+                ->setColumns(6),
+            TextField::new('linkedinLink', 'Lien LinkedIn')
+                ->setHelp('Exemple: https://www.linkedin.com/company/monentreprise')
+                ->setColumns(6),
+            TextField::new('xLink', 'Lien X (ex Twitter)')
+                ->setHelp('Exemple: https://www.x.com/monentreprise')
+                ->setColumns(6),
+            TextField::new('tiktokLink', 'Lien TikTok')
+                ->setHelp('Exemple: https://www.tiktok.com/@monentreprise')
+                ->setColumns(6),
+            TextField::new('youtubeLink', 'Lien YouTube')
+                ->setHelp('Exemple: https://www.youtube.com/channel/monentreprise')
+                ->setColumns(6),
+
             FormField::addTab('Emails')->setIcon('fa fa-envelope'),
             FormField::addPanel('Formulaire de contact (emails)')->setIcon('fa fa-paper-plane'),
             TextField::new('contactFormRecipientEmail', 'Destinataire formulaire')
@@ -113,18 +132,18 @@ final class SiteSettingsCrudController extends AbstractCrudController
                 ->setHelp('Code Twig/HTML complet. Aperçu live sous le champ.')
                 ->setNumOfRows(18)
                 ->setFormTypeOption('attr', [
-                    'class' => 'js-email-template-editor',
+                    'class'             => 'js-email-template-editor',
                     'data-preview-kind' => 'admin',
-                    'data-preview-url' => '/backoffice/parametres-site/email-template-preview',
+                    'data-preview-url'  => '/backoffice/parametres-site/email-template-preview',
                 ])
                 ->setColumns(12),
             TextareaField::new('contactFormTemplateUser', 'Template email (confirmation client)')
                 ->setHelp('Code Twig/HTML complet. Aperçu live sous le champ.')
                 ->setNumOfRows(18)
                 ->setFormTypeOption('attr', [
-                    'class' => 'js-email-template-editor',
+                    'class'             => 'js-email-template-editor',
                     'data-preview-kind' => 'user',
-                    'data-preview-url' => '/backoffice/parametres-site/email-template-preview',
+                    'data-preview-url'  => '/backoffice/parametres-site/email-template-preview',
                 ])
                 ->setColumns(12),
 

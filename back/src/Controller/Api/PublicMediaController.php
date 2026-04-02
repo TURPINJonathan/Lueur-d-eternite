@@ -6,8 +6,8 @@ use App\Entity\Media;
 use App\Service\Media\MediaGzipStorage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/public/media')]
@@ -16,8 +16,7 @@ final class PublicMediaController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly MediaGzipStorage $mediaGzipStorage,
-    ) {
-    }
+    ) {}
 
     #[Route('/{id}', name: 'api_public_media_get', methods: ['GET'])]
     public function __invoke(string $id): StreamedResponse
@@ -45,10 +44,9 @@ final class PublicMediaController extends AbstractController
         // Keep headers consistent with a binary response.
         $response->headers->set(
             'Content-Disposition',
-            (new ResponseHeaderBag())->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $media->getOriginalFilename())
+            (new ResponseHeaderBag())->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $media->getOriginalFilename()),
         );
 
         return $response;
     }
 }
-

@@ -15,8 +15,7 @@ final class PublicSiteSettingsController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     #[Route('', methods: ['GET'])]
     public function __invoke(): JsonResponse
@@ -26,44 +25,56 @@ final class PublicSiteSettingsController extends AbstractController
 
         if (!$settings instanceof SiteSettings) {
             return new JsonResponse([
-                'contactPhoneDisplay' => '06 25 29 59 52',
-                'contactEmail' => 'contact@lueur-eternite.fr',
-                'serviceRadiusKm' => 15,
-                'serviceAreaText' => 'Caen et ses alentours',
-                'legalZoneNotice' => 'Prestations limitées à 15 km autour de Caen.',
-                'legalEntityName' => 'Émilie SIMON',
-                'legalStatus' => 'Entrepreneur individuel',
-                'legalAddress' => '49 rue de Condé, 14220 Thury-Harcourt-le-Hom, France',
-                'legalSiren' => '848 739 546',
-                'legalSiret' => '848 739 546 00036',
-                'legalVat' => 'TVA non applicable, article 293B du CGI',
-                'publicationDirector' => 'Émilie SIMON',
-                'hostingProviderName' => 'OVHcloud',
+                'contactPhoneDisplay'    => '06 25 29 59 52',
+                'contactEmail'           => 'contact@lueur-eternite.fr',
+                'serviceRadiusKm'        => 15,
+                'serviceAreaText'        => 'Caen et ses alentours',
+                'legalZoneNotice'        => 'Prestations limitées à 15 km autour de Caen.',
+                'legalEntityName'        => 'Émilie SIMON',
+                'legalStatus'            => 'Entrepreneur individuel',
+                'legalAddress'           => '49 rue de Condé, 14220 Thury-Harcourt-le-Hom, France',
+                'legalSiren'             => '848 739 546',
+                'legalSiret'             => '848 739 546 00036',
+                'legalVat'               => 'TVA non applicable, article 293B du CGI',
+                'publicationDirector'    => 'Émilie SIMON',
+                'hostingProviderName'    => 'OVHcloud',
                 'hostingProviderAddress' => '2 rue Kellermann, 59100 Roubaix, France',
-                'hostingProviderUrl' => 'https://www.ovh.com',
-                'technicalConfig' => '{}',
-                'updatedAt' => (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
+                'hostingProviderUrl'     => 'https://www.ovh.com',
+                'facebookLink'           => '',
+                'instagramLink'          => '',
+                'linkedinLink'           => '',
+                'xLink'                    => '',
+                'tiktokLink'               => '',
+                'youtubeLink'              => '',
+                'technicalConfig'        => '{}',
+                'updatedAt'              => (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
             ]);
         }
 
         return new JsonResponse([
-            'contactPhoneDisplay' => $settings->getContactPhoneDisplay(),
-            'contactEmail' => $settings->getContactEmail(),
-            'serviceRadiusKm' => $settings->getServiceRadiusKm(),
-            'serviceAreaText' => $settings->getServiceAreaText(),
-            'legalZoneNotice' => $settings->getLegalZoneNotice(),
-            'legalEntityName' => $settings->getLegalEntityName(),
-            'legalStatus' => $settings->getLegalStatus(),
-            'legalAddress' => $settings->getLegalAddress(),
-            'legalSiren' => $settings->getLegalSiren(),
-            'legalSiret' => $settings->getLegalSiret(),
-            'legalVat' => $settings->getLegalVat(),
-            'publicationDirector' => $settings->getPublicationDirector(),
-            'hostingProviderName' => $settings->getHostingProviderName(),
+            'contactPhoneDisplay'    => $settings->getContactPhoneDisplay(),
+            'contactEmail'           => $settings->getContactEmail(),
+            'serviceRadiusKm'        => $settings->getServiceRadiusKm(),
+            'serviceAreaText'        => $settings->getServiceAreaText(),
+            'legalZoneNotice'        => $settings->getLegalZoneNotice(),
+            'legalEntityName'        => $settings->getLegalEntityName(),
+            'legalStatus'            => $settings->getLegalStatus(),
+            'legalAddress'           => $settings->getLegalAddress(),
+            'legalSiren'             => $settings->getLegalSiren(),
+            'legalSiret'             => $settings->getLegalSiret(),
+            'legalVat'               => $settings->getLegalVat(),
+            'publicationDirector'    => $settings->getPublicationDirector(),
+            'hostingProviderName'    => $settings->getHostingProviderName(),
             'hostingProviderAddress' => $settings->getHostingProviderAddress(),
-            'hostingProviderUrl' => $settings->getHostingProviderUrl(),
-            'technicalConfig' => $settings->getTechnicalConfig(),
-            'updatedAt' => $settings->getUpdatedAt()->format(\DateTimeInterface::ATOM),
+            'hostingProviderUrl'     => $settings->getHostingProviderUrl(),
+            'facebookLink'           => $settings->getFacebookLink(),
+            'instagramLink'          => $settings->getInstagramLink(),
+            'linkedinLink'           => $settings->getLinkedinLink(),
+            'xLink'                  => $settings->getXLink(),
+            'tiktokLink'             => $settings->getTiktokLink(),
+            'youtubeLink'            => $settings->getYoutubeLink(),
+            'technicalConfig'        => $settings->getTechnicalConfig(),
+            'updatedAt'              => $settings->getUpdatedAt()->format(\DateTimeInterface::ATOM),
         ]);
     }
 }

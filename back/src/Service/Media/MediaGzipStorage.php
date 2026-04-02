@@ -9,13 +9,12 @@ final class MediaGzipStorage
     public function __construct(
         private readonly string $storageDir,
         private readonly int $gzipLevel = 9,
-    ) {
-    }
+    ) {}
 
     public function ensureStorageDirExists(): void
     {
         if (!is_dir($this->storageDir)) {
-            mkdir($this->storageDir, 0775, true);
+            mkdir($this->storageDir, 0o775, true);
         }
     }
 
@@ -27,7 +26,7 @@ final class MediaGzipStorage
     public function compressToGzip(string $mediaId, File $file, string $extension): array
     {
         $realPath = $file->getRealPath();
-        if ($realPath === false) {
+        if (false === $realPath) {
             throw new \RuntimeException('Impossible de lire le fichier uploadé.');
         }
 
@@ -44,16 +43,17 @@ final class MediaGzipStorage
         $this->ensureStorageDirExists();
 
         $storageFilename = $mediaId . '.' . $extension . '.gz';
-        $destPath = rtrim($this->storageDir, '/\\') . DIRECTORY_SEPARATOR . $storageFilename;
+        $destPath = rtrim($this->storageDir, '/\\') . \DIRECTORY_SEPARATOR . $storageFilename;
 
-        $source = fopen($sourcePath, 'rb');
-        if ($source === false) {
+        $source = fopen($sourcePath, 'r');
+        if (false === $source) {
             throw new \RuntimeException('Impossible d’ouvrir le fichier source.');
         }
 
         $gz = gzopen($destPath, 'wb' . $this->gzipLevel);
-        if ($gz === false) {
+        if (false === $gz) {
             fclose($source);
+
             throw new \RuntimeException('Impossible de créer le fichier gzip.');
         }
 
@@ -63,18 +63,18 @@ final class MediaGzipStorage
         try {
             while (!feof($source)) {
                 $chunk = fread($source, 1024 * 64);
-                if ($chunk === false) {
+                if (false === $chunk) {
                     throw new \RuntimeException('Erreur de lecture du fichier.');
                 }
-                if ($chunk === '') {
+                if ('' === $chunk) {
                     continue;
                 }
 
-                $originalSize += strlen($chunk);
+                $originalSize += \strlen($chunk);
                 hash_update($hash, $chunk);
 
                 $written = gzwrite($gz, $chunk);
-                if ($written === false) {
+                if (false === $written) {
                     throw new \RuntimeException('Erreur d’écriture gzip.');
                 }
             }
@@ -84,7 +84,7 @@ final class MediaGzipStorage
         }
 
         $sizeCompressed = filesize($destPath);
-        if ($sizeCompressed === false) {
+        if (false === $sizeCompressed) {
             throw new \RuntimeException('Impossible de déterminer la taille du gzip.');
         }
 
@@ -92,28 +92,28 @@ final class MediaGzipStorage
 
         return [
             'storageFilename' => $storageFilename,
-            'sizeCompressed' => $sizeCompressed,
-            'sha256' => $sha256,
-            'originalSize' => $originalSize,
+            'sizeCompressed'  => $sizeCompressed,
+            'sha256'          => $sha256,
+            'originalSize'    => $originalSize,
         ];
     }
 
     public function getGzipFilePath(string $storageFilename): string
     {
-        return rtrim($this->storageDir, '/\\') . DIRECTORY_SEPARATOR . $storageFilename;
+        return rtrim($this->storageDir, '/\\') . \DIRECTORY_SEPARATOR . $storageFilename;
     }
 
     public function streamDecompressed(string $gzipPath, callable $onChunk): void
     {
         $gz = gzopen($gzipPath, 'rb');
-        if ($gz === false) {
+        if (false === $gz) {
             throw new \RuntimeException('Fichier compressé introuvable ou illisible.');
         }
 
         try {
             while (!gzeof($gz)) {
                 $chunk = gzread($gz, 1024 * 64);
-                if ($chunk === false || $chunk === '') {
+                if (false === $chunk || '' === $chunk) {
                     continue;
                 }
                 $onChunk($chunk);
@@ -123,4 +123,3 @@ final class MediaGzipStorage
         }
     }
 }
-

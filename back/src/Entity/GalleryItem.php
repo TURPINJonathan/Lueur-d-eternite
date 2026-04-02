@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Enum\GalleryItemKind;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -47,17 +46,18 @@ class GalleryItem
     private ?Media $afterThumbMedia = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     // Controls whether this gallery item is returned by the public API.
     #[ORM\Column(type: 'boolean')]
     private bool $visibleInGallery = true;
 
-
     // Transient file properties used by EasyAdmin uploads (not persisted by Doctrine).
     // EasyAdmin's ImageField/FileUploadType maps to "filename" strings (not UploadedFile instances).
     private ?string $srcFile = null;
+
     private ?string $beforeFile = null;
+
     private ?string $afterFile = null;
 
     public function __construct(?string $id = null, ?GalleryItemKind $kind = null, ?string $alt = null)
@@ -65,7 +65,7 @@ class GalleryItem
         $this->id = $id ?? Uuid::v4()->toRfc4122();
         $this->kind = $kind ?? GalleryItemKind::SINGLE;
         $this->alt = $alt ?? '';
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): string
@@ -102,7 +102,7 @@ class GalleryItem
      */
     public function isCompare(): bool
     {
-        return $this->kind === GalleryItemKind::COMPARE;
+        return GalleryItemKind::COMPARE === $this->kind;
     }
 
     /**
@@ -223,7 +223,7 @@ class GalleryItem
         return $this;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -242,12 +242,12 @@ class GalleryItem
 
     /**
      * Helper for EasyAdmin list view: URL to render the thumbnail image.
-     * Route: GET /api/public/media/{id}
+     * Route: GET /api/public/media/{id}.
      */
     public function getThumbUrl(): ?string
     {
         // On compare items, the UI shows avant/après instead of a single thumb.
-        if ($this->kind === GalleryItemKind::COMPARE) {
+        if (GalleryItemKind::COMPARE === $this->kind) {
             return null;
         }
 
@@ -256,7 +256,7 @@ class GalleryItem
 
     /**
      * Helper for EasyAdmin compare list view: before image URL.
-     * Route: GET /api/public/media/{id}
+     * Route: GET /api/public/media/{id}.
      */
     public function getBeforeSrcUrl(): ?string
     {
@@ -265,7 +265,7 @@ class GalleryItem
 
     /**
      * Helper for EasyAdmin compare list view: after image URL.
-     * Route: GET /api/public/media/{id}
+     * Route: GET /api/public/media/{id}.
      */
     public function getAfterSrcUrl(): ?string
     {
@@ -275,7 +275,7 @@ class GalleryItem
     public function getSrcCompressionPercent(): ?int
     {
         // When compare, src is not used in the UI.
-        if ($this->kind === GalleryItemKind::COMPARE) {
+        if (GalleryItemKind::COMPARE === $this->kind) {
             return null;
         }
 
@@ -284,7 +284,7 @@ class GalleryItem
 
     public function getBeforeCompressionPercent(): ?int
     {
-        if ($this->kind === GalleryItemKind::SINGLE) {
+        if (GalleryItemKind::SINGLE === $this->kind) {
             return null;
         }
 
@@ -293,11 +293,10 @@ class GalleryItem
 
     public function getAfterCompressionPercent(): ?int
     {
-        if ($this->kind === GalleryItemKind::SINGLE) {
+        if (GalleryItemKind::SINGLE === $this->kind) {
             return null;
         }
 
         return $this->afterMedia ? $this->afterMedia->getCompressionSavingsPercent() : null;
     }
 }
-
