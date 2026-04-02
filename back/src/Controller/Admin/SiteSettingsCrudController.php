@@ -101,21 +101,27 @@ final class SiteSettingsCrudController extends AbstractCrudController
             FormField::addPanel('Réseaux sociaux')->setIcon('fa fa-link'),
             TextField::new('facebookLink', 'Lien Facebook')
                 ->setHelp('Exemple: https://www.facebook.com/monentreprise')
+                ->setRequired(false)
                 ->setColumns(6),
             TextField::new('instagramLink', 'Lien Instagram')
                 ->setHelp('Exemple: https://www.instagram.com/monentreprise')
+                ->setRequired(false)
                 ->setColumns(6),
             TextField::new('linkedinLink', 'Lien LinkedIn')
                 ->setHelp('Exemple: https://www.linkedin.com/company/monentreprise')
+                ->setRequired(false)
                 ->setColumns(6),
             TextField::new('xLink', 'Lien X (ex Twitter)')
                 ->setHelp('Exemple: https://www.x.com/monentreprise')
+                ->setRequired(false)
                 ->setColumns(6),
             TextField::new('tiktokLink', 'Lien TikTok')
                 ->setHelp('Exemple: https://www.tiktok.com/@monentreprise')
+                ->setRequired(false)
                 ->setColumns(6),
             TextField::new('youtubeLink', 'Lien YouTube')
                 ->setHelp('Exemple: https://www.youtube.com/channel/monentreprise')
+                ->setRequired(false)
                 ->setColumns(6),
 
             FormField::addTab('Emails')->setIcon('fa fa-envelope'),
