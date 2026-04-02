@@ -2,19 +2,19 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Service;
 use App\Entity\Media;
-use App\Service\Media\MediaGzipStorage;
+use App\Entity\Service;
 use App\Service\Media\ImageThumbnailer;
+use App\Service\Media\MediaGzipStorage;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 
@@ -26,8 +26,7 @@ final class ServiceCrudController extends AbstractCrudController
         private readonly ImageThumbnailer $imageThumbnailer,
         #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
-    ) {
-    }
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -57,14 +56,13 @@ final class ServiceCrudController extends AbstractCrudController
                     ->setRequired(true)
                     ->setColumns(6),
 
-                    
                 // URL actuelle pour l’aperçu (script service_card_image_preview.html.twig).
                 HiddenField::new('pictureUrl'),
-                
+
                 TextareaField::new('itemsText', 'Prestations (une par ligne)')
                 ->setRequired(true)
                 ->setColumns(12),
-                
+
                 TextField::new('pictureAlt', 'Description de l\'image')
                     ->setRequired(true)
                     ->setHelp('Description pour l\'accessibilité des mal voyants. Ca doit être court, concis.')
@@ -112,7 +110,7 @@ final class ServiceCrudController extends AbstractCrudController
 
         $uploadDir = $this->projectDir . '/var/uploads/services/';
 
-        $toSymfonyFile = function (?string $filename) use ($uploadDir): ?SymfonyFile {
+        $toSymfonyFile = static function (?string $filename) use ($uploadDir): ?SymfonyFile {
             if (!$filename) {
                 return null;
             }
@@ -152,7 +150,7 @@ final class ServiceCrudController extends AbstractCrudController
     {
         $originalFilename = $file->getFilename() ?: 'upload';
 
-        $extension = strtolower(pathinfo($originalFilename, PATHINFO_EXTENSION) ?: 'bin');
+        $extension = strtolower(pathinfo($originalFilename, \PATHINFO_EXTENSION) ?: 'bin');
         $mimeType = $file->getMimeType() ?: 'application/octet-stream';
 
         $mediaId = \Symfony\Component\Uid\Uuid::v4()->toRfc4122();
@@ -211,4 +209,3 @@ final class ServiceCrudController extends AbstractCrudController
         return $thumbMedia;
     }
 }
-

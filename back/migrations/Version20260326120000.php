@@ -41,4 +41,3 @@ final class Version20260326120000 extends AbstractMigration
         $this->addSql('DROP TABLE promo_code_tarif');
     }
 }
-

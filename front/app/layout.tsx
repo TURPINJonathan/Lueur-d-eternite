@@ -176,6 +176,12 @@ export default async function RootLayout({
         <Footer
           contactPhoneDisplay={siteSettings.contactPhoneDisplay}
           contactEmail={siteSettings.contactEmail}
+          facebookLink={siteSettings.facebookLink}
+          instagramLink={siteSettings.instagramLink}
+          linkedinLink={siteSettings.linkedinLink}
+          xLink={siteSettings.xLink}
+          tiktokLink={siteSettings.tiktokLink}
+          youtubeLink={siteSettings.youtubeLink}
         />
         <NavigationRouteLoader />
         <ToasterComponent />

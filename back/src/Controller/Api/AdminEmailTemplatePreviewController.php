@@ -21,8 +21,7 @@ final class AdminEmailTemplatePreviewController extends AbstractController
     public function __construct(
         private readonly Environment $twig,
         private readonly EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     #[Route('', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
@@ -53,17 +52,17 @@ final class AdminEmailTemplatePreviewController extends AbstractController
 
         try {
             $html = $this->twig->createTemplate($template)->render([
-                'siteName' => $siteName,
+                'siteName'       => $siteName,
                 'recipientEmail' => $recipientEmail,
-                'fullName' => 'Marie Dupont',
-                'senderEmail' => 'marie.dupont@email.fr',
-                'phone' => '06 12 34 56 78',
-                'message' => "Bonjour,\nJe souhaite un devis pour un entretien mensuel.\nMerci.",
+                'fullName'       => 'Marie Dupont',
+                'senderEmail'    => 'marie.dupont@email.fr',
+                'phone'          => '06 12 34 56 78',
+                'message'        => "Bonjour,\nJe souhaite un devis pour un entretien mensuel.\nMerci.",
             ]);
         } catch (TwigError $e) {
             return new JsonResponse([
                 'message' => 'Erreur de template Twig',
-                'detail' => $e->getMessage(),
+                'detail'  => $e->getMessage(),
             ], 422);
         }
 

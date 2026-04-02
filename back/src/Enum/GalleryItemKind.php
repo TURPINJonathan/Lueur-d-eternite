@@ -7,4 +7,3 @@ enum GalleryItemKind: string
     case SINGLE = 'single';
     case COMPARE = 'compare';
 }
-

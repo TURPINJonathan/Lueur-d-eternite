@@ -9,4 +9,3 @@ enum DiscountType: string
     case PERCENT = 'percent';
     case FIXED_AMOUNT = 'fixed_amount';
 }
-

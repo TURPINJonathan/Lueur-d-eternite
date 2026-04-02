@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Entity\Promotion;
 use App\Entity\PromoCode;
+use App\Entity\Promotion;
 use App\Entity\Tarif;
 use App\Enum\DiscountType;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,13 +18,12 @@ final class PublicTarifsController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     #[Route('', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
-        $now = new DateTimeImmutable();
+        $now = new \DateTimeImmutable();
 
         /** @var list<Tarif> $tarifs */
         $tarifs = $this->entityManager
@@ -62,24 +60,24 @@ final class PublicTarifsController extends AbstractController
 
         $payload = array_map(static function (Tarif $tarif): array {
             return [
-                'id' => $tarif->getId(),
-                'title' => $tarif->getTitle(),
-                'details' => $tarif->getDescription(),
-                'priceCents' => $tarif->getPriceCents(),
+                'id'                 => $tarif->getId(),
+                'title'              => $tarif->getTitle(),
+                'details'            => $tarif->getDescription(),
+                'priceCents'         => $tarif->getPriceCents(),
                 'originalPriceCents' => $tarif->getPriceCents(),
-                'hasDiscount' => false,
-                'discountLabel' => null,
-                'offerType' => null,
-                'offerName' => null,
-                'offerCode' => null,
-                'position' => $tarif->getPosition(),
+                'hasDiscount'        => false,
+                'discountLabel'      => null,
+                'offerType'          => null,
+                'offerName'          => null,
+                'offerCode'          => null,
+                'position'           => $tarif->getPosition(),
             ];
         }, $tarifs);
 
         $computeDiscountedPrice = static function (int $basePriceCents, DiscountType $type, int $value): int {
             $discounted = $basePriceCents;
 
-            if ($type === DiscountType::PERCENT) {
+            if (DiscountType::PERCENT === $type) {
                 $ratio = $value / 10000; // centi-points -> %
                 $discounted = (int) round($basePriceCents * (1 - $ratio));
             } else {
@@ -90,17 +88,17 @@ final class PublicTarifsController extends AbstractController
         };
 
         $buildDiscountLabel = static function (DiscountType $type, int $value): string {
-            if ($type === DiscountType::PERCENT) {
+            if (DiscountType::PERCENT === $type) {
                 $whole = intdiv($value, 100);
                 $dec = $value % 100;
-                $percent = $dec === 0 ? (string) $whole : sprintf('%d,%02d', $whole, $dec);
+                $percent = 0 === $dec ? (string) $whole : \sprintf('%d,%02d', $whole, $dec);
 
                 return '-' . $percent . '%';
             }
 
             $euros = intdiv($value, 100);
             $cents = $value % 100;
-            $amount = $cents === 0 ? (string) $euros : sprintf('%d,%02d', $euros, $cents);
+            $amount = 0 === $cents ? (string) $euros : \sprintf('%d,%02d', $euros, $cents);
 
             return '-' . $amount . ' €';
         };
@@ -110,10 +108,10 @@ final class PublicTarifsController extends AbstractController
         foreach ($promotions as $promotion) {
             if ($promotion->getTarifs()->isEmpty()) {
                 $genericNotices[] = [
-                    'kind' => 'promotion',
+                    'kind'  => 'promotion',
                     'title' => $promotion->getName(),
                     'label' => $buildDiscountLabel($promotion->getDiscountType(), $promotion->getDiscountValue()),
-                    'code' => null,
+                    'code'  => null,
                 ];
             }
         }
@@ -121,10 +119,10 @@ final class PublicTarifsController extends AbstractController
         foreach ($promoCodes as $promoCode) {
             if ($promoCode->getTarifs()->isEmpty()) {
                 $genericNotices[] = [
-                    'kind' => 'promo_code',
+                    'kind'  => 'promo_code',
                     'title' => $promoCode->getName(),
                     'label' => $buildDiscountLabel($promoCode->getDiscountType(), $promoCode->getDiscountValue()),
-                    'code' => $promoCode->getCode(),
+                    'code'  => $promoCode->getCode(),
                 ];
             }
         }
@@ -147,6 +145,7 @@ final class PublicTarifsController extends AbstractController
                 foreach ($targets as $targetTarif) {
                     if ($targetTarif->getId() === $item['id']) {
                         $applies = true;
+
                         break;
                     }
                 }
@@ -159,9 +158,9 @@ final class PublicTarifsController extends AbstractController
                 if ($candidate < $best) {
                     $best = $candidate;
                     $bestOffer = [
-                        'offerType' => 'promotion',
-                        'offerName' => $promotion->getName(),
-                        'offerCode' => null,
+                        'offerType'     => 'promotion',
+                        'offerName'     => $promotion->getName(),
+                        'offerCode'     => null,
                         'discountLabel' => $buildDiscountLabel($promotion->getDiscountType(), $promotion->getDiscountValue()),
                     ];
                 }
@@ -178,6 +177,7 @@ final class PublicTarifsController extends AbstractController
                 foreach ($targets as $targetTarif) {
                     if ($targetTarif->getId() === $item['id']) {
                         $applies = true;
+
                         break;
                     }
                 }
@@ -190,9 +190,9 @@ final class PublicTarifsController extends AbstractController
                 if ($candidate < $best) {
                     $best = $candidate;
                     $bestOffer = [
-                        'offerType' => 'promo_code',
-                        'offerName' => $promoCode->getName(),
-                        'offerCode' => $promoCode->getCode(),
+                        'offerType'     => 'promo_code',
+                        'offerName'     => $promoCode->getName(),
+                        'offerCode'     => $promoCode->getCode(),
                         'discountLabel' => $buildDiscountLabel($promoCode->getDiscountType(), $promoCode->getDiscountValue()),
                     ];
                 }
@@ -200,7 +200,7 @@ final class PublicTarifsController extends AbstractController
 
             $payload[$index]['priceCents'] = $best;
             $payload[$index]['hasDiscount'] = $best < $basePrice;
-            if ($bestOffer !== null) {
+            if (null !== $bestOffer) {
                 $payload[$index]['offerType'] = $bestOffer['offerType'];
                 $payload[$index]['offerName'] = $bestOffer['offerName'];
                 $payload[$index]['offerCode'] = $bestOffer['offerCode'];
@@ -209,9 +209,8 @@ final class PublicTarifsController extends AbstractController
         }
 
         return new JsonResponse([
-            'items' => $payload,
+            'items'          => $payload,
             'genericNotices' => $genericNotices,
         ]);
     }
 }
-

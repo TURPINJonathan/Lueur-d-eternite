@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Enum\DiscountType;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,22 +32,22 @@ class PromoCode
 
     /**
      * percent => centi-points (10,5% => 1050)
-     * fixed_amount => centimes (4,99€ => 499)
+     * fixed_amount => centimes (4,99€ => 499).
      */
     #[ORM\Column(type: 'integer')]
     private int $discountValue = 0;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $startsAt;
+    private \DateTimeImmutable $startsAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $endsAt;
+    private \DateTimeImmutable $endsAt;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isActive = true;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     /** @var Collection<int, Tarif> */
     #[ORM\ManyToMany(targetEntity: Tarif::class)]
@@ -60,15 +59,15 @@ class PromoCode
         $this->id = $id ?? Uuid::v4()->toRfc4122();
         $this->code = strtoupper($code ?? '');
         $this->name = $name ?? '';
-        $this->startsAt = new DateTimeImmutable();
+        $this->startsAt = new \DateTimeImmutable();
         $this->endsAt = $this->startsAt->modify('+1 month');
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
         $this->tarifs = new ArrayCollection();
     }
 
     public function __toString(): string
     {
-        return $this->code !== '' ? $this->code : $this->id;
+        return '' !== $this->code ? $this->code : $this->id;
     }
 
     public function getId(): string
@@ -138,17 +137,17 @@ class PromoCode
 
     public function getDiscountValueText(): string
     {
-        if ($this->discountType === DiscountType::PERCENT) {
+        if (DiscountType::PERCENT === $this->discountType) {
             $whole = intdiv($this->discountValue, 100);
             $dec = $this->discountValue % 100;
 
-            return $dec === 0 ? (string) $whole : sprintf('%d,%02d', $whole, $dec);
+            return 0 === $dec ? (string) $whole : \sprintf('%d,%02d', $whole, $dec);
         }
 
         $euros = intdiv($this->discountValue, 100);
         $cents = $this->discountValue % 100;
 
-        return $cents === 0 ? (string) $euros : sprintf('%d,%02d', $euros, $cents);
+        return 0 === $cents ? (string) $euros : \sprintf('%d,%02d', $euros, $cents);
     }
 
     public function setDiscountValueText(?string $raw): self
@@ -158,24 +157,24 @@ class PromoCode
         return $this;
     }
 
-    public function getStartsAt(): DateTimeImmutable
+    public function getStartsAt(): \DateTimeImmutable
     {
         return $this->startsAt;
     }
 
-    public function setStartsAt(DateTimeImmutable $startsAt): self
+    public function setStartsAt(\DateTimeImmutable $startsAt): self
     {
         $this->startsAt = $startsAt;
 
         return $this;
     }
 
-    public function getEndsAt(): DateTimeImmutable
+    public function getEndsAt(): \DateTimeImmutable
     {
         return $this->endsAt;
     }
 
-    public function setEndsAt(DateTimeImmutable $endsAt): self
+    public function setEndsAt(\DateTimeImmutable $endsAt): self
     {
         $this->endsAt = $endsAt;
 
@@ -194,7 +193,7 @@ class PromoCode
         return $this;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -224,7 +223,7 @@ class PromoCode
     private function parseTextValue(?string $raw): int
     {
         $value = trim((string) $raw);
-        if ($value === '') {
+        if ('' === $value) {
             return 0;
         }
 
@@ -235,7 +234,7 @@ class PromoCode
             throw new \RuntimeException('Valeur de réduction invalide.');
         }
 
-        if ($this->discountType === DiscountType::PERCENT) {
+        if (DiscountType::PERCENT === $this->discountType) {
             $percent = (float) $value;
             if ($percent < 0) {
                 throw new \RuntimeException('Le pourcentage ne peut pas être négatif.');
@@ -252,4 +251,3 @@ class PromoCode
         return (int) round($amount * 100);
     }
 }
-

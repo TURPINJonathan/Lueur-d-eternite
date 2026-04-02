@@ -16,6 +16,12 @@ export interface SiteSettingsPublic {
   hostingProviderName: string;
   hostingProviderAddress: string;
   hostingProviderUrl: string;
+  facebookLink: string;
+  instagramLink: string;
+  linkedinLink: string;
+  xLink: string;
+  tiktokLink: string;
+  youtubeLink: string;
   technicalConfig: string;
   updatedAt: string;
 }
@@ -36,6 +42,12 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsPublic = {
   hostingProviderName: 'OVHcloud',
   hostingProviderAddress: '2 rue Kellermann, 59100 Roubaix, France',
   hostingProviderUrl: 'https://www.ovh.com',
+  facebookLink: '',
+  instagramLink: '',
+  linkedinLink: '',
+  xLink: '',
+  tiktokLink: '',
+  youtubeLink: '',
   technicalConfig: '{}',
   updatedAt: new Date(0).toISOString(),
 };

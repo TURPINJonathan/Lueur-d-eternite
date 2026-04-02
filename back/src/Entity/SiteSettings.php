@@ -74,6 +74,24 @@ class SiteSettings
     #[ORM\Column(length: 255)]
     private string $hostingProviderUrl = 'https://www.ovh.com';
 
+    #[ORM\Column(length: 512)]
+    private string $facebookLink = '';
+
+    #[ORM\Column(length: 512)]
+    private string $instagramLink = '';
+
+    #[ORM\Column(length: 512)]
+    private string $linkedinLink = '';
+
+    #[ORM\Column(length: 512)]
+    private string $xLink = '';
+
+    #[ORM\Column(length: 512)]
+    private string $tiktokLink = '';
+
+    #[ORM\Column(length: 512)]
+    private string $youtubeLink = '';
+
     #[ORM\Column(type: 'text')]
     private string $technicalConfig = '{}';
 
@@ -326,6 +344,78 @@ class SiteSettings
     public function setHostingProviderUrl(string $hostingProviderUrl): self
     {
         $this->hostingProviderUrl = $hostingProviderUrl;
+
+        return $this;
+    }
+
+    public function getFacebookLink(): string
+    {
+        return $this->facebookLink;
+    }
+
+    public function setFacebookLink(string $facebookLink): self
+    {
+        $this->facebookLink = $facebookLink;
+
+        return $this;
+    }
+
+    public function getInstagramLink(): string
+    {
+        return $this->instagramLink;
+    }
+
+    public function setInstagramLink(string $instagramLink): self
+    {
+        $this->instagramLink = $instagramLink;
+
+        return $this;
+    }
+
+    public function getLinkedinLink(): string
+    {
+        return $this->linkedinLink;
+    }
+
+    public function setLinkedinLink(string $linkedinLink): self
+    {
+        $this->linkedinLink = $linkedinLink;
+
+        return $this;
+    }
+
+    public function getXLink(): string
+    {
+        return $this->xLink;
+    }
+
+    public function setXLink(string $xLink): self
+    {
+        $this->xLink = $xLink;
+
+        return $this;
+    }
+
+    public function getTiktokLink(): string
+    {
+        return $this->tiktokLink;
+    }
+
+    public function setTiktokLink(string $tiktokLink): self
+    {
+        $this->tiktokLink = $tiktokLink;
+
+        return $this;
+    }
+
+    public function getYoutubeLink(): string
+    {
+        return $this->youtubeLink;
+    }
+
+    public function setYoutubeLink(string $youtubeLink): self
+    {
+        $this->youtubeLink = $youtubeLink;
 
         return $this;
     }

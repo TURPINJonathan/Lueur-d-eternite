@@ -27,4 +27,3 @@ final class Version20260326110000 extends AbstractMigration
         $this->addSql('DROP TABLE tarif');
     }
 }
-
