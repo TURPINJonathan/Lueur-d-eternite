@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 import LogoLoader from './LogoLoader.component';
+import { toAbsoluteApiUrl } from '#lib/api';
 
 export type GalleryItem =
   | {
@@ -39,7 +40,7 @@ function GalleryLightboxMedia({ item }: { item: GalleryItem }) {
     <div className="relative min-h-[200px]">
       {item.kind === 'single' ? (
         <Image
-          src={item.src}
+          src={toAbsoluteApiUrl(item.src)}
           alt={item.alt}
           width={1600}
           height={1000}
@@ -52,7 +53,7 @@ function GalleryLightboxMedia({ item }: { item: GalleryItem }) {
         <ReactCompareSlider
           itemOne={
             <ReactCompareSliderImage
-              src={item.beforeSrc}
+              src={toAbsoluteApiUrl(item.beforeSrc)}
               alt={`${item.alt} - avant`}
               onLoad={onPieceLoaded}
               onError={onPieceLoaded}
@@ -60,7 +61,7 @@ function GalleryLightboxMedia({ item }: { item: GalleryItem }) {
           }
           itemTwo={
             <ReactCompareSliderImage
-              src={item.afterSrc}
+              src={toAbsoluteApiUrl(item.afterSrc)}
               alt={`${item.alt} - après`}
               onLoad={onPieceLoaded}
               onError={onPieceLoaded}
@@ -116,7 +117,7 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
                 aria-label={`Agrandir ${item.alt}`}
               >
                 <Image
-                  src={item.thumb}
+                  src={toAbsoluteApiUrl(item.thumb)}
                   alt={item.alt}
                   width={800}
                   height={500}
@@ -134,7 +135,7 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
                 aria-label={`Ouvrir la comparaison ${item.alt}`}
               >
                 <Image
-                  src={item.afterThumb ?? item.afterSrc}
+                  src={toAbsoluteApiUrl(item.afterThumb ?? item.afterSrc)}
                   alt={`${item.alt} - aperçu après`}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -144,7 +145,7 @@ export default function GalleryComponent({ items }: GalleryComponentProps) {
                 />
                 <div className="absolute inset-y-0 left-0 w-1/2 overflow-hidden">
                   <Image
-                    src={item.thumb}
+                    src={toAbsoluteApiUrl(item.thumb)}
                     alt={`${item.alt} - aperçu avant`}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
