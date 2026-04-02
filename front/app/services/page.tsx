@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { safeJsonLd } from '../jsonld';
 import { getServices, type ServiceCard } from '#lib';
+import { toAbsoluteApiUrl } from '#lib/api';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Services nettoyage tombe | Caen (Calvados)',
@@ -75,7 +76,7 @@ export default async function Services() {
                   <div className={`services-image-frame !p-0 relative overflow-hidden flex-1 ${imageOrder}`}>
                     {service.picture ? (
                       <Image
-                        src={service.picture}
+                        src={toAbsoluteApiUrl(service.picture)}
                         alt={service.pictureAlt.trim()}
                         className="absolute inset-0 h-full w-full object-cover"
                         loading="lazy"

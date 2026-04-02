@@ -6,10 +6,10 @@ interface ApiGetOptions {
   revalidate?: number;
 }
 
-function toApiUrl(path: string): string {
+export function toAbsoluteApiUrl(path: string): string {
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
 
-  const baseUrl = process.env.NEXT_PUBLIC_BACK_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_BACK_BASE_URL ?? 'https://api.lueur-eternite.fr';
   if (!baseUrl) {
     throw new Error(
       "NEXT_PUBLIC_BACK_BASE_URL est requis pour les appels API en export statique. Ex: 'https://api.lueur-eternite.fr'",
@@ -17,12 +17,13 @@ function toApiUrl(path: string): string {
   }
 
   const trimmed = baseUrl.replace(/\/+$/, '');
+  const normalizedPath = path.replace(/^\/+/, '/');
   if (!path.startsWith('/')) return `${trimmed}/${path}`;
-  return `${trimmed}${path}`;
+  return `${trimmed}${normalizedPath}`;
 }
 
 export async function apiGet<T>(path: string, options: ApiGetOptions = {}): Promise<T> {
-  const url = toApiUrl(path);
+  const url = toAbsoluteApiUrl(path);
   console.log(`API GET: ${url} (revalidate: ${options.revalidate ?? 'default'})`);
 
   const res = await fetch(url, {

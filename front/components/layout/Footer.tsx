@@ -1,9 +1,10 @@
 'use client';
 
 import { ButtonComponent } from '#ui';
-import { Copyright, Facebook, Instagram } from 'lucide-react';
+import { Copyright } from 'lucide-react';
 import Link from 'next/link';
 import { sanitizePhoneToHref } from '#lib/phone';
+import { SiInstagram } from '@icons-pack/react-simple-icons';
 
 const QUICK_LINKS = [
   { href: '/services', label: 'Services' },
@@ -56,8 +57,15 @@ export default function Footer({ contactPhoneDisplay, contactEmail }: FooterProp
             {contactPhoneDisplay}
           </a>
           <div className="social-links flex gap-4">
-            <Facebook size={20} className="inline-block opacity-50" aria-hidden />
-            <Instagram size={20} className="inline-block opacity-50" aria-hidden />
+            <a
+              href="https://www.instagram.com/lueur.d.eternite?igsh=bHdvbWZobHZlaTd5"
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+              aria-label="Voir le compte Instagram de Lueur d’Éternité"
+              className="inline-flex"
+            >
+              <SiInstagram size={20} className="inline-block opacity-50" aria-hidden />
+            </a>
           </div>
         </div>
       </div>

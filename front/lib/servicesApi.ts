@@ -11,6 +11,5 @@ export interface ServiceCard {
 }
 
 export async function getServices(revalidate: number = 60): Promise<ServiceCard[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_BACK_BASE_URL ?? '';
-  return apiGet<ServiceCard[]>(`${baseUrl.replace(/\/+$/, '')}/api/public/services`, { revalidate });
+  return apiGet<ServiceCard[]>('/api/public/services', { revalidate });
 }
