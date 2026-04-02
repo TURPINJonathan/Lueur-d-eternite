@@ -37,7 +37,7 @@ final class PromotionCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $discountTypeChoices = [
-            'Pourcentage' => DiscountType::PERCENT,
+            'Pourcentage'  => DiscountType::PERCENT,
             'Montant fixe' => DiscountType::FIXED_AMOUNT,
         ];
 
@@ -98,4 +98,3 @@ final class PromotionCrudController extends AbstractCrudController
         }
     }
 }
-

@@ -16,7 +16,7 @@ final class Version20260331190000 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql("ALTER TABLE site_settings ADD contact_form_template_admin LONGTEXT NOT NULL, ADD contact_form_template_user LONGTEXT NOT NULL");
+        $this->addSql('ALTER TABLE site_settings ADD contact_form_template_admin LONGTEXT NOT NULL, ADD contact_form_template_user LONGTEXT NOT NULL');
     }
 
     public function down(Schema $schema): void

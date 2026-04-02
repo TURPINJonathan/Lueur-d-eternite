@@ -31,4 +31,3 @@ final class Version20260326113000 extends AbstractMigration
         $this->addSql('ALTER TABLE tarif DROP position');
     }
 }
-

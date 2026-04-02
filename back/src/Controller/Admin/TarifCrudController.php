@@ -19,8 +19,7 @@ final class TarifCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -163,18 +162,17 @@ final class TarifCrudController extends AbstractCrudController
         $count = (int) $this->entityManager->getRepository(Tarif::class)->count([]);
 
         $context = $this->getContext();
-        $isEdit = $context?->getCrud()->getCurrentPage() === Crud::PAGE_EDIT;
+        $isEdit = Crud::PAGE_EDIT === $context?->getCrud()->getCurrentPage();
 
         // En édition : 1..N (N = nombre actuel d'items)
         // En création : 1..N+1
         $max = $isEdit ? max(1, $count) : ($count + 1);
 
         $choices = [];
-        for ($position = 1; $position <= $max; $position++) {
+        for ($position = 1; $position <= $max; ++$position) {
             $choices[(string) $position] = $position;
         }
 
         return $choices;
     }
 }
-

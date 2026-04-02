@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -36,7 +35,7 @@ class Service
     private string $pictureAlt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     // Transient file property used by EasyAdmin uploads (not persisted by Doctrine).
     // EasyAdmin's ImageField maps to "filename" strings (not UploadedFile instances).
@@ -48,7 +47,7 @@ class Service
         $this->title = $title ?? '';
         $this->subtitle = $subtitle ?? '';
         $this->pictureAlt = $pictureAlt ?? '';
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): string
@@ -95,7 +94,7 @@ class Service
     {
         $this->items = array_values(array_map(
             static fn (string $v): string => trim($v),
-            array_filter($items, static fn ($v): bool => is_string($v) && trim($v) !== ''),
+            array_filter($items, static fn ($v): bool => \is_string($v) && '' !== trim($v)),
         ));
 
         return $this;
@@ -111,7 +110,7 @@ class Service
 
     public function setItemsText(?string $itemsText): self
     {
-        $itemsText = $itemsText ?? '';
+        $itemsText ??= '';
         $lines = preg_split('/\r\n|\r|\n/', $itemsText) ?: [];
 
         return $this->setItems($lines);
@@ -149,11 +148,9 @@ class Service
     /**
      * Setter factice : l’URL d’aperçu est calculée (getPictureUrl) ; le formulaire envoie un hidden non persisté.
      */
-    public function setPictureUrl(?string $pictureUrl): void
-    {
-    }
+    public function setPictureUrl(?string $pictureUrl): void {}
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -170,4 +167,3 @@ class Service
         return $this;
     }
 }
-

@@ -6,14 +6,14 @@ namespace App\Controller\Api;
 
 use App\Entity\SiteSettings;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -30,8 +30,7 @@ final class PublicContactController extends AbstractController
         private readonly RateLimiterFactory $contactFormLimiter,
         #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
-    ) {
-    }
+    ) {}
 
     #[Route('', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
@@ -45,7 +44,7 @@ final class PublicContactController extends AbstractController
             return new JsonResponse([
                 'message' => 'Trop de demandes envoyées. Merci de réessayer dans quelques minutes.',
             ], 429, [
-                'Retry-After' => (string) $retryAfterSeconds,
+                'Retry-After'           => (string) $retryAfterSeconds,
                 'X-RateLimit-Remaining' => (string) $rateLimit->getRemainingTokens(),
             ]);
         }
@@ -63,7 +62,7 @@ final class PublicContactController extends AbstractController
         $website = trim((string) ($payload['website'] ?? '')); // honeypot anti-bot
 
         $errors = [];
-        if (\mb_strlen($fullName) < 2 || \mb_strlen($fullName) > 120) {
+        if (mb_strlen($fullName) < 2 || mb_strlen($fullName) > 120) {
             $errors['fullName'] = 'Le nom complet doit contenir entre 2 et 120 caractères.';
         }
         if (!filter_var($email, \FILTER_VALIDATE_EMAIL)) {
@@ -73,17 +72,17 @@ final class PublicContactController extends AbstractController
         if (\strlen($phoneDigits) < 10 || \strlen($phoneDigits) > 15) {
             $errors['phone'] = 'Numéro de téléphone invalide.';
         }
-        if (\mb_strlen($message) < 10 || \mb_strlen($message) > 4000) {
+        if (mb_strlen($message) < 10 || mb_strlen($message) > 4000) {
             $errors['message'] = 'Le message doit contenir entre 10 et 4000 caractères.';
         }
-        if ($website !== '') {
+        if ('' !== $website) {
             return new JsonResponse(['message' => 'Demande rejetée.'], 400);
         }
 
-        if ($errors !== []) {
+        if ([] !== $errors) {
             return new JsonResponse([
                 'message' => 'Veuillez corriger les champs en erreur.',
-                'errors' => $errors,
+                'errors'  => $errors,
             ], 422);
         }
 
@@ -104,12 +103,12 @@ final class PublicContactController extends AbstractController
                 $siteSettings?->getContactFormTemplateAdmin() ?? '',
                 'emails/contact_request_admin.html.twig',
                 [
-                    'siteName' => $siteName,
+                    'siteName'       => $siteName,
                     'recipientEmail' => $recipientEmail,
-                    'fullName' => $fullName,
-                    'senderEmail' => $email,
-                    'phone' => $phone,
-                    'message' => $message,
+                    'fullName'       => $fullName,
+                    'senderEmail'    => $email,
+                    'phone'          => $phone,
+                    'message'        => $message,
                 ],
             );
 
@@ -126,12 +125,12 @@ final class PublicContactController extends AbstractController
                     $siteSettings?->getContactFormTemplateUser() ?? '',
                     'emails/contact_request_user_confirmation.html.twig',
                     [
-                        'siteName' => $siteName,
+                        'siteName'       => $siteName,
                         'recipientEmail' => $recipientEmail,
-                        'fullName' => $fullName,
-                        'senderEmail' => $email,
-                        'phone' => $phone,
-                        'message' => $message,
+                        'fullName'       => $fullName,
+                        'senderEmail'    => $email,
+                        'phone'          => $phone,
+                        'message'        => $message,
                     ],
                 );
 

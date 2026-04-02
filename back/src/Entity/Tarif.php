@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -32,7 +31,7 @@ class Tarif
     private int $position = 1;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     public function __construct(
         ?string $id = null,
@@ -44,7 +43,7 @@ class Tarif
         $this->title = $title ?? '';
         $this->description = $description ?? '';
         $this->priceCents = $priceCents ?? 0;
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): string
@@ -54,7 +53,7 @@ class Tarif
 
     public function __toString(): string
     {
-        return $this->title !== '' ? $this->title : $this->id;
+        return '' !== $this->title ? $this->title : $this->id;
     }
 
     public function getTitle(): string
@@ -99,11 +98,11 @@ class Tarif
         $euros = intdiv($abs, 100);
         $cents = $abs % 100;
 
-        if ($cents === 0) {
+        if (0 === $cents) {
             return ($negative ? '-' : '') . (string) $euros;
         }
 
-        return sprintf(
+        return \sprintf(
             '%s%d,%02d',
             $negative ? '-' : '',
             $euros,
@@ -112,7 +111,7 @@ class Tarif
     }
 
     /**
-     * @throws \RuntimeException si le texte ne ressemble pas à un nombre.
+     * @throws \RuntimeException si le texte ne ressemble pas à un nombre
      */
     public function setPriceText(?string $priceText): self
     {
@@ -121,7 +120,7 @@ class Tarif
         return $this;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -140,12 +139,12 @@ class Tarif
 
     private static function parsePriceTextToCents(?string $priceText): int
     {
-        if ($priceText === null) {
+        if (null === $priceText) {
             return 0;
         }
 
         $raw = trim($priceText);
-        if ($raw === '') {
+        if ('' === $raw) {
             return 0;
         }
 
@@ -153,7 +152,7 @@ class Tarif
         $raw = preg_replace('/[[:space:]]+/u', '', $raw) ?? '';
         $raw = str_replace(['€', 'EUR', 'euro'], '', $raw);
         $raw = preg_replace('/[^0-9,.\-+]/', '', $raw) ?? '';
-        if ($raw === '' || $raw === '+' || $raw === '-') {
+        if ('' === $raw || '+' === $raw || '-' === $raw) {
             throw new \RuntimeException('Format de prix invalide.');
         }
 
@@ -170,7 +169,7 @@ class Tarif
 
         $decimalSep = null;
         $thousandSep = null;
-        if ($lastComma !== false && $lastDot !== false) {
+        if (false !== $lastComma && false !== $lastDot) {
             if ($lastComma > $lastDot) {
                 $decimalSep = ',';
                 $thousandSep = '.';
@@ -178,17 +177,17 @@ class Tarif
                 $decimalSep = '.';
                 $thousandSep = ',';
             }
-        } elseif ($lastComma !== false) {
+        } elseif (false !== $lastComma) {
             $decimalSep = ',';
-        } elseif ($lastDot !== false) {
+        } elseif (false !== $lastDot) {
             $decimalSep = '.';
         }
 
-        if ($thousandSep !== null) {
+        if (null !== $thousandSep) {
             $raw = str_replace($thousandSep, '', $raw);
         }
 
-        if ($decimalSep !== null) {
+        if (null !== $decimalSep) {
             $raw = str_replace($decimalSep, '.', $raw);
         }
 
@@ -196,23 +195,23 @@ class Tarif
         $intPart = $parts[0] ?? '';
         $decPart = $parts[1] ?? '';
 
-        if ($intPart === '' || !ctype_digit($intPart)) {
+        if ('' === $intPart || !ctype_digit($intPart)) {
             throw new \RuntimeException('Format de prix invalide.');
         }
 
-        if ($decPart !== '' && !ctype_digit($decPart)) {
+        if ('' !== $decPart && !ctype_digit($decPart)) {
             throw new \RuntimeException('Format de prix invalide.');
         }
 
         $euros = (int) $intPart;
 
-        if ($decPart === '') {
+        if ('' === $decPart) {
             $cents = 0;
         } else {
             $decPartDigits = $decPart;
-            $decLen = strlen($decPartDigits);
+            $decLen = \strlen($decPartDigits);
 
-            if ($decLen === 1) {
+            if (1 === $decLen) {
                 $cents = ((int) $decPartDigits) * 10;
             } else {
                 $firstTwo = substr($decPartDigits, 0, 2);
@@ -220,11 +219,11 @@ class Tarif
 
                 $cents = (int) $firstTwo;
                 if ($decLen >= 3 && ((int) $thirdDigit) >= 5) {
-                    $cents += 1;
+                    ++$cents;
                 }
 
                 if ($cents >= 100) {
-                    $euros += 1;
+                    ++$euros;
                     $cents = 0;
                 }
             }
@@ -244,4 +243,3 @@ class Tarif
         return $total;
     }
 }
-

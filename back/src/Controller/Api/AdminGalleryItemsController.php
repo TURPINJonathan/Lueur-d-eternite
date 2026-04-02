@@ -19,8 +19,7 @@ final class AdminGalleryItemsController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     #[Route('', methods: ['GET'])]
     public function list(): JsonResponse
@@ -38,33 +37,33 @@ final class AdminGalleryItemsController extends AbstractController
             return $this->generateUrl(
                 'api_public_media_get',
                 ['id' => $media->getId()],
-                UrlGeneratorInterface::ABSOLUTE_PATH
+                UrlGeneratorInterface::ABSOLUTE_PATH,
             );
         };
 
         $payload = array_map(static function (GalleryItem $item) use ($toUrl): array {
-            if ($item->getKind() === GalleryItemKind::SINGLE) {
+            if (GalleryItemKind::SINGLE === $item->getKind()) {
                 $src = $toUrl($item->getSrcMedia());
                 $thumb = $toUrl($item->getThumbMedia()) ?? $src;
 
                 return [
-                    'id' => $item->getId(),
-                    'kind' => 'single',
-                    'src' => $src,
-                    'thumb' => $thumb,
-                    'alt' => $item->getAlt(),
+                    'id'       => $item->getId(),
+                    'kind'     => 'single',
+                    'src'      => $src,
+                    'thumb'    => $thumb,
+                    'alt'      => $item->getAlt(),
                     'position' => $item->getPosition(),
                 ];
             }
 
             return [
-                'id' => $item->getId(),
-                'kind' => 'compare',
+                'id'        => $item->getId(),
+                'kind'      => 'compare',
                 'beforeSrc' => $toUrl($item->getBeforeMedia()),
-                'afterSrc' => $toUrl($item->getAfterMedia()),
-                'thumb' => $toUrl($item->getThumbMedia()) ?? $toUrl($item->getBeforeMedia()),
-                'alt' => $item->getAlt(),
-                'position' => $item->getPosition(),
+                'afterSrc'  => $toUrl($item->getAfterMedia()),
+                'thumb'     => $toUrl($item->getThumbMedia()) ?? $toUrl($item->getBeforeMedia()),
+                'alt'       => $item->getAlt(),
+                'position'  => $item->getPosition(),
             ];
         }, $items);
 
@@ -76,25 +75,25 @@ final class AdminGalleryItemsController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $data = json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode((string) $request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
 
         $kindRaw = $data['kind'] ?? null;
         $alt = $data['alt'] ?? null;
-        if (!is_string($kindRaw) || !is_string($alt) || $alt === '') {
+        if (!\is_string($kindRaw) || !\is_string($alt) || '' === $alt) {
             return new JsonResponse(['error' => 'kind (single|compare) et alt sont requis.'], Response::HTTP_BAD_REQUEST);
         }
 
         $kind = match ($kindRaw) {
-            'single' => GalleryItemKind::SINGLE,
+            'single'  => GalleryItemKind::SINGLE,
             'compare' => GalleryItemKind::COMPARE,
-            default => null,
+            default   => null,
         };
 
-        if ($kind === null) {
+        if (null === $kind) {
             return new JsonResponse(['error' => 'kind invalide.'], Response::HTTP_BAD_REQUEST);
         }
 
-        $position = is_int($data['position'] ?? null) ? $data['position'] : 0;
+        $position = \is_int($data['position'] ?? null) ? $data['position'] : 0;
 
         $itemId = Uuid::v4()->toRfc4122();
         $item = new GalleryItem($itemId, $kind, $alt);
@@ -107,14 +106,14 @@ final class AdminGalleryItemsController extends AbstractController
 
             $media = $this->entityManager->getRepository(Media::class)->find($id);
             if (!$media) {
-                throw new \RuntimeException(sprintf('Media introuvable: %s', $id));
+                throw new \RuntimeException(\sprintf('Media introuvable: %s', $id));
             }
 
             return $media;
         };
 
         try {
-            if ($kind === GalleryItemKind::SINGLE) {
+            if (GalleryItemKind::SINGLE === $kind) {
                 $srcMedia = $getMedia($data['srcMediaId'] ?? null);
                 if (!$srcMedia) {
                     return new JsonResponse(['error' => 'srcMediaId est requis pour kind=single.'], Response::HTTP_BAD_REQUEST);
@@ -143,4 +142,3 @@ final class AdminGalleryItemsController extends AbstractController
         return new JsonResponse(['id' => $item->getId()], Response::HTTP_CREATED);
     }
 }
-

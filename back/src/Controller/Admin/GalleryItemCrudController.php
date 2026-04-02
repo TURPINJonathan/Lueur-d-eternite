@@ -8,16 +8,16 @@ use App\Service\Media\ImageThumbnailer;
 use App\Service\Media\MediaGzipStorage;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Symfony\Component\Uid\Uuid;
 
 #[AdminRoute(path: 'galerie', name: 'galerie')]
@@ -28,8 +28,7 @@ final class GalleryItemCrudController extends AbstractCrudController
         private readonly ImageThumbnailer $imageThumbnailer,
         #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
-    ) {
-    }
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -136,7 +135,7 @@ final class GalleryItemCrudController extends AbstractCrudController
 
         $uploadDir = $this->projectDir . '/var/uploads/gallery/';
 
-        $toSymfonyFile = function (?string $filename) use ($uploadDir): ?SymfonyFile {
+        $toSymfonyFile = static function (?string $filename) use ($uploadDir): ?SymfonyFile {
             if (!$filename) {
                 return null;
             }
@@ -224,7 +223,7 @@ final class GalleryItemCrudController extends AbstractCrudController
     {
         $originalFilename = $file->getFilename() ?: 'upload';
 
-        $extension = strtolower(pathinfo($originalFilename, PATHINFO_EXTENSION) ?: 'bin');
+        $extension = strtolower(pathinfo($originalFilename, \PATHINFO_EXTENSION) ?: 'bin');
 
         $mimeType = $file->getMimeType() ?: 'application/octet-stream';
 
@@ -284,4 +283,3 @@ final class GalleryItemCrudController extends AbstractCrudController
         return $thumbMedia;
     }
 }
-

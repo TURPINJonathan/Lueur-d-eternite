@@ -8,8 +8,7 @@ final class ImageThumbnailer
         private readonly int $thumbWidth = 800,
         private readonly int $thumbHeight = 500,
         private readonly int $webpQuality = 80,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array{path: string, extension: string, mimeType: string}|null
@@ -17,7 +16,7 @@ final class ImageThumbnailer
     public function generateWebpThumbnail(string $sourcePath, string $sourceMimeType): ?array
     {
         $tmp = tempnam(sys_get_temp_dir(), 'thumb_');
-        if ($tmp === false) {
+        if (false === $tmp) {
             throw new \RuntimeException('Impossible de créer un fichier temporaire.');
         }
         // Ensure it has a .webp extension for image libraries that rely on it
@@ -25,11 +24,11 @@ final class ImageThumbnailer
         @unlink($tmp);
 
         try {
-            if (extension_loaded('imagick') && class_exists('Imagick')) {
+            if (\extension_loaded('imagick') && class_exists('Imagick')) {
                 return $this->generateWithImagick($sourcePath, $thumbPath);
             }
 
-            if (function_exists('imagecreatefromstring') && function_exists('imagewebp')) {
+            if (\function_exists('imagecreatefromstring') && \function_exists('imagewebp')) {
                 return $this->generateWithGd($sourcePath, $thumbPath);
             }
 
@@ -78,9 +77,9 @@ final class ImageThumbnailer
         }
 
         return [
-            'path' => $thumbPath,
+            'path'      => $thumbPath,
             'extension' => 'webp',
-            'mimeType' => 'image/webp',
+            'mimeType'  => 'image/webp',
         ];
     }
 
@@ -90,7 +89,7 @@ final class ImageThumbnailer
     private function generateWithGd(string $sourcePath, string $thumbPath): ?array
     {
         $raw = file_get_contents($sourcePath);
-        if ($raw === false) {
+        if (false === $raw) {
             return null;
         }
 
@@ -103,6 +102,7 @@ final class ImageThumbnailer
         $origH = imagesy($src);
         if ($origW <= 0 || $origH <= 0) {
             imagedestroy($src);
+
             return null;
         }
 
@@ -129,7 +129,7 @@ final class ImageThumbnailer
             $this->thumbWidth,
             $this->thumbHeight,
             $this->thumbWidth,
-            $this->thumbHeight
+            $this->thumbHeight,
         );
 
         $ok = imagewebp($thumb, $thumbPath, $this->webpQuality);
@@ -142,10 +142,9 @@ final class ImageThumbnailer
         }
 
         return [
-            'path' => $thumbPath,
+            'path'      => $thumbPath,
             'extension' => 'webp',
-            'mimeType' => 'image/webp',
+            'mimeType'  => 'image/webp',
         ];
     }
 }
-

@@ -15,8 +15,7 @@ final class PublicGalleryItemsController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     #[Route('', methods: ['GET'])]
     public function __invoke(): JsonResponse
@@ -34,21 +33,21 @@ final class PublicGalleryItemsController extends AbstractController
             return $this->generateUrl(
                 'api_public_media_get',
                 ['id' => $media->getId()],
-                UrlGeneratorInterface::ABSOLUTE_PATH
+                UrlGeneratorInterface::ABSOLUTE_PATH,
             );
         };
 
         $payload = array_map(static function (GalleryItem $item) use ($mapMediaToUrl): array {
-            if ($item->getKind()->value === 'single') {
+            if ('single' === $item->getKind()->value) {
                 $src = $mapMediaToUrl($item->getSrcMedia());
                 $thumb = $mapMediaToUrl($item->getThumbMedia()) ?? $src;
 
                 return [
-                    'id' => $item->getId(),
-                    'kind' => 'single',
-                    'src' => $src,
+                    'id'    => $item->getId(),
+                    'kind'  => 'single',
+                    'src'   => $src,
                     'thumb' => $thumb,
-                    'alt' => $item->getAlt(),
+                    'alt'   => $item->getAlt(),
                 ];
             }
 
@@ -58,17 +57,16 @@ final class PublicGalleryItemsController extends AbstractController
             $afterThumb = $mapMediaToUrl($item->getAfterThumbMedia()) ?? $after;
 
             return [
-                'id' => $item->getId(),
-                'kind' => 'compare',
-                'beforeSrc' => $before,
-                'afterSrc' => $after,
-                'thumb' => $thumb,
+                'id'         => $item->getId(),
+                'kind'       => 'compare',
+                'beforeSrc'  => $before,
+                'afterSrc'   => $after,
+                'thumb'      => $thumb,
                 'afterThumb' => $afterThumb,
-                'alt' => $item->getAlt(),
+                'alt'        => $item->getAlt(),
             ];
         }, $items);
 
         return new JsonResponse($payload);
     }
 }
-

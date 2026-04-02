@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Service;
 use App\Entity\Media;
+use App\Entity\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,8 +15,7 @@ final class PublicServicesController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     #[Route('', methods: ['GET'])]
     public function __invoke(): JsonResponse
@@ -40,11 +39,11 @@ final class PublicServicesController extends AbstractController
 
         $payload = array_map(static function (Service $service) use ($mapMediaToUrl): array {
             return [
-                'id' => $service->getId(),
-                'title' => $service->getTitle(),
-                'subtitle' => $service->getSubtitle(),
-                'items' => $service->getItems(),
-                'picture' => $mapMediaToUrl($service->getPictureMedia()),
+                'id'         => $service->getId(),
+                'title'      => $service->getTitle(),
+                'subtitle'   => $service->getSubtitle(),
+                'items'      => $service->getItems(),
+                'picture'    => $mapMediaToUrl($service->getPictureMedia()),
                 'pictureAlt' => $service->getPictureAlt(),
             ];
         }, $services);
@@ -52,4 +51,3 @@ final class PublicServicesController extends AbstractController
         return new JsonResponse($payload);
     }
 }
-

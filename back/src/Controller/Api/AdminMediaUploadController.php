@@ -3,8 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\Media;
-use App\Service\Media\MediaGzipStorage;
 use App\Service\Media\ImageThumbnailer;
+use App\Service\Media\MediaGzipStorage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,8 +21,7 @@ final class AdminMediaUploadController extends AbstractController
         private readonly EntityManagerInterface $entityManager,
         private readonly MediaGzipStorage $mediaGzipStorage,
         private readonly ImageThumbnailer $imageThumbnailer,
-    ) {
-    }
+    ) {}
 
     #[Route('', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
@@ -36,7 +35,7 @@ final class AdminMediaUploadController extends AbstractController
             return new JsonResponse(['error' => 'Champ fichier manquant (file)'], Response::HTTP_BAD_REQUEST);
         }
 
-        if (!($uploadedFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile)) {
+        if (!$uploadedFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
             return new JsonResponse(['error' => 'Type de fichier invalide'], Response::HTTP_BAD_REQUEST);
         }
 
@@ -44,16 +43,16 @@ final class AdminMediaUploadController extends AbstractController
         $metadataRaw = $request->request->get('metadata');
 
         $metadata = null;
-        if (is_string($metadataRaw) && $metadataRaw !== '') {
+        if (\is_string($metadataRaw) && '' !== $metadataRaw) {
             try {
-                $metadata = json_decode($metadataRaw, true, 512, JSON_THROW_ON_ERROR);
+                $metadata = json_decode($metadataRaw, true, 512, \JSON_THROW_ON_ERROR);
             } catch (\Throwable) {
                 return new JsonResponse(['error' => 'metadata doit être un JSON valide'], Response::HTTP_BAD_REQUEST);
             }
         }
 
         $originalFilename = $uploadedFile->getClientOriginalName() ?? 'upload';
-        $extension = strtolower(pathinfo($originalFilename, PATHINFO_EXTENSION) ?: 'bin');
+        $extension = strtolower(pathinfo($originalFilename, \PATHINFO_EXTENSION) ?: 'bin');
 
         // Prefer the client mime if possible; fall back to Symfony guessing.
         $mimeType = $uploadedFile->getClientMimeType() ?: $uploadedFile->getMimeType() ?: 'application/octet-stream';
@@ -70,7 +69,7 @@ final class AdminMediaUploadController extends AbstractController
             ->setSizeOriginal($computed['originalSize'])
             ->setSizeCompressed($computed['sizeCompressed'])
             ->setSha256($computed['sha256'])
-            ->setAlt(is_string($alt) && $alt !== '' ? $alt : null)
+            ->setAlt(\is_string($alt) && '' !== $alt ? $alt : null)
             ->setMetadata($metadata);
 
         $this->entityManager->persist($media);
@@ -80,10 +79,10 @@ final class AdminMediaUploadController extends AbstractController
         $thumbId = null;
 
         // Generate an optimized thumbnail for the front grid if possible.
-        if (is_string($mimeType) && str_starts_with($mimeType, 'image/')) {
+        if (\is_string($mimeType) && str_starts_with($mimeType, 'image/')) {
             try {
                 $realPath = $uploadedFile->getRealPath();
-                if ($realPath !== false) {
+                if (false !== $realPath) {
                     $thumb = $this->imageThumbnailer->generateWebpThumbnail($realPath, $mimeType);
                     if ($thumb) {
                         $thumbMediaId = Uuid::v4()->toRfc4122();
@@ -110,7 +109,7 @@ final class AdminMediaUploadController extends AbstractController
                         $thumbUrl = $this->generateUrl(
                             'api_public_media_get',
                             ['id' => $thumbId],
-                            UrlGeneratorInterface::ABSOLUTE_PATH
+                            UrlGeneratorInterface::ABSOLUTE_PATH,
                         );
                     }
 
@@ -127,19 +126,18 @@ final class AdminMediaUploadController extends AbstractController
         $publicUrl = $this->generateUrl(
             'api_public_media_get',
             ['id' => $media->getId()],
-            UrlGeneratorInterface::ABSOLUTE_PATH
+            UrlGeneratorInterface::ABSOLUTE_PATH,
         );
 
         return new JsonResponse([
-            'id' => $media->getId(),
-            'thumbId' => $thumbId,
-            'alt' => $media->getAlt(),
-            'metadata' => $media->getMetadata(),
-            'mimeType' => $media->getMimeType(),
+            'id'           => $media->getId(),
+            'thumbId'      => $thumbId,
+            'alt'          => $media->getAlt(),
+            'metadata'     => $media->getMetadata(),
+            'mimeType'     => $media->getMimeType(),
             'sizeOriginal' => $media->getSizeOriginal(),
-            'url' => $publicUrl,
-            'thumbUrl' => $thumbUrl,
+            'url'          => $publicUrl,
+            'thumbUrl'     => $thumbUrl,
         ], Response::HTTP_CREATED);
     }
 }
-
