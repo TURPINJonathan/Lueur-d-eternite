@@ -353,9 +353,9 @@ class SiteSettings
         return $this->facebookLink;
     }
 
-    public function setFacebookLink(string $facebookLink): self
+    public function setFacebookLink(?string $facebookLink): self
     {
-        $this->facebookLink = $facebookLink;
+        $this->facebookLink = $facebookLink ?? '';
 
         return $this;
     }
@@ -365,9 +365,9 @@ class SiteSettings
         return $this->instagramLink;
     }
 
-    public function setInstagramLink(string $instagramLink): self
+    public function setInstagramLink(?string $instagramLink): self
     {
-        $this->instagramLink = $instagramLink;
+        $this->instagramLink = $instagramLink ?? '';
 
         return $this;
     }
@@ -377,9 +377,9 @@ class SiteSettings
         return $this->linkedinLink;
     }
 
-    public function setLinkedinLink(string $linkedinLink): self
+    public function setLinkedinLink(?string $linkedinLink): self
     {
-        $this->linkedinLink = $linkedinLink;
+        $this->linkedinLink = $linkedinLink ?? '';
 
         return $this;
     }
@@ -389,9 +389,9 @@ class SiteSettings
         return $this->xLink;
     }
 
-    public function setXLink(string $xLink): self
+    public function setXLink(?string $xLink): self
     {
-        $this->xLink = $xLink;
+        $this->xLink = $xLink ?? '';
 
         return $this;
     }
@@ -401,9 +401,9 @@ class SiteSettings
         return $this->tiktokLink;
     }
 
-    public function setTiktokLink(string $tiktokLink): self
+    public function setTiktokLink(?string $tiktokLink): self
     {
-        $this->tiktokLink = $tiktokLink;
+        $this->tiktokLink = $tiktokLink ?? '';
 
         return $this;
     }
@@ -413,9 +413,9 @@ class SiteSettings
         return $this->youtubeLink;
     }
 
-    public function setYoutubeLink(string $youtubeLink): self
+    public function setYoutubeLink(?string $youtubeLink): self
     {
-        $this->youtubeLink = $youtubeLink;
+        $this->youtubeLink = $youtubeLink ?? '';
 
         return $this;
     }
