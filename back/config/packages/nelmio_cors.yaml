@@ -1,16 +1,21 @@
 nelmio_cors:
   defaults:
-    allow_credentials: true
-    allow_origin: ['%env(CORS_ALLOW_ORIGIN)%'] # Allow all origins by default, but you can specify specific origins if needed
-    allow_headers: ['Content-Type', 'Authorization']
+    allow_credentials: false
+    allow_origin:
+      - 'https://www.lueur-eternite.fr'
+      - 'https://lueur-eternite.fr'
+    allow_headers: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
     expose_headers: ['Link']
     allow_methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
     max_age: 3600
 
   paths:
     '^/api/':
-      allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
-      allow_credentials: true
-      allow_headers: ['Content-Type', 'Authorization']
+      allow_credentials: false
+      allow_origin:
+        - 'https://www.lueur-eternite.fr'
+        - 'https://lueur-eternite.fr'
+      allow_headers: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
+      expose_headers: ['Link']
       allow_methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
       max_age: 3600
