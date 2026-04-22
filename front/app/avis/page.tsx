@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { CardComponent, HeroComponent, SectionDivider } from '#ui';
 import { Star } from 'lucide-react';
-import HeroPicture from '../../public/assets/about_hero_picture.webp';
+import HeroPicture from '../../public/assets/review_hero_picture.webp';
 import { createPageMetadata } from '../seo';
 import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '../seo-jsonld';
 import { safeJsonLd } from '../jsonld';
