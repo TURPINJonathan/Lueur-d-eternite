@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -46,9 +47,15 @@ final class TarifCrudController extends AbstractCrudController
                     ->setColumns(4),
 
                 TextField::new('priceText', 'Prix (€)')
-                    ->setRequired(true)
-                    ->setColumns(4)
-                    ->setHelp('Exemples : 4,99 ou 4.99'),
+                    ->setRequired(false)
+                    ->setColumns(2)
+                    ->setHelp('Exemples : 4,99 ou 4.99. Laissez vide si "Sur devis" est activé.'),
+
+                BooleanField::new('isQuoteOnly', 'Sur devis')
+                    ->setRequired(false)
+                    ->setColumns(2)
+                    ->setFormTypeOption('row_attr', ['class' => 'pt-lg-4'])
+                    ->setHelp('Masquera le tarif sur le site et affichera "Sur devis" à la place.'),
 
                 ChoiceField::new('position', 'Position')
                     ->setRequired(true)
@@ -67,6 +74,7 @@ final class TarifCrudController extends AbstractCrudController
             IntegerField::new('position', 'Position'),
             TextField::new('title', 'Nom'),
             TextField::new('priceText', 'Prix (€)'),
+            BooleanField::new('isQuoteOnly', 'Sur devis'),
             TextField::new('description', 'Description'),
         ];
     }

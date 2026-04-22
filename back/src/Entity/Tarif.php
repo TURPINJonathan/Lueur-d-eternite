@@ -27,6 +27,9 @@ class Tarif
     #[ORM\Column(type: 'integer')]
     private int $priceCents = 0;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isQuoteOnly = false;
+
     #[ORM\Column(type: 'integer')]
     private int $position = 1;
 
@@ -123,6 +126,18 @@ class Tarif
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function isQuoteOnly(): bool
+    {
+        return $this->isQuoteOnly;
+    }
+
+    public function setIsQuoteOnly(bool $isQuoteOnly): self
+    {
+        $this->isQuoteOnly = $isQuoteOnly;
+
+        return $this;
     }
 
     public function getPosition(): int
