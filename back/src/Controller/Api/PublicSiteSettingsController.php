@@ -43,9 +43,9 @@ final class PublicSiteSettingsController extends AbstractController
                 'facebookLink'           => '',
                 'instagramLink'          => '',
                 'linkedinLink'           => '',
-                'xLink'                    => '',
-                'tiktokLink'               => '',
-                'youtubeLink'              => '',
+                'xLink'                  => '',
+                'tiktokLink'             => '',
+                'youtubeLink'            => '',
                 'technicalConfig'        => '{}',
                 'updatedAt'              => (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
             ]);

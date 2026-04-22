@@ -13,7 +13,9 @@ export const metadata: Metadata = createPageMetadata({
 
 export default async function LegalNoticesPage() {
   const siteSettings = await getSiteSettings(300);
-  const legalUpdatedAt = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date(siteSettings.updatedAt));
+  const legalUpdatedAt = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(
+    new Date(siteSettings.updatedAt),
+  );
   const phoneHref = sanitizePhoneToHref(siteSettings.contactPhoneDisplay);
 
   return (
@@ -115,7 +117,12 @@ export default async function LegalNoticesPage() {
               <span className="leading-6">{siteSettings.hostingProviderAddress}</span>
             </div>
             <p className="leading-7 mt-2">
-              <a className="underline underline-offset-4" href={siteSettings.hostingProviderUrl} target="_blank" rel="noreferrer">
+              <a
+                className="underline underline-offset-4"
+                href={siteSettings.hostingProviderUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {siteSettings.hostingProviderUrl}
               </a>
             </p>

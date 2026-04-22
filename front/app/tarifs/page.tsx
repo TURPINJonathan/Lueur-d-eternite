@@ -41,7 +41,7 @@ function GlobalNotices({ notices }: { notices: TarifGenericNotice[] }) {
         >
           {/* <pre>{JSON.stringify(notice, null, 2)}</pre> */}
           {notice.code && (
-            <span className="inline-flex items-center rounded border border-[var(--color-gold)]/40 bg-[var(--muted)] px-3 py-1 text-xs font-medium uppercase tracking-[0.04em] text-[var(--foreground)]">
+            <span className="inline-flex items-center rounded border border-[var(--color-gold-dark)]/40 bg-[var(--muted)] px-3 py-1 text-xs font-medium uppercase tracking-[0.04em] text-[var(--foreground)]">
               {notice.code}
             </span>
           )}
@@ -56,12 +56,12 @@ function DesktopPriceCell({ tarif }: { tarif: TarifCard }) {
     <div className="flex flex-col items-start gap-1.5">
       <div className="flex items-center gap-2">
         {tarif.hasDiscount && (
-          <span className="text-sm text-[var(--muted-foreground)] line-through decoration-[var(--color-gold)] decoration-[1px]">
+          <span className="text-sm text-[var(--muted-foreground)] line-through decoration-[var(--color-gold-dark)] decoration-[1px]">
             {formatEuroFromCents(tarif.originalPriceCents)} €
           </span>
         )}
 
-        <span className="flex items-center gap-1 font-semibold text-[var(--color-gold)]">
+        <span className="flex items-center gap-1 font-semibold text-[var(--color-gold-dark)]">
           <span className="leading-none">{formatEuroFromCents(tarif.priceCents)}</span>
           <Euro className="h-4 w-4" />
         </span>
@@ -75,14 +75,14 @@ function MobilePriceCell({ tarif }: { tarif: TarifCard }) {
     <div className="flex flex-col items-center gap-1.5">
       <div className="flex items-end gap-2">
         {tarif.hasDiscount ? (
-          <span className="text-xs text-[var(--muted-foreground)] line-through decoration-[var(--color-gold)] decoration-[1px]">
+          <span className="text-xs text-[var(--muted-foreground)] line-through decoration-[var(--color-gold-dark)] decoration-[1px]">
             {formatEuroFromCents(tarif.originalPriceCents)} €
           </span>
         ) : null}
 
-        <span className="flex items-center gap-1.5 font-semibold text-[var(--color-gold)]">
+        <span className="flex items-center gap-1.5 font-semibold text-[var(--color-gold-dark)]">
           <span className="text-xl leading-none">{formatEuroFromCents(tarif.priceCents)}</span>
-          <Euro className="h-4 w-4 !text-[var(--color-gold)]" />
+          <Euro className="h-4 w-4 !text-[var(--color-gold-dark)]" />
         </span>
       </div>
     </div>
