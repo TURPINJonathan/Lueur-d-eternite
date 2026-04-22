@@ -4,6 +4,7 @@ export interface TarifCard {
   id: string;
   title: string;
   details: string;
+  isQuoteOnly: boolean;
   priceCents: number;
   originalPriceCents: number;
   hasDiscount: boolean;
