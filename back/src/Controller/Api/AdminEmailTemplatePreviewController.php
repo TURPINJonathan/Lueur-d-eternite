@@ -41,9 +41,12 @@ final class AdminEmailTemplatePreviewController extends AbstractController
         $recipientEmail = trim((string) ($settings?->getContactFormRecipientEmail() ?? $settings?->getContactEmail() ?? 'contact@lueur-eternite.fr'));
 
         if ('' === trim($template) && $settings instanceof SiteSettings) {
-            $template = 'user' === $kind
-                ? $settings->getContactFormTemplateUser()
-                : $settings->getContactFormTemplateAdmin();
+            $template = match ($kind) {
+                'user'         => $settings->getContactFormTemplateUser(),
+                'review_admin' => $settings->getReviewFormTemplateAdmin(),
+                'review_user'  => $settings->getReviewFormTemplateUser(),
+                default        => $settings->getContactFormTemplateAdmin(),
+            };
         }
 
         if ('' === trim($template)) {
@@ -58,6 +61,11 @@ final class AdminEmailTemplatePreviewController extends AbstractController
                 'senderEmail'    => 'marie.dupont@email.fr',
                 'phone'          => '06 12 34 56 78',
                 'message'        => "Bonjour,\nJe souhaite un devis pour un entretien mensuel.\nMerci.",
+                'author'         => 'Marie Dupont',
+                'title'          => 'Un accompagnement bienveillant',
+                'comment'        => 'Une expérience très apaisante, merci pour votre écoute et votre professionnalisme.',
+                'rate'           => 5,
+                'createdAt'      => new \DateTimeImmutable(),
             ]);
         } catch (TwigError $e) {
             return new JsonResponse([

@@ -36,6 +36,15 @@ class SiteSettings
     private string $contactFormTemplateUser = '';
 
     #[ORM\Column]
+    private bool $reviewFormSendConfirmation = true;
+
+    #[ORM\Column(type: 'text')]
+    private string $reviewFormTemplateAdmin = '';
+
+    #[ORM\Column(type: 'text')]
+    private string $reviewFormTemplateUser = '';
+
+    #[ORM\Column]
     private int $serviceRadiusKm = 15;
 
     #[ORM\Column(length: 255)]
@@ -224,6 +233,42 @@ class SiteSettings
     public function setContactFormTemplateUser(string $contactFormTemplateUser): self
     {
         $this->contactFormTemplateUser = $contactFormTemplateUser;
+
+        return $this;
+    }
+
+    public function isReviewFormSendConfirmation(): bool
+    {
+        return $this->reviewFormSendConfirmation;
+    }
+
+    public function setReviewFormSendConfirmation(bool $reviewFormSendConfirmation): self
+    {
+        $this->reviewFormSendConfirmation = $reviewFormSendConfirmation;
+
+        return $this;
+    }
+
+    public function getReviewFormTemplateAdmin(): string
+    {
+        return $this->reviewFormTemplateAdmin;
+    }
+
+    public function setReviewFormTemplateAdmin(string $reviewFormTemplateAdmin): self
+    {
+        $this->reviewFormTemplateAdmin = $reviewFormTemplateAdmin;
+
+        return $this;
+    }
+
+    public function getReviewFormTemplateUser(): string
+    {
+        return $this->reviewFormTemplateUser;
+    }
+
+    public function setReviewFormTemplateUser(string $reviewFormTemplateUser): self
+    {
+        $this->reviewFormTemplateUser = $reviewFormTemplateUser;
 
         return $this;
     }

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { ButtonComponent, CardComponent, HeroComponent, SectionDivider } from '#ui';
 import MapComponent from '#components/ui/Map.dynamic';
-import { Clock, HeartHandshake, ShieldCheck } from 'lucide-react';
+import { Clock, HeartHandshake, ShieldCheck, Star } from 'lucide-react';
 import HeroPicture from '../public/assets/home_hero_picture.webp';
 import { createPageMetadata } from './seo';
 import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd, buildWebPageJsonLd } from './seo-jsonld';
 import Link from 'next/link';
 import { safeJsonLd } from './jsonld';
-import { getSiteSettings } from '#lib';
+import { getReviews, getSiteSettings } from '#lib';
 import { sanitizePhoneToHref } from '#lib/phone';
 
 export const metadata: Metadata = createPageMetadata({
@@ -20,8 +20,10 @@ export const metadata: Metadata = createPageMetadata({
 
 export default async function Home() {
   const siteSettings = await getSiteSettings(60);
+  const reviews = await getReviews(120);
+  const hasLoopAnimation = reviews.length > 2;
+  const reviewsLoop = hasLoopAnimation ? [...reviews, ...reviews] : reviews;
   const phoneHref = sanitizePhoneToHref(siteSettings.contactPhoneDisplay);
-
   const webPageJsonLd = buildWebPageJsonLd({
     title: 'Entretien de sépultures à Caen',
     description:
@@ -37,8 +39,7 @@ export default async function Home() {
   const faqJsonLd = buildFaqJsonLd([
     {
       question: 'Dans quelle zone intervenez-vous autour de Caen ?',
-      answer:
-        `Nous intervenons à Caen et dans les communes alentours, avec une zone d'intervention d'environ ${siteSettings.serviceRadiusKm} km autour de la ville.`,
+      answer: `Nous intervenons à Caen et dans les communes alentours, avec une zone d'intervention d'environ ${siteSettings.serviceRadiusKm} km autour de la ville.`,
     },
     {
       question: 'Proposez-vous un entretien ponctuel et régulier ?',
@@ -127,7 +128,64 @@ export default async function Home() {
         </div>
 
         <div className="flex-3 basis-[600px]">
-          <MapComponent mode="circle" center={[49.1829, -0.3707]} radiusKm={siteSettings.serviceRadiusKm} zoomBoost={1} />
+          <MapComponent
+            mode="circle"
+            center={[49.1829, -0.3707]}
+            radiusKm={siteSettings.serviceRadiusKm}
+            zoomBoost={1}
+          />
+        </div>
+      </section>
+
+      <SectionDivider flip />
+
+      <section className="page-shell page-section">
+        <div className="flex flex-col items-center gap-8">
+          <h2 className="section-heading text-3xl lg:text-4xl">
+            Nous prenons soin de leurs défunts et il nous le racontent
+          </h2>
+
+          {reviews.length === 0 ? (
+            <ButtonComponent href="/avis" variant="gold" size="lg">
+              Déposez-nous votre avis
+            </ButtonComponent>
+          ) : (
+            <>
+              <div className="reviews-loop" role="region" aria-label="Avis clients">
+                <div className={`p-10 reviews-loop__track${hasLoopAnimation ? ' reviews-loop__track--animated' : ''}`}>
+                  {reviewsLoop.map((review, index) => (
+                    // The second half exists only to create a seamless visual loop.
+                    <CardComponent
+                      key={`${review.id}-${index}`}
+                      aria-hidden={hasLoopAnimation && index >= reviews.length ? true : undefined}
+                      className="reviews-loop__item reviews-loop__item--home !items-start !justify-start !gap-2 !text-left"
+                    >
+                      <div className="reviews-loop__head w-full flex items-center justify-between gap-4">
+                        <strong>{review.author}</strong>
+                        <span
+                          className="reviews-loop__rate flex items-center gap-1"
+                          aria-label={`Note ${review.rate} sur 5`}
+                        >
+                          {[1, 2, 3, 4, 5].map((value) => (
+                            <Star
+                              key={value}
+                              aria-hidden
+                              className={`h-4 w-4 ${value <= Math.max(1, Math.min(5, review.rate)) ? 'reviews-star--filled' : 'reviews-star--empty'}`}
+                            />
+                          ))}
+                        </span>
+                      </div>
+                      {review.title ? <h3 className="reviews-loop__title">{review.title}</h3> : null}
+                      <p className="reviews-loop__comment">{review.comment}</p>
+                    </CardComponent>
+                  ))}
+                </div>
+              </div>
+              <ButtonComponent href="/avis" variant="gold" size="lg">
+                Déposez votre avis
+              </ButtonComponent>
+            </>
+          )}
         </div>
       </section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageJsonLd) }} />

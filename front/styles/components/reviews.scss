@@ -1,0 +1,126 @@
+.reviews-loop {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+
+  &__track {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+
+    &--animated {
+      width: max-content;
+      justify-content: flex-start;
+      animation: reviews-loop-scroll 80s linear infinite;
+      will-change: transform;
+    }
+  }
+
+  &__item {
+    width: min(88vw, 360px);
+    min-height: 190px;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid rgb(120 96 56 / 14%);
+    border-radius: 1rem;
+    background:
+      radial-gradient(circle at 50% 0%, rgb(255 255 255 / 58%), transparent 35%),
+      linear-gradient(180deg, rgb(255 251 247 / 96%), rgb(244 237 228 / 84%));
+    box-shadow: 0 12px 26px rgb(0 0 0 / 10%);
+
+    &--home {
+      min-height: 230px;
+      max-height: 230px;
+      overflow: hidden;
+
+      .reviews-loop__title {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+
+      .reviews-loop__comment {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+      }
+    }
+  }
+
+  &__head {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__rate {
+    color: var(--color-gold-light);
+    letter-spacing: 1px;
+
+    .reviews-star--filled {
+      color: var(--color-gold);
+      fill: var(--color-gold);
+    }
+
+    .reviews-star--empty {
+      color: color-mix(in srgb, var(--color-gold-light) 60%, transparent);
+      fill: transparent;
+    }
+  }
+
+  &__title {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__comment {
+    margin-top: 0.45rem;
+    line-height: 1.5;
+    white-space: pre-line;
+    color: rgb(43 43 43 / 90%);
+  }
+}
+
+.reviews-star--filled {
+  color: var(--color-gold);
+  fill: var(--color-gold);
+}
+
+.reviews-star--empty {
+  color: color-mix(in srgb, var(--color-gold-light) 60%, transparent);
+  fill: transparent;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  &__item {
+    @extend .reviews-loop__item;
+
+    width: 100%;
+  }
+}
+
+@keyframes reviews-loop-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reviews-loop__track--animated {
+    animation: none;
+  }
+}
