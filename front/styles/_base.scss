@@ -299,6 +299,7 @@ select:focus {
 
 .mobile-nav-panel {
   padding: 10px 0 10px 10px;
+  background-color: $bg-overlay;
   border-top-left-radius: var(--radius-md);
   border-bottom-left-radius: var(--radius-md);
   backdrop-filter: blur(18px);
