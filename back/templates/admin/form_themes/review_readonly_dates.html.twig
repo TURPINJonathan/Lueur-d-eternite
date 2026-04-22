@@ -1,0 +1,13 @@
+{% extends '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{% block _review_created_at_display_widget %}
+  <div class="form-control-plaintext">
+    {{ form.vars.value ?: '-' }}
+  </div>
+{% endblock %}
+
+{% block _review_approuved_at_display_widget %}
+  <div class="form-control-plaintext">
+    {{ form.vars.value ?: '-' }}
+  </div>
+{% endblock %}

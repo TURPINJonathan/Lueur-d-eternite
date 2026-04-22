@@ -12,7 +12,9 @@ export const metadata: Metadata = createPageMetadata({
 
 export default async function PrivacyPolicyPage() {
   const siteSettings = await getSiteSettings(300);
-  const policyUpdatedAt = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date(siteSettings.updatedAt));
+  const policyUpdatedAt = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(
+    new Date(siteSettings.updatedAt),
+  );
 
   return (
     <section className="page-shell page-section min-h-[68svh] relative overflow-hidden">

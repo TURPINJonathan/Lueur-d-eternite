@@ -11,6 +11,7 @@ const QUICK_LINKS = [
   { href: '/services', label: 'Services' },
   { href: '/tarifs', label: 'Tarifs' },
   { href: '/galerie', label: 'Galerie' },
+  { href: '/avis', label: 'Avis' },
   { href: '/a-propos', label: 'À propos' },
 ];
 
@@ -106,14 +107,14 @@ export default function Footer({
           <ButtonComponent href="/contact" variant="gold" size="smf" outline className="uppercase font-title">
             Contactez-nous
           </ButtonComponent>
-          <a href={`mailto:${contactEmail}`} className="font-light text-md" aria-label={`Envoyer un email à ${contactEmail}`}>
+          <a
+            href={`mailto:${contactEmail}`}
+            className="font-light text-md"
+            aria-label={`Envoyer un email à ${contactEmail}`}
+          >
             {contactEmail}
           </a>
-          <a
-            href={`tel:${phoneHref}`}
-            className="font-light text-md"
-            aria-label={`Appeler le ${contactPhoneDisplay}`}
-          >
+          <a href={`tel:${phoneHref}`} className="font-light text-md" aria-label={`Appeler le ${contactPhoneDisplay}`}>
             {contactPhoneDisplay}
           </a>
           {socialItems.length > 0 ? (

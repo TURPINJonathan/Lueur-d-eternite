@@ -50,6 +50,8 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToRoute('Galerie', 'fa fa-images', 'back_office_galerie_index');
 
+        yield MenuItem::linkToRoute('Avis', 'fa fa-star', 'back_office_reviews_index');
+
         yield MenuItem::subMenu('Tarifs', 'fa fa-receipt')->setSubItems([
             MenuItem::linkToRoute('Tarifs', 'fa fa-receipt', 'back_office_tarifs_index'),
             MenuItem::linkToRoute('Promotions', 'fa fa-tags', 'back_office_promotions_index'),

@@ -153,6 +153,28 @@ final class SiteSettingsCrudController extends AbstractCrudController
                 ])
                 ->setColumns(12),
 
+            FormField::addPanel('Avis clients (emails)')->setIcon('fa fa-star'),
+            BooleanField::new('reviewFormSendConfirmation', 'Envoyer un email de confirmation pour les avis')
+                ->setColumns(12),
+            TextareaField::new('reviewFormTemplateAdmin', 'Template email (nouvel avis en attente)')
+                ->setHelp('Code Twig/HTML complet. Aperçu live sous le champ.')
+                ->setNumOfRows(18)
+                ->setFormTypeOption('attr', [
+                    'class'             => 'js-email-template-editor',
+                    'data-preview-kind' => 'review_admin',
+                    'data-preview-url'  => '/backoffice/parametres-site/email-template-preview',
+                ])
+                ->setColumns(12),
+            TextareaField::new('reviewFormTemplateUser', 'Template email (confirmation dépôt d\'avis)')
+                ->setHelp('Code Twig/HTML complet. Aperçu live sous le champ.')
+                ->setNumOfRows(18)
+                ->setFormTypeOption('attr', [
+                    'class'             => 'js-email-template-editor',
+                    'data-preview-kind' => 'review_user',
+                    'data-preview-url'  => '/backoffice/parametres-site/email-template-preview',
+                ])
+                ->setColumns(12),
+
             FormField::addTab('Juridique')->setIcon('fa fa-balance-scale'),
             FormField::addPanel('Mentions légales')->setIcon('fa fa-balance-scale'),
             TextField::new('legalEntityName', 'Nom / raison sociale')->setColumns(6),
@@ -210,6 +232,8 @@ final class SiteSettingsCrudController extends AbstractCrudController
         $settings
             ->setContactFormTemplateAdmin($this->loadTemplateFile('emails/contact_request_admin.html.twig'))
             ->setContactFormTemplateUser($this->loadTemplateFile('emails/contact_request_user_confirmation.html.twig'))
+            ->setReviewFormTemplateAdmin($this->loadTemplateFile('emails/review_posted_pending_admin.html.twig'))
+            ->setReviewFormTemplateUser($this->loadTemplateFile('emails/review_posted_pending_user_confirmation.html.twig'))
             ->touch();
         $this->entityManager->persist($settings);
         $this->entityManager->flush();
@@ -245,6 +269,14 @@ final class SiteSettingsCrudController extends AbstractCrudController
         }
         if ('' === trim($settings->getContactFormTemplateUser())) {
             $settings->setContactFormTemplateUser($this->loadTemplateFile('emails/contact_request_user_confirmation.html.twig'));
+            $changed = true;
+        }
+        if ('' === trim($settings->getReviewFormTemplateAdmin())) {
+            $settings->setReviewFormTemplateAdmin($this->loadTemplateFile('emails/review_posted_pending_admin.html.twig'));
+            $changed = true;
+        }
+        if ('' === trim($settings->getReviewFormTemplateUser())) {
+            $settings->setReviewFormTemplateUser($this->loadTemplateFile('emails/review_posted_pending_user_confirmation.html.twig'));
             $changed = true;
         }
         if ($changed) {

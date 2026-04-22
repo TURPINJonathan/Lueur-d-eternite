@@ -54,10 +54,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsPublic = {
 
 export async function getSiteSettings(revalidate: number = 60): Promise<SiteSettingsPublic> {
   try {
-    return await apiGet<SiteSettingsPublic>(
-      '/api/public/site-settings',
-      { revalidate },
-    ).then((data) => ({
+    return await apiGet<SiteSettingsPublic>('/api/public/site-settings', { revalidate }).then((data) => ({
       ...DEFAULT_SITE_SETTINGS,
       ...data,
     }));
