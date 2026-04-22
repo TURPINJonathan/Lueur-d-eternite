@@ -142,7 +142,7 @@ export default async function Home() {
       <section className="page-shell page-section">
         <div className="flex flex-col items-center gap-8">
           <h2 className="section-heading text-3xl lg:text-4xl">
-            Nous prenons soin de leurs défunts et il nous le racontent
+            Nous prenons soin de leurs défunts et ils nous le racontent
           </h2>
 
           {reviews.length === 0 ? (
