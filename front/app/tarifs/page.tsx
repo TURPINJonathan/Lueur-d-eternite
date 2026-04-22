@@ -52,6 +52,10 @@ function GlobalNotices({ notices }: { notices: TarifGenericNotice[] }) {
 }
 
 function DesktopPriceCell({ tarif }: { tarif: TarifCard }) {
+  if (tarif.isQuoteOnly) {
+    return <span className="font-semibold text-[var(--color-gold-dark)]">Sur devis</span>;
+  }
+
   return (
     <div className="flex flex-col items-start gap-1.5">
       <div className="flex items-center gap-2">
@@ -71,6 +75,10 @@ function DesktopPriceCell({ tarif }: { tarif: TarifCard }) {
 }
 
 function MobilePriceCell({ tarif }: { tarif: TarifCard }) {
+  if (tarif.isQuoteOnly) {
+    return <span className="font-semibold text-[var(--color-gold-dark)]">Sur devis</span>;
+  }
+
   return (
     <div className="flex flex-col items-center gap-1.5">
       <div className="flex items-end gap-2">

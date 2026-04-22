@@ -71,6 +71,7 @@ final class PublicTarifsController extends AbstractController
                 'offerName'          => null,
                 'offerCode'          => null,
                 'position'           => $tarif->getPosition(),
+                'isQuoteOnly'        => $tarif->isQuoteOnly(),
             ];
         }, $tarifs);
 
@@ -130,6 +131,10 @@ final class PublicTarifsController extends AbstractController
         // Applique la meilleure offre active ciblée (promotion ou code) sur chaque tarif.
         // Les offres génériques (sans tarifs liés) sont affichées uniquement dans genericNotices.
         foreach ($payload as $index => $item) {
+            if (true === $item['isQuoteOnly']) {
+                continue;
+            }
+
             $basePrice = (int) $item['originalPriceCents'];
             $best = $basePrice;
             $bestOffer = null;
